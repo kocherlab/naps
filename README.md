@@ -1,1 +1,3 @@
-# NAPS (NAPS is ArUco Plus SLEAP)
+# NAPS
+
+We'll want some basic information here. "Naps (NAPS is ArUco Plus SLEAP) is ..."
