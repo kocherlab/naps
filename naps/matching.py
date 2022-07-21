@@ -134,11 +134,8 @@ class MatchFrame ():
 			y_min, y_max = croppedCoords(coords[1], crop_size, self.frame.shape[0])
 			x_min, x_max = croppedCoords(coords[0], crop_size, self.frame.shape[1])
 
-			# Assign the cropped area
-			cropped_area = self.frame[y_min:y_max, x_min:x_max, 0]
-
-			# Store the track image
-			self.frame_images[track] = cropped_area
+			# Assign and store the cropped track image
+			self.frame_images[track] = self.frame[y_min:y_max, x_min:x_max, 0]
 
 	def returnArUcoTags (self, aruco_model:ArUcoModel):
 
