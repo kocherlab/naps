@@ -2,11 +2,16 @@ import io
 import naps
 from setuptools import setup
 
-with io.open("README.rst", "rt", encoding="utf8") as f:
+with io.open("README.md", "rt", encoding="utf8") as f:
     readme = f.read()
 
 # List of required non-standard python libraries
-requirements = ['pandas',
+requirements = ['numpy>=1.19.5,<=1.21.5',
+                'scipy>=1.4.1,<=1.7.3',
+                'sleap>=1.2.4',
+                'opencv-python',
+                'opencv-contrib-python',
+                'pandas',
                 'tox']
 
 # Executable scripts in the package
