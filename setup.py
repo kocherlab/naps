@@ -12,7 +12,7 @@ requirements = ['numpy>=1.19.5,<=1.21.5',
                 'opencv-python',
                 'opencv-contrib-python',
                 'pandas',
-                'tox']
+                'pytest']
 
 # Executable scripts in the package
 tool_scripts = ['naps/matching.py']
