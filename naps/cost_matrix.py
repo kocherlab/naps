@@ -62,7 +62,7 @@ class CostMatrix ():
 	
 			# Store the assignments
 			for track_index, tag_index in self.assignment_method(cost_dataframe.values):
-				matched_dict[match_frame][cost_dataframe.index[track_index]] = cost_dataframe.columns[tag_index]
+				matched_dict[match_frame][cost_dataframe.columns[track_index]] = cost_dataframe.index[tag_index]
 
 		return matched_dict
 
@@ -70,7 +70,7 @@ class CostMatrix ():
 	def _linearAssignment (value_array):
 
 		# Solve the linear assignment problem using Jonker-Volgenant algorithm
-		track_indices, tag_indices = linear_sum_assignment(value_array)
+		tag_indices, track_indices = linear_sum_assignment(value_array)
 
 		# Store the assignments
 		for track_index, tag_index in zip(track_indices, tag_indices):
