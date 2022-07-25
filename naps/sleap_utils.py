@@ -6,6 +6,7 @@ import h5py
 import logging
 import time
 from tqdm import tqdm
+import operator
 
 logger = logging.getLogger(__name__)
 
