@@ -91,7 +91,7 @@ class Matching:
         # Assign the matching jobs
         self.matching_dict = {}
         for frame_start, frame_end in framesPerThread():
-            self.matching.dict.update(self._matchJob(frame_start, frame_end))
+            self.matching_dict.update(self._matchJob(frame_start, frame_end))
         return self.matching_dict
 
     def _matchJob(self, frame_start: int, frame_end: int):

@@ -4,6 +4,7 @@ import logging
 import time
 from naps.aruco import ArUcoModel
 from naps.matching import Matching
+import sleap
 
 logger = logging.getLogger("NAPS Logger")
 
@@ -17,14 +18,16 @@ def parse_args(argv):
         "--video_path",
         help="The filepath of the video used with SLEAP.",
         type=str,
-        default="/Genomics/ayroleslab2/scott/git/bee-tracking-manuscript/data/example-data/20210909QR_MultiCpu_000.mp4_padded_matched_annotated.mp4",
+        default="tests/data/example.mp4",
+        # required=True,
     )
 
     parser.add_argument(
         "--slp_path",
         help="The filepath of the SLEAP (.slp or .h5) file to generate coordinates from, corresponding with the input video file.",
         type=str,
-        default="/Genomics/ayroleslab2/scott/git/bee-tracking-manuscript/data/example-data/20210909QR_MultiCpu_000.mp4_padded.mp4.analysis.h5",
+        default="tests/data/example.slp",
+        # required=True,
     )
 
     parser.add_argument(
@@ -46,6 +49,8 @@ def main(argv=None):
     locations = load_tracks_from_slp(args.slp_path)
     logger.info(f"Done loading predictions in {time.time() - t0} seconds.")
     tag_locations = locations[:, args.tag_node, :, :]
+
+    logger.info("Starting matching...")
     t0 = time.time()
     matching = Matching(
         args.video_path,
@@ -57,12 +62,12 @@ def main(argv=None):
     matching_dict = matching.match()
     logger.info(f"Done matching in {time.time() - t0} seconds.")
 
-    logger.info(f"Matching dict: {matching_dict}")
-
     logger.info("Reconstructing SLEAP file...")
+    t0 = time.time()
     # Right now the reconstruction assumes that we each track has a single track ID assigned to it. We'll generalize so that a track can switch IDs over time.
-    resulting_labeled_frames = reconstruct_slp(args.slp_path, matching_list)
-
+    resulting_labeled_frames = reconstruct_slp(args.slp_path, matching_dict)
+    sleap.Labels.save_file(resulting_labeled_frames, "resulting_labeled_frames.slp")
+    logger.info(f"Done reconstructing SLEAP file in {time.time() - t0} seconds.")
 
 if __name__ == "__main__":
     main()

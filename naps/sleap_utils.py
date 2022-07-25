@@ -7,6 +7,7 @@ import logging
 import time
 from tqdm import tqdm
 import operator
+import itertools
 
 logger = logging.getLogger(__name__)
 
@@ -127,22 +128,28 @@ def load_tracks_from_slp(slp_path):
     return locations
 
 
-def reconstruct_slp(slp_path, matching_array):
-    logger.info("Loading predictions...")
-    t0 = time.time()
+def reconstruct_slp(slp_path, matching_dict):
     labels = sleap.load_file(slp_path)
     frames = sorted(labels.labeled_frames, key=operator.attrgetter("frame_idx"))
-    logger.info(f"Done loading predictions in {time.time() - t0} seconds.")
+
+    # Matching dict is of the form [Frame][Track][Tag]
+    # List of lists of tracks
+    tags = [track_dict.values() for track_dict in matching_dict.values()]
+
+    # Set of all tags
+    tags = set(itertools.chain(*tags))
+    num_uniq_tags = len(tags)
 
     new_tracks = [
         sleap.Track(spawned_on=0, name=f"track_{i}")
-        for i in range(np.unique(matching_array).shape[0])
+        for i in range(num_uniq_tags)
     ]
+
     new_lfs = []
     for lf in tqdm(frames):
         for inst in lf.instances:
-            inst.track = new_tracks[matching_array[int(inst.track.name.split("_")[-1])]]
-
+            # TODO: We also want to pass first_frame_idx and last_frame_idx to update
+            inst.track = new_tracks[matching_dict[lf.frame_idx][int(inst.track.name.split("_")[-1])]]
         new_lf = sleap.LabeledFrame(
             frame_idx=lf.frame_idx, video=lf.video, instances=lf.instances
         )
