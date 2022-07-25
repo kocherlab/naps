@@ -18,7 +18,7 @@ requirements = [
 ]
 
 # Executable scripts in the package
-tool_scripts = ["naps/matching.py"]
+tool_scripts = ["naps/naps_track.py"]
 
 setup(
     name=naps.__title__,
@@ -40,7 +40,7 @@ setup(
     install_requires=requirements,
     scripts=tool_scripts,
     entry_points={
-        "console_scripts": ["naps-track=naps.naps:main"],
+        "console_scripts": ["naps-track=naps.naps_track:main"],
     },
     python_requires=">=3.7",
 )

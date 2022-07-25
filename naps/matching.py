@@ -1,8 +1,11 @@
+#!/usr/bin/env python
 import sys
 import cv2
 import math
 
 import numpy as np
+
+from collections import defaultdict
 
 from naps.aruco import ArUcoModel
 from naps.cost_matrix import CostMatrix
@@ -42,17 +45,6 @@ class Matching:
 
         # Output
         self.matching_dict = {}
-
-    @classmethod
-    def test(cls, *args, **kwargs):
-        return cls(
-            "20210909QR_MultiCpu_010.mp4",
-            21,
-            99,
-            aruco_model=ArUcoModel.withTagSet("DICT_4X4_100"),
-            *args,
-            **kwargs
-        )
 
     def match(self):
         def framesPerThread():
@@ -108,14 +100,12 @@ class Matching:
 
         # Read in the frame, confirm it was sucessful
         frame = MatchFrame.fromCV2(*video.read())
-        while frame and current_frame < frame_end:
+        while frame and current_frame <= frame_end:
 
-            # REMOVE WHILE NOT TESTING
-            # import numpy as np
-            # test_array = np.asarray((np.asarray((2556, 3020)), np.asarray((2557, 3021))))
-            tag_locations = self.tag_node_matrix[current_frame, :, :].T
             # Just get [x,y] for each
+            tag_locations = self.tag_node_matrix[current_frame, :, :].T
             tag_locations = [tag_locations[i, :] for i in range(tag_locations.shape[0])]
+            
             # Crop and return the ArUco tags
             frame.cropArUcoWithCoordsArray(tag_locations, self.aruco_crop_size)
             job_match_dict[current_frame] = frame.returnArUcoTags(self.aruco_model)
@@ -123,12 +113,6 @@ class Matching:
             # Advance to the next frame
             frame = MatchFrame.fromCV2(*video.read())
             current_frame += 1
-
-            # REMOVE WHILE NOT TESTING
-            # break
-
-        # REMOVE WHILE NOT TESTING
-        # frame_end = frame_start
 
         # Create the cost matrix and assign the track/tag pairs for each frame
         job_cost_matrix = CostMatrix.fromDict(
@@ -163,6 +147,9 @@ class MatchFrame:
         # Loop the frame track coordinates
         for track, coords in enumerate(coords_array):
 
+            # Skip track if NaN found in coordinates
+            if np.isnan(coords).any(): continue
+
             # Assign the min/max coords for cropping
             y_min, y_max = croppedCoords(coords[1], crop_size, self.frame.shape[0])
             x_min, x_max = croppedCoords(coords[0], crop_size, self.frame.shape[1])
@@ -171,8 +158,6 @@ class MatchFrame:
             self.frame_images[track] = self.frame[y_min:y_max, x_min:x_max, 0]
 
     def returnArUcoTags(self, aruco_model: ArUcoModel):
-
-        from collections import defaultdict
 
         track_tag_dict = defaultdict(list)
 
@@ -191,10 +176,3 @@ class MatchFrame:
                 track_tag_dict[track].append(marker_tag[0])
 
         return track_tag_dict
-
-
-# model = ArUcoModel.withTagSet('DICT_4X4_100')
-# test = Matching(model)
-
-# test = Matching.test()
-# test.match()

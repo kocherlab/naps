@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import h5py
 import numpy as np
 import sleap
@@ -128,7 +129,7 @@ def load_tracks_from_slp(slp_path):
     return locations
 
 
-def reconstruct_slp(slp_path, matching_dict):
+def reconstruct_slp(slp_path, matching_dict, first_frame_idx, last_frame_idx):
     labels = sleap.load_file(slp_path)
     frames = sorted(labels.labeled_frames, key=operator.attrgetter("frame_idx"))
 
@@ -147,9 +148,16 @@ def reconstruct_slp(slp_path, matching_dict):
 
     new_lfs = []
     for lf in tqdm(frames):
+        # Skips frames outside matching window
+        if lf.frame_idx < first_frame_idx or lf.frame_idx > last_frame_idx: continue
         for inst in lf.instances:
-            # TODO: We also want to pass first_frame_idx and last_frame_idx to update
-            inst.track = new_tracks[matching_dict[lf.frame_idx][int(inst.track.name.split("_")[-1])]]
+            # Confirm frame was assigned matches, could be used above, likely slower
+            if lf.frame_idx not in matching_dict: continue
+            # Confirm the instance was assigned a tag
+            inst_name = int(inst.track.name.split("_")[-1])
+            if inst_name not in matching_dict[lf.frame_idx]: continue
+            print(matching_dict[lf.frame_idx][inst_name])
+            inst.track = new_tracks[matching_dict[lf.frame_idx][inst_name]]
         new_lf = sleap.LabeledFrame(
             frame_idx=lf.frame_idx, video=lf.video, instances=lf.instances
         )

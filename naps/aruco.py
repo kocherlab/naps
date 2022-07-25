@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import cv2
 from cv2.aruco import Dictionary_get, DetectorParameters_create, detectMarkers
 
