@@ -41,9 +41,9 @@ def parse_args(argv):
     )
     parser.add_argument(
         "--output_path",
-        help="A string indicating the path to save the resulting SLEAP file.",
+        help="A string indicating the path to save the resulting SLEAP analysis file.",
         type=str,
-        default="tests/data/example_output.h5",
+        default="tests/data/example_output.analysis.h5",
         # required=True,
     )
     # parser.add_argument('output_path', nargs='?', help='A string indicating the path to save the resulting SLEAP file.')

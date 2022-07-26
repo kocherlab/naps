@@ -10,10 +10,10 @@ class ArUcoModel:
         tag_set: str,
         adaptiveThreshWinSizeMin: int = 3,
         adaptiveThreshWinSizeMax: int = 30,
-        adaptiveThreshWinSizeStep: int = 3,
-        adaptiveThreshConstant: float = 12,
+        adaptiveThreshWinSizeStep: int = 2,
+        adaptiveThreshConstant: float = 3,
         perspectiveRemoveIgnoredMarginPerCell: float = 0.13,
-        errorCorrectionRate: float = 0.0,
+        errorCorrectionRate: float = 1,
         **kwargs,
     ):
 
