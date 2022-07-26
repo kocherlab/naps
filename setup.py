@@ -9,11 +9,11 @@ with io.open("README.md", "rt", encoding="utf8") as f:
 requirements = [
     "numpy>=1.19.5,<=1.21.5",
     "scipy>=1.4.1,<=1.7.3",
+    "h5py>=3.1.0,<=3.6.0",
     "sleap>=1.2.4",
     "opencv-contrib-python",
     "pandas",
     "pytest",
-    "h5py",
     "tqdm",
 ]
 
