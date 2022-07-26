@@ -52,7 +52,7 @@ extensions = [
     "sphinx.ext.coverage",
     "sphinx.ext.viewcode",
     "sphinx.ext.napoleon",
-    "sphinx-copybutton",
+    "sphinx_copybutton",
     # https://myst-nb.readthedocs.io/en/latest/
     "myst_nb",
 ]
