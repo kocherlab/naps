@@ -3,6 +3,10 @@ NAPS Installation Instructions
 ##############################
 
 **********
+From GitHub
+**********
+
+**********
 From Conda
 **********
 

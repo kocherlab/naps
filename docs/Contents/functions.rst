@@ -2,5 +2,5 @@
 NAPS Functions
 ##############
 
-Link to automodules from here
-   
+.. automodule:: naps.sleap_utils
+   :members:

@@ -9,13 +9,14 @@ import time
 from tqdm import tqdm
 import operator
 import itertools
+from typing import Tuple, List
 
 logger = logging.getLogger(__name__)
 
 
 def get_location_matrix(
     labels: sleap.Labels, all_frames: bool, video: sleap.Video = None
-):
+) -> Tuple[np.ndarray, List[str]]:
     """Builds numpy matrix with point location data.
     Note: This function assumes either all instances have tracks or no instances have
     tracks.
@@ -30,6 +31,7 @@ def get_location_matrix(
             are no labeled frames in the `video`, then None will be returned.
     Returns:
         np.ndarray: point location array with shape (frames, nodes, 2, tracks)
+        List[str]: list of node names
     """
     # Assumes either all instances have tracks or no instances have tracks
     track_count = len(labels.tracks) or 1
@@ -119,7 +121,15 @@ def get_location_matrix(
     return locations_matrix, labels.skeletons[0].nodes
 
 
-def load_tracks_from_slp(slp_path):
+def load_tracks_from_slp(slp_path: str) -> Tuple[np.ndarray, List[str]]:
+    """_summary_
+
+    Args:
+        slp_path (str): Path to SLEAP analysis h5. This file is typically generated using `sleap-convert`.
+
+    Returns:
+        Tuple[np.ndarray, List[str]]: Tuple of (locations_matrix, node_names) where location matrix is a numpy array with shape (frames, nodes, 2, tracks) and node_names is a list of node names.
+    """
     if pathlib.Path(slp_path).suffix == ".slp":
         dset = sleap.load_file(slp_path)
         locations, node_names = get_location_matrix(dset, all_frames=True)
@@ -130,7 +140,18 @@ def load_tracks_from_slp(slp_path):
     return locations, node_names
 
 
-def reconstruct_slp(slp_path, matching_dict, first_frame_idx, last_frame_idx):
+def update_labeled_frames(slp_path: str, matching_dict: dict, first_frame_idx:int, last_frame_idx:int) -> List[sleap.LabeledFrame]:
+    """_summary_
+
+    Args:
+        slp_path (str): Path to SLEAP project file (.slp) file.
+        matching_dict (dict): Dictionary of format [Frame][Track] containing the tag number for each track in each frame.
+        first_frame_idx (int): First frame index to include in the reconstructed h5.
+        last_frame_idx (int): Last frame index to include in the reconstructed h5.
+
+    Returns:
+        List[sleap.LabeledFrame]: List of labeled frames with updated tracks.
+    """
     labels = sleap.load_file(slp_path)
     frames = sorted(labels.labeled_frames, key=operator.attrgetter("frame_idx"))
 

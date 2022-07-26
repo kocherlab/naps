@@ -6,7 +6,7 @@ import argparse
 
 from naps.aruco import ArUcoModel
 from naps.matching import Matching
-from naps.sleap_utils import load_tracks_from_slp, reconstruct_slp
+from naps.sleap_utils import load_tracks_from_slp, update_labeled_frames
 
 
 logger = logging.getLogger("NAPS Logger")
@@ -77,7 +77,7 @@ def main(argv=None):
     logger.info("Reconstructing SLEAP file...")
     t0 = time.time()
     # Right now the reconstruction assumes that we each track has a single track ID assigned to it. We'll generalize so that a track can switch IDs over time.
-    resulting_labeled_frames = reconstruct_slp(args.slp_path, matching_dict, 0, 1203)
+    resulting_labeled_frames = update_labeled_frames(args.slp_path, matching_dict, 0, 1203)
     new_labels = sleap.Labels(labeled_frames=resulting_labeled_frames)
 
     # Temporary workaround to write out a SLEAP Analysis HDF5. These can be imported into SLEAP but aren't the base project format.
