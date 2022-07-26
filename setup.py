@@ -1,24 +1,18 @@
 import io
 import naps
 from setuptools import setup
+import os
 
 with io.open("README.md", "rt", encoding="utf8") as f:
     readme = f.read()
 
-# List of required non-standard python libraries
-requirements = [
-    "scikit-build",
-    "numpy>=1.19.5,<=1.21.5",
-    "scipy>=1.4.1,<=1.7.3",
-    "h5py>=3.1.0,<=3.6.0",
-    "attrs==21.2.0",
-    "pynwb==2.1.0",
-    "sleap>=1.2.4",
-    "opencv-contrib-python",
-    "pandas",
-    "pytest",
-    "tqdm",
-]
+# Read requirements.txt
+lib_folder = os.path.dirname(os.path.realpath(__file__))
+requirement_path = lib_folder + '/requirements.txt'
+requirements= []
+if os.path.isfile(requirement_path):
+    with open(requirement_path) as f:
+        requirements = f.read().splitlines()
 
 # Executable scripts in the package
 tool_scripts = ["naps/naps_track.py"]
