@@ -17,6 +17,7 @@ requirements = [
     "pandas",
     "pytest",
     "tqdm",
+    "scikit-build",
 ]
 
 # Executable scripts in the package
