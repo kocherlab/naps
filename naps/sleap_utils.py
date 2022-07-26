@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def get_location_matrix(
     labels: sleap.Labels, all_frames: bool, video: sleap.Video = None
-) -> np.ndarray:
+):
     """Builds numpy matrix with point location data.
     Note: This function assumes either all instances have tracks or no instances have
     tracks.
@@ -71,6 +71,7 @@ def get_location_matrix(
     lfs_instances = list()
     warning_flag = False
     for lf in labeled_frames:
+
         user_instances = lf.user_instances
         predicted_instances = lf.predicted_instances
         for track in tracks:
@@ -115,18 +116,18 @@ def get_location_matrix(
             track_i = labels.tracks.index(inst.track)
 
         locations_matrix[frame_i, ..., track_i] = inst.numpy()
-
-    return locations_matrix
+    return locations_matrix, labels.skeletons[0].nodes
 
 
 def load_tracks_from_slp(slp_path):
     if pathlib.Path(slp_path).suffix == ".slp":
         dset = sleap.load_file(slp_path)
-        locations = get_location_matrix(dset, all_frames=True)
+        locations, node_names = get_location_matrix(dset, all_frames=True)
     elif pathlib.Path(slp_path).suffix == ".h5":
         with h5py.File(slp_path, "r") as f:
             locations = f["tracks"][:].T
-    return locations
+            node_names = [n.decode() for n in f["node_names"][:]]
+    return locations, node_names
 
 
 def reconstruct_slp(slp_path, matching_dict, first_frame_idx, last_frame_idx):
@@ -139,25 +140,28 @@ def reconstruct_slp(slp_path, matching_dict, first_frame_idx, last_frame_idx):
 
     # Set of all tags
     tags = set(itertools.chain(*tags))
-    num_uniq_tags = len(tags)
-
-    new_tracks = [
-        sleap.Track(spawned_on=0, name=f"track_{i}")
-        for i in range(num_uniq_tags)
-    ]
+    logger.info(f"Total tags: {len(tags)}")
+    new_tracks = {tag: sleap.Track(spawned_on=0, name=f"track_{tag}") for tag in tags}
 
     new_lfs = []
     for lf in tqdm(frames):
         # Skips frames outside matching window
-        if lf.frame_idx < first_frame_idx or lf.frame_idx > last_frame_idx: continue
+        if lf.frame_idx < first_frame_idx or lf.frame_idx > last_frame_idx:
+            continue
         for inst in lf.instances:
             # Confirm frame was assigned matches, could be used above, likely slower
-            if lf.frame_idx not in matching_dict: continue
+            if lf.frame_idx not in matching_dict:
+                for inst in lf.instances:
+                    inst.track = None
+                continue
+
             # Confirm the instance was assigned a tag
             inst_name = int(inst.track.name.split("_")[-1])
-            if inst_name not in matching_dict[lf.frame_idx]: continue
-            print(matching_dict[lf.frame_idx][inst_name])
+            inst.track = None
+            if inst_name not in matching_dict[lf.frame_idx] or inst_name == "":
+                continue
             inst.track = new_tracks[matching_dict[lf.frame_idx][inst_name]]
+
         new_lf = sleap.LabeledFrame(
             frame_idx=lf.frame_idx, video=lf.video, instances=lf.instances
         )

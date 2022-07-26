@@ -20,7 +20,7 @@ class ArUcoModel:
         # Assign the aruco dictionary
         self.aruco_dict = self._assignArucoDict(tag_set)
 
-        """	
+        """
 		ArUco parameters:
 		These have been adjusted by dyknapp but are worth playing with if ArUco is too slow or not detecting enough tags.
 		These thresholding parameters DRAMATICALLY improve detection rate, while DRAMATICALLY hurting performance.
@@ -30,7 +30,7 @@ class ArUcoModel:
 
         """
 		Assign the corner refinement method:
-		
+
 		Should we permit all options?
 		"""
         self.aruco_params.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_SUBPIX

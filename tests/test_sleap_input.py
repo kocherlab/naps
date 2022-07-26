@@ -7,6 +7,7 @@ import os
 
 logger = logging.getLogger(__name__)
 
+
 def test_load_tracks_from_slp():
     locations = load_tracks_from_slp("tests/data/example.slp")
     assert isinstance(locations, np.ndarray)
@@ -20,7 +21,7 @@ def test_sleap_recreation():
     num_tracks = 50
 
     matching_array = np.random.randint(0, num_tracks, (1204), dtype="int64")
-    frames = reconstruct_slp(path, matching_array)
+    frames = reconstruct_slp(path, matching_array, 0, 100)
     new_labels = sleap.Labels(labeled_frames=frames)
     try:
         sleap.Labels.save_file(new_labels, outpath)
