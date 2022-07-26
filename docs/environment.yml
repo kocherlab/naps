@@ -20,5 +20,6 @@ dependencies:
 #  - nvidia::cuda-nvcc=11.3
   - conda-forge::pip<=22.0.3
 #  - sleap::sleap>=1.2.4
+- pip:
   - sphinx-copybutton
   - sphinx-press-theme
