@@ -1,0 +1,16 @@
+version: 2
+
+conda:
+    environment: docs/environment.yml
+
+build:
+   image: latest
+
+python:
+   version: 3.7
+   install:
+      - method: pip
+        path: .
+
+submodules:
+    include: all
