@@ -12,12 +12,12 @@ requirements = [
     "h5py>=3.1.0,<=3.6.0",
     "attrs==21.2.0",
     "pynwb==2.1.0",
+    "scikit-build",
     "sleap>=1.2.4",
     "opencv-contrib-python",
     "pandas",
     "pytest",
-    "tqdm",
-    "scikit-build",
+    "tqdm", 
 ]
 
 # Executable scripts in the package
