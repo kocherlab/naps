@@ -16,6 +16,7 @@ requirements = [
     "pandas",
     "pytest",
     "tqdm",
+    "pynwb",
 ]
 
 # Executable scripts in the package
