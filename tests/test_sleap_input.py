@@ -1,4 +1,4 @@
-from naps.sleap_utils import load_tracks_from_slp, reconstruct_slp
+from naps.sleap_utils import load_tracks_from_slp
 import logging
 import numpy as np
 import pytest
