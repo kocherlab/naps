@@ -29,6 +29,8 @@ setup(
     url=naps.__url__,
     description=naps.__summary__,
     long_description=readme,
+    author=naps.__author__,
+    author_email=naps.__email__,
     packages=["naps"],
     install_requires=requirements,
     scripts=tool_scripts,
