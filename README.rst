@@ -9,7 +9,8 @@
    :target: https://naps.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
 
-# NAPS
+NAPS
+====
 
 We'll want some basic information here, could be the doc introduction: "Naps (NAPS is ArUco Plus SLEAP) is ..."
 
