@@ -3,7 +3,7 @@ import naps
 from setuptools import setup
 import os
 
-with io.open("README.md", "rt", encoding="utf8") as f:
+with io.open("README.rst", "rt", encoding="utf8") as f:
     readme = f.read()
 
 # Read requirements.txt
@@ -18,7 +18,7 @@ if os.path.isfile(requirement_path):
 tool_scripts = ["naps/naps_track.py"]
 
 setup(
-    name=naps.__title__,
+    name=naps.__name__,
     version=naps.__version__,
     project_urls={
         "Documentation": naps.__docs__,
@@ -29,8 +29,8 @@ setup(
     url=naps.__url__,
     author=naps.__author__,
     author_email=naps.__email__,
-    maintainer=naps.__maintainer__,
-    maintainer_email=naps.__maintainer_email__,
+    #maintainer=naps.__maintainer__,
+    #maintainer_email=naps.__maintainer_email__,
     description=naps.__summary__,
     long_description=readme,
     packages=["naps"],
