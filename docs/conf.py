@@ -26,7 +26,7 @@ import naps
 
 project = "NAPS Documentation"
 copyright = naps.__copyright__
-author = naps.__author__
+author = naps.__authors__
 
 # The full version, including alpha/beta/rc tags
 release = naps.__version__
