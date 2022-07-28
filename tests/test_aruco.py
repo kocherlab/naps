@@ -31,31 +31,21 @@ from naps.aruco import ArUcoModel
 )
 def test_ArUcoModel_tag_sets(tag_set):
 
+    param_dict = {
+        "adaptiveThreshWinSizeMin": 10,
+        "adaptiveThreshWinSizeMax": 10,
+        "adaptiveThreshWinSizeStep": 10,
+        "adaptiveThreshConstant": 10,
+        "perspectiveRemoveIgnoredMarginPerCell": 0.1,
+        "errorCorrectionRate": 0.1
+    }
+
     # Confirm the model loads without error for each tag set
     try:
-        ArUcoModel.withTagSet(tag_set)
+        test_model = ArUcoModel.withTagSet(tag_set, **param_dict)
+        test_model.buildModel()
     except Exception as exc:
         assert False, f"Tag set {tag_set} raised an exception {exc}"
-
-
-@pytest.mark.parametrize(
-    "param, value",
-    [
-        ("adaptiveThreshWinSizeMin", 10),
-        ("adaptiveThreshWinSizeMax", 10),
-        ("adaptiveThreshWinSizeStep", 10),
-        ("adaptiveThreshConstant", 10),
-        ("perspectiveRemoveIgnoredMarginPerCell", 0.1),
-        ("errorCorrectionRate", 0.1),
-    ],
-)
-def test_ArUcoModel_params(param, value):
-
-    # Confirm the model loads without error for each parameter and value
-    try:
-        ArUcoModel.withTagSet("DICT_4X4_100", **{param: value})
-    except Exception as exc:
-        assert False, f"Parameter{param} with value {value} raised an exception {exc}"
 
 
 @pytest.mark.parametrize(
@@ -70,5 +60,19 @@ def test_ArUcoModel_params(param, value):
     ],
 )
 def test_ArUcoModel_params_type_error(param, value):
+
+    param_dict = {
+        "adaptiveThreshWinSizeMin": 10,
+        "adaptiveThreshWinSizeMax": 10,
+        "adaptiveThreshWinSizeStep": 10,
+        "adaptiveThreshConstant": 10,
+        "perspectiveRemoveIgnoredMarginPerCell": 0.1,
+        "errorCorrectionRate": 0.1
+    }
+
+    # Replace value
+    param_dict[param] = value
+
     with pytest.raises(Exception) as e_info:
-        ArUcoModel.withTagSet("DICT_4X4_100", **{param: value})
+        test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
+        test_model.buildModel()
