@@ -1,4 +1,4 @@
-|travis ci| |Documentation|
+|conda| |travis ci| |Documentation|
 
 .. |travis ci| image:: 
    https://app.travis-ci.com/kocherlab/naps.svg?branch=main
@@ -8,6 +8,10 @@
    https://readthedocs.org/projects/naps/badge/?version=latest
    :target: https://naps.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
+   
+.. |conda| image:: 
+   https://anaconda.org/kocherlab/naps-track/badges/version.svg
+   :target: https://anaconda.org/kocherlab/naps-track
 
 NAPS
 ====
