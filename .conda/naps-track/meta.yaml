@@ -1,0 +1,50 @@
+{% set name = "naps-track" %}
+{% set version = "0.1.1" %}
+
+package:
+  name: "{{ name|lower }}"
+  version: "{{ version }}"
+
+source:
+  url: "https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz"
+  sha256: 6afc1bb0b4feca036254c3238cbbeb6bbdb883e19d8d1bf6a388825c6ef71c7e
+
+build:
+  number: 0
+  entry_points:
+    - naps-track=naps.naps_track:main
+
+requirements:
+  host:
+    - pip
+    - python
+  run:
+    - python
+    - numpy>=1.19.5,<=1.21.5
+    - scipy>=1.4.1,<=1.7.3
+    - h5py>=3.1.0,<=3.6.0
+    - attrs==21.2.0
+    - sleap>=1.2.4
+    - pandas
+    - pytest
+    - tqdm
+
+test:
+  imports:
+    - naps
+    - cv2.aruco
+  commands:
+    - naps-track --help
+
+about:
+  home: "https://github.com/kocherlab/naps"
+  license: BSD 3-Clause
+  license_family: BSD
+  license_file: 
+  summary: "NAPS (NAPS is ArUco Plus SLEAP)"
+  doc_url: 
+  dev_url: 
+
+extra:
+  recipe-maintainers:
+    - your-github-id-here
