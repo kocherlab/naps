@@ -8,52 +8,74 @@ class ArUcoModel:
     def __init__(
         self,
         tag_set: str,
-        adaptiveThreshWinSizeMin: int = 3,
-        adaptiveThreshWinSizeMax: int = 30,
-        adaptiveThreshWinSizeStep: int = 2,
-        adaptiveThreshConstant: float = 3,
-        perspectiveRemoveIgnoredMarginPerCell: float = 0.13,
-        errorCorrectionRate: float = 1,
+        adaptiveThreshWinSizeMin: int,
+        adaptiveThreshWinSizeMax: int,
+        adaptiveThreshWinSizeStep: int,
+        adaptiveThreshConstant: float,
+        perspectiveRemoveIgnoredMarginPerCell: float,
+        errorCorrectionRate: float,
         **kwargs,
     ):
 
-        # Assign the aruco dictionary
-        self.aruco_dict = self._assignArucoDict(tag_set)
-
-        """
-		ArUco parameters:
-		These have been adjusted by dyknapp but are worth playing with if ArUco is too slow or not detecting enough tags.
-		These thresholding parameters DRAMATICALLY improve detection rate, while DRAMATICALLY hurting performance.
-		Since super fast processing isn't really necessary here they should be fine as is.
-		"""
-        self.aruco_params = DetectorParameters_create()
-
-        """
-		Assign the corner refinement method:
-
-		Should we permit all options?
-		"""
-        self.aruco_params.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_SUBPIX
-
-        # Window parameters
-        self.aruco_params.adaptiveThreshWinSizeMin = adaptiveThreshWinSizeMin
-        self.aruco_params.adaptiveThreshWinSizeMax = adaptiveThreshWinSizeMax
-        self.aruco_params.adaptiveThreshWinSizeStep = adaptiveThreshWinSizeStep
-
-        # If too slow, start by adjusting this one up. If we want more tags, lower it (diminishing returns)
-        self.aruco_params.adaptiveThreshConstant = adaptiveThreshConstant
-
-        # No note for this option
-        self.aruco_params.perspectiveRemoveIgnoredMarginPerCell = (
+        # Store the tag set
+        self.tag_set = tag_set
+        
+        # Store the ArUco parameters
+        self.adaptiveThreshWinSizeMin = adaptiveThreshWinSizeMin
+        self.adaptiveThreshWinSizeMax = adaptiveThreshWinSizeMax
+        self.adaptiveThreshWinSizeStep = adaptiveThreshWinSizeStep
+        self.adaptiveThreshConstant = adaptiveThreshConstant
+        self.errorCorrectionRate = errorCorrectionRate
+        self.perspectiveRemoveIgnoredMarginPerCell = (
             perspectiveRemoveIgnoredMarginPerCell
         )
 
-        # If false positives are a problem, lower this parameter.
-        self.aruco_params.errorCorrectionRate = errorCorrectionRate
+        '''
+        Set the ArUco dict and params to None. Create w/ buildModel
+        as we cannot pickle them when using multiprocessing
+        '''
+        self.aruco_dict = None
+        self.aruco_params = None
 
     @classmethod
     def withTagSet(cls, tag_set, **kwargs):
         return cls(tag_set, **kwargs)
+
+    def buildModel (self):
+
+        # Assign the aruco dict
+        self.aruco_dict = self._assignArucoDict(self.tag_set)
+
+        """
+        ArUco parameters:
+        These have been adjusted by dyknapp but are worth playing with if ArUco is too slow or not detecting enough tags.
+        These thresholding parameters DRAMATICALLY improve detection rate, while DRAMATICALLY hurting performance.
+        Since super fast processing isn't really necessary here they should be fine as is.
+        """
+        self.aruco_params = DetectorParameters_create()
+
+        """
+        Assign the corner refinement method:
+        
+        Should we permit all options?
+        """
+        self.aruco_params.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_SUBPIX
+
+        # Window parameters
+        self.aruco_params.adaptiveThreshWinSizeMin = self.adaptiveThreshWinSizeMin
+        self.aruco_params.adaptiveThreshWinSizeMax = self.adaptiveThreshWinSizeMax
+        self.aruco_params.adaptiveThreshWinSizeStep = self.adaptiveThreshWinSizeStep
+
+        # If too slow, start by adjusting this one up. If we want more tags, lower it (diminishing returns)
+        self.aruco_params.adaptiveThreshConstant = self.adaptiveThreshConstant
+
+        # No note for this option
+        self.aruco_params.perspectiveRemoveIgnoredMarginPerCell = (
+            self.perspectiveRemoveIgnoredMarginPerCell
+        )
+
+        # If false positives are a problem, lower this parameter.
+        self.aruco_params.errorCorrectionRate = self.errorCorrectionRate
 
     def detect(self, img):
 

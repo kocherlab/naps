@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-from collections import defaultdict
 import math
 import cv2
 import numpy as np
+from collections import defaultdict
+from ray.util.multiprocessing import Pool
 from naps.aruco import ArUcoModel
 from naps.cost_matrix import CostMatrix
-
 
 class Matching:
     def __init__(
@@ -14,11 +14,11 @@ class Matching:
         video_first_frame: int,
         video_last_frame: int,
         aruco_model: ArUcoModel,
+        aruco_crop_size: int,
+        half_rolling_window_size: int,
         tag_node_matrix: np.ndarray,
+        threads: int,
         min_sleap_score: float = 0.1,
-        half_rolling_window_size: int = 10,
-        aruco_crop_size: int = 50,
-        threads: int = 1,
         **kwargs
     ):
 
@@ -76,13 +76,23 @@ class Matching:
                 )
                 yield frame_start, frame_end
 
-        # Assign the matching jobs
-        self.matching_dict = {}
-        for frame_start, frame_end in framesPerThread():
-            self.matching_dict.update(self._matchJob(frame_start, frame_end))
+        # Run the multiprocessing job, then convert the resulting list into a dict
+        if self.threads > 1:
+            with Pool(processes = self.threads) as matching_pool:
+                results_list = matching_pool.starmap(self._matchJob, framesPerThread())
+                for results_dict in results_list: self.matching_dict.update(results_dict)
+        
+        # Run the job as normal
+        else: 
+            for frame_start, frame_end in framesPerThread(): 
+                self.matching_dict.update(self._matchJob(frame_start, frame_end))
+
         return self.matching_dict
 
     def _matchJob(self, frame_start: int, frame_end: int):
+
+        # Build the aruco model
+        self.aruco_model.buildModel()
 
         # Create a dict to store the matches for this job
         job_match_dict = {}

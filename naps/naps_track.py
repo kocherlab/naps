@@ -18,35 +18,129 @@ def parse_args(argv):
     )
 
     parser.add_argument(
-        "--video_path",
-        help="The filepath of the video used with SLEAP.",
+        "--slp-path",
+        help="The filepath of the SLEAP (.slp or .h5) file to generate coordinates from, corresponding with the input video file",
         type=str,
-        default="tests/data/example.mp4",
-        # required=True,
+        #required=True
+        default="tests/data/example.slp"
+        
     )
 
     parser.add_argument(
-        "--slp_path",
-        help="The filepath of the SLEAP (.slp or .h5) file to generate coordinates from, corresponding with the input video file.",
+        "--video-path",
+        help="The filepath of the video used with SLEAP",
         type=str,
-        default="tests/data/example.slp",
-        # required=True,
+        #required=True
+        default="tests/data/example.mp4"
+        
     )
 
     parser.add_argument(
-        "--tag_node",
-        help="A string to include as stems of filenames saved to files_folder_path.",
+        "--tag-node",
+        help="The aruco SLEAP node",
         type=int,
-        required=True,
+        required=True
     )
+
     parser.add_argument(
-        "--output_path",
-        help="A string indicating the path to save the resulting SLEAP analysis file.",
+        "--start-frame",
+        help="The frame to begin NAPS assignment",
+        type=int,
+        #required=True
+        default=0
+    )
+
+    parser.add_argument(
+        "--end-frame",
+        help="The frame to stop NAPS assignment",
+        type=int,
+        #required=True
+        default=1203
+    )
+
+    parser.add_argument(
+        "--half-rolling-window-size",
+        help="Specifies the number of flanking frames (prior and subsequent) required in the rolling window for Hungarian matching a frame",
+        type=int,
+        default=5,
+    )
+
+    parser.add_argument(
+        "--aruco-marker-set",
+        help="The aruco markers used in the video",
+        type=str,
+        #required=True
+        default="DICT_4X4_100"
+    )
+
+    parser.add_argument(
+        "--aruco-crop-size",
+        help="The number of pixels horizontally and vertically around the aruco SLEAP node to identify the marker",
+        type=int,
+        default=50
+    )
+
+    parser.add_argument(
+        "--aruco-adaptive-thresh-win-size-min",
+        dest='adaptiveThreshWinSizeMin',
+        help="Specifies the value for adaptiveThreshWinSizeMin",
+        type=int,
+        default=3
+    )
+
+    parser.add_argument(
+        "--aruco-adaptive-thresh-win-size-max",
+        dest='adaptiveThreshWinSizeMax',
+        help="Specifies the value for adaptiveThreshWinSizeMax",
+        type=int,
+        default=30
+    )
+
+    parser.add_argument(
+        "--aruco-adaptive-thresh-win-size-step",
+        dest='adaptiveThreshWinSizeStep',
+        help="Specifies the value for adaptiveThreshWinSizeStep",
+        type=int,
+        default=2
+    )
+
+    parser.add_argument(
+        "--aruco-adaptive-thresh-constant",
+        dest='adaptiveThreshConstant',
+        help="Specifies the value for adaptiveThreshConstant",
+        type=float,
+        default=3
+    )
+
+    parser.add_argument(
+        "--aruco-perspective-rm-ignored-margin",
+        dest='perspectiveRemoveIgnoredMarginPerCell',
+        help="Specifies the value for perspectiveRemoveIgnoredMarginPerCell",
+        type=float,
+        default=0.13
+    )
+    
+    parser.add_argument(
+        "--aruco-error-correction-rate",
+        dest='errorCorrectionRate',
+        help="Specifies the value for errorCorrectionRate",
+        type=float,
+        default=1
+    )
+
+    parser.add_argument(
+        "--output-path",
+        help="Output path of the resulting SLEAP analysis file.",
         type=str,
         default="tests/data/example_output.analysis.h5",
-        # required=True,
     )
-    # parser.add_argument('output_path', nargs='?', help='A string indicating the path to save the resulting SLEAP file.')
+
+    parser.add_argument(
+        "--threads",
+        help="Specifies the number of threads to use in the analysis",
+        type=int,
+        default=1
+    )
 
     args = parser.parse_args()
     return args
@@ -62,14 +156,31 @@ def main(argv=None):
     logger.info(f"Done loading predictions in {time.time() - t0} seconds.")
     tag_locations = locations[:, args.tag_node, :, :]
 
+    logger.info("Building ArUco model...")
+    t0 = time.time()
+    aruco_model = ArUcoModel.withTagSet(
+        args.aruco_marker_set,
+        adaptiveThreshWinSizeMin = args.adaptiveThreshWinSizeMin,
+        adaptiveThreshWinSizeMax = args.adaptiveThreshWinSizeMax,
+        adaptiveThreshWinSizeStep = args.adaptiveThreshWinSizeStep,
+        adaptiveThreshConstant = args.adaptiveThreshConstant,
+        perspectiveRemoveIgnoredMarginPerCell = args.perspectiveRemoveIgnoredMarginPerCell,
+        errorCorrectionRate = args.errorCorrectionRate,
+    )
+    logger.info(f"ArUco model built in {time.time() - t0} seconds.")
+
     logger.info("Starting matching...")
     t0 = time.time()
     matching = Matching(
         args.video_path,
-        0,
-        1203,
-        aruco_model=ArUcoModel.withTagSet("DICT_4X4_100"),
+        args.start_frame,
+        args.end_frame,
+        aruco_model=aruco_model,
+        aruco_crop_size=args.aruco_crop_size,
+        half_rolling_window_size=args.half_rolling_window_size,
         tag_node_matrix=tag_locations,
+        threads= args.threads,
+        
     )
     matching_dict = matching.match()
     logger.info(f"Done matching in {time.time() - t0} seconds.")
