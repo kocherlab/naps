@@ -14,7 +14,7 @@ What you need to proceed:
 #. The video used to generate the tracks
 #. Knowledge of the tag node in your SLEAP skeleton
 
-We start by preparing a dataset for NAPS. For the purpose of this tutorial, we will use the toy data provided in `tests/data/` on the `NAPS GitHub repository <https://github.com/kocherlab/naps/issues>`. The data includes a `.slp` file with putative tracks from SLEAP, a `.h5` analysis file corresponding to the SLEAP file, and the corresponding video file.
+We start by preparing a dataset for NAPS. For the purpose of this tutorial, we will use the toy data provided in `tests/data/` on the `NAPS GitHub repository <https://github.com/kocherlab/naps/issues>`_. The data includes a `.slp` file with putative tracks from SLEAP, a `.h5` analysis file corresponding to the SLEAP file, and the corresponding video file.
 
 To run NAPS, you will first need to have a SLEAP file with putative tracks assigned by one of the trackers in SLEAP. We strongly recommend going through the tutorials on `sleap.ai <https://sleap.ai>`_ to learn how to do this.
 
@@ -49,7 +49,7 @@ The most direct usage of NAPS is through the CLI. After installing NAPS, :ref:`n
 
 .. code-block:: text
 
-    naps-track --slp-path tests/data/example.slp --video-path tests/data/example.mp4 --tag-node 0 --output-path tests/data/example_output.analysis.h5
+    naps-track --slp-path tests/data/example.slp --h5-path tests/data/example.analysis.h5 --video-path tests/data/example.mp4 --tag-node 0 --output-path tests/data/example_output.analysis.h5
 
 The resulting file, `example_output.analysis.h5`, is the same form as SLEAP analysis HDF5s.
 
