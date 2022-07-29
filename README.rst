@@ -15,11 +15,6 @@
    :target: https://anaconda.org/kocherlab/naps-track
 
 
-
-.. image:: docs/_static/logo.png
-   :width: 100 %
-   :align: center
-
 NAPS
 ====
 
