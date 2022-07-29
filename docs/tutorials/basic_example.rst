@@ -10,15 +10,17 @@ Preparing a dataset for NAPS
 
 What you need to proceed:
 
-#. A `.slp` file with putative tracks from SLEAP
+#. A `.slp` file with putative tracks from SLEAP (and ideally a `.h5` analysis file corresponding to the SLEAP file.)
 #. The video used to generate the tracks
 #. Knowledge of the tag node in your SLEAP skeleton
 
-We start by preparing a dataset for NAPS. For the purpose of this tutorial, we will use the toy data provided in `tests/data/`.
+We start by preparing a dataset for NAPS. For the purpose of this tutorial, we will use the toy data provided in `tests/data/` on the `NAPS GitHub repository <https://github.com/kocherlab/naps/issues>`. The data includes a `.slp` file with putative tracks from SLEAP, a `.h5` analysis file corresponding to the SLEAP file, and the corresponding video file.
 
 To run NAPS, you will first need to have a SLEAP file with putative tracks assigned by one of the trackers in SLEAP. We strongly recommend going through the tutorials on `sleap.ai <https://sleap.ai>`_ to learn how to do this.
 
 While NAPS will allow you to directly input the results of `sleap-track`, we strongly recommend you also convert this to an analysis h5 using `sleap-convert` if you will be troubleshooting your workflow. Directly reading in the locations from the h5 drastically increases speed.
+
+.. _tracking:
 
 Running NAPS on the command line
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,14 +47,25 @@ The most direct usage of NAPS is through the CLI. After installing NAPS, :ref:`n
                     [--threads THREADS]
 
 
-
-As an example, we can run the following command to run NAPS on the toy data provided in `tests/data/`:
-
 .. code-block:: text
 
     naps-track --slp-path tests/data/example.slp --video-path tests/data/example.mp4 --tag-node 0 --output-path tests/data/example_output.analysis.h5
 
-The resulting file, `example_output.analysis.h5`, is the same form as SLEAP analysis HDF5s and can be read, as shown in the SLEAP tutorial, as follows:
+The resulting file, `example_output.analysis.h5`, is the same form as SLEAP analysis HDF5s.
+
+
+
+.. _post-tracking:
+
+After NAPS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The resulting HDF5 can be imported back into SLEAP using SLEAP's import function -- treating it as a SLEAP analysis HDF5.
+
+Example of importing the HDF5 into Python
+*************
+
+The resulting HDF5 can also be read into Python, as shown in the SLEAP tutorial, as follows:
 
 .. code-block:: python
 

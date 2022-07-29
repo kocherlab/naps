@@ -37,7 +37,7 @@ def test_ArUcoModel_tag_sets(tag_set):
         "adaptiveThreshWinSizeStep": 10,
         "adaptiveThreshConstant": 10,
         "perspectiveRemoveIgnoredMarginPerCell": 0.1,
-        "errorCorrectionRate": 0.1
+        "errorCorrectionRate": 0.1,
     }
 
     # Confirm the model loads without error for each tag set
@@ -67,7 +67,7 @@ def test_ArUcoModel_params_type_error(param, value):
         "adaptiveThreshWinSizeStep": 10,
         "adaptiveThreshConstant": 10,
         "perspectiveRemoveIgnoredMarginPerCell": 0.1,
-        "errorCorrectionRate": 0.1
+        "errorCorrectionRate": 0.1,
     }
 
     # Replace value

@@ -8,8 +8,8 @@ with io.open("README.rst", "rt", encoding="utf8") as f:
 
 # Read requirements.txt
 lib_folder = os.path.dirname(os.path.realpath(__file__))
-requirement_path = lib_folder + '/requirements.txt'
-requirements= []
+requirement_path = lib_folder + "/requirements.txt"
+requirements = []
 if os.path.isfile(requirement_path):
     with open(requirement_path) as f:
         requirements = f.read().splitlines()

@@ -21,42 +21,35 @@ def build_parser():
         "--slp-path",
         help="The filepath of the SLEAP (.slp or .h5) file to pull coordinates from. This should correspond with the input video file",
         type=str,
-        required=True
-
+        required=True,
     )
     parser.add_argument(
         "--h5-path",
         help="The filepath of the analysis h5 file to pull coordinates from. This should correspond with the input video file and slp file",
         type=str,
-        default=None
+        default=None,
     )
 
     parser.add_argument(
         "--video-path",
         help="The filepath of the video used with SLEAP",
         type=str,
-        required=True
+        required=True,
     )
 
     parser.add_argument(
-        "--tag-node",
-        help="The ArUco tag SLEAP node ID",
-        type=int,
-        required=True
+        "--tag-node", help="The ArUco tag SLEAP node ID", type=int, required=True
     )
 
     parser.add_argument(
         "--start-frame",
         help="The frame to begin NAPS assignment",
         type=int,
-        required=True
+        required=True,
     )
 
     parser.add_argument(
-        "--end-frame",
-        help="The frame to stop NAPS assignment",
-        type=int,
-        rquired=True
+        "--end-frame", help="The frame to stop NAPS assignment", type=int, required=True
     )
 
     parser.add_argument(
@@ -70,62 +63,62 @@ def build_parser():
         "--aruco-marker-set",
         help="The ArUco markers used in the video",
         type=str,
-        required=True
+        required=True,
     )
 
     parser.add_argument(
         "--aruco-crop-size",
         help="The number of pixels horizontally and vertically around the aruco SLEAP node to identify the marker",
         type=int,
-        default=50
+        default=50,
     )
 
     parser.add_argument(
         "--aruco-adaptive-thresh-win-size-min",
-        dest='adaptiveThreshWinSizeMin',
+        dest="adaptiveThreshWinSizeMin",
         help="Specifies the value for adaptiveThreshWinSizeMin",
         type=int,
-        default=3
+        default=3,
     )
 
     parser.add_argument(
         "--aruco-adaptive-thresh-win-size-max",
-        dest='adaptiveThreshWinSizeMax',
+        dest="adaptiveThreshWinSizeMax",
         help="Specifies the value for adaptiveThreshWinSizeMax",
         type=int,
-        default=30
+        default=30,
     )
 
     parser.add_argument(
         "--aruco-adaptive-thresh-win-size-step",
-        dest='adaptiveThreshWinSizeStep',
+        dest="adaptiveThreshWinSizeStep",
         help="Specifies the value for adaptiveThreshWinSizeStep",
         type=int,
-        default=2
+        default=2,
     )
 
     parser.add_argument(
         "--aruco-adaptive-thresh-constant",
-        dest='adaptiveThreshConstant',
+        dest="adaptiveThreshConstant",
         help="Specifies the value for adaptiveThreshConstant",
         type=float,
-        default=3
+        default=3,
     )
 
     parser.add_argument(
         "--aruco-perspective-rm-ignored-margin",
-        dest='perspectiveRemoveIgnoredMarginPerCell',
+        dest="perspectiveRemoveIgnoredMarginPerCell",
         help="Specifies the value for perspectiveRemoveIgnoredMarginPerCell",
         type=float,
-        default=0.13
+        default=0.13,
     )
 
     parser.add_argument(
         "--aruco-error-correction-rate",
-        dest='errorCorrectionRate',
+        dest="errorCorrectionRate",
         help="Specifies the value for errorCorrectionRate",
         type=float,
-        default=1
+        default=1,
     )
 
     parser.add_argument(
@@ -139,7 +132,7 @@ def build_parser():
         "--threads",
         help="Specifies the number of threads to use in the analysis",
         type=int,
-        default=1
+        default=1,
     )
 
     return parser
@@ -162,12 +155,12 @@ def main(argv=None):
     t0 = time.time()
     aruco_model = ArUcoModel.withTagSet(
         args.aruco_marker_set,
-        adaptiveThreshWinSizeMin = args.adaptiveThreshWinSizeMin,
-        adaptiveThreshWinSizeMax = args.adaptiveThreshWinSizeMax,
-        adaptiveThreshWinSizeStep = args.adaptiveThreshWinSizeStep,
-        adaptiveThreshConstant = args.adaptiveThreshConstant,
-        perspectiveRemoveIgnoredMarginPerCell = args.perspectiveRemoveIgnoredMarginPerCell,
-        errorCorrectionRate = args.errorCorrectionRate,
+        adaptiveThreshWinSizeMin=args.adaptiveThreshWinSizeMin,
+        adaptiveThreshWinSizeMax=args.adaptiveThreshWinSizeMax,
+        adaptiveThreshWinSizeStep=args.adaptiveThreshWinSizeStep,
+        adaptiveThreshConstant=args.adaptiveThreshConstant,
+        perspectiveRemoveIgnoredMarginPerCell=args.perspectiveRemoveIgnoredMarginPerCell,
+        errorCorrectionRate=args.errorCorrectionRate,
     )
     logger.info(f"ArUco model built in {time.time() - t0} seconds.")
 
@@ -181,8 +174,7 @@ def main(argv=None):
         aruco_crop_size=args.aruco_crop_size,
         half_rolling_window_size=args.half_rolling_window_size,
         tag_node_matrix=tag_locations,
-        threads= args.threads,
-
+        threads=args.threads,
     )
     matching_dict = matching.match()
     logger.info(f"Done matching in {time.time() - t0} seconds.")
@@ -190,7 +182,9 @@ def main(argv=None):
     logger.info("Reconstructing SLEAP file...")
     t0 = time.time()
     # Right now the reconstruction assumes that we each track has a single track ID assigned to it. We'll generalize so that a track can switch IDs over time.
-    resulting_labeled_frames = update_labeled_frames(args.slp_path, matching_dict, 0, 1203)
+    resulting_labeled_frames = update_labeled_frames(
+        args.slp_path, matching_dict, 0, 1203
+    )
     new_labels = sleap.Labels(labeled_frames=resulting_labeled_frames)
 
     # Temporary workaround to write out a SLEAP Analysis HDF5. These can be imported into SLEAP but aren't the base project format.

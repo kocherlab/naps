@@ -7,6 +7,7 @@ from ray.util.multiprocessing import Pool
 from naps.aruco import ArUcoModel
 from naps.cost_matrix import CostMatrix
 
+
 class Matching:
     def __init__(
         self,
@@ -78,13 +79,14 @@ class Matching:
 
         # Run the multiprocessing job, then convert the resulting list into a dict
         if self.threads > 1:
-            with Pool(processes = self.threads) as matching_pool:
+            with Pool(processes=self.threads) as matching_pool:
                 results_list = matching_pool.starmap(self._matchJob, framesPerThread())
-                for results_dict in results_list: self.matching_dict.update(results_dict)
-        
+                for results_dict in results_list:
+                    self.matching_dict.update(results_dict)
+
         # Run the job as normal
-        else: 
-            for frame_start, frame_end in framesPerThread(): 
+        else:
+            for frame_start, frame_end in framesPerThread():
                 self.matching_dict.update(self._matchJob(frame_start, frame_end))
 
         return self.matching_dict

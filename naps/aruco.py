@@ -19,7 +19,7 @@ class ArUcoModel:
 
         # Store the tag set
         self.tag_set = tag_set
-        
+
         # Store the ArUco parameters
         self.adaptiveThreshWinSizeMin = adaptiveThreshWinSizeMin
         self.adaptiveThreshWinSizeMax = adaptiveThreshWinSizeMax
@@ -30,10 +30,10 @@ class ArUcoModel:
             perspectiveRemoveIgnoredMarginPerCell
         )
 
-        '''
+        """
         Set the ArUco dict and params to None. Create w/ buildModel
         as we cannot pickle them when using multiprocessing
-        '''
+        """
         self.aruco_dict = None
         self.aruco_params = None
 
@@ -41,7 +41,7 @@ class ArUcoModel:
     def withTagSet(cls, tag_set, **kwargs):
         return cls(tag_set, **kwargs)
 
-    def buildModel (self):
+    def buildModel(self):
 
         # Assign the aruco dict
         self.aruco_dict = self._assignArucoDict(self.tag_set)

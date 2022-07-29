@@ -123,10 +123,10 @@ html_theme = "press"
 # Customization options.
 # https://pradyunsg.me/furo/customisation/
 html_theme_options = {
-  "external_links": [
-      ("GitHub", "https://github.com/kocherlab/naps"),
-  ],
-  "collapse_navigation" : False
+    "external_links": [
+        ("GitHub", "https://github.com/kocherlab/naps"),
+    ],
+    "collapse_navigation": False,
 }
 
 myst_number_code_blocks = ["python"]

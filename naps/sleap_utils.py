@@ -140,7 +140,9 @@ def load_tracks_from_slp(slp_path: str) -> Tuple[np.ndarray, List[str]]:
     return locations, node_names
 
 
-def update_labeled_frames(slp_path: str, matching_dict: dict, first_frame_idx:int, last_frame_idx:int) -> List[sleap.LabeledFrame]:
+def update_labeled_frames(
+    slp_path: str, matching_dict: dict, first_frame_idx: int, last_frame_idx: int
+) -> List[sleap.LabeledFrame]:
     """Updates
 
     Args:
