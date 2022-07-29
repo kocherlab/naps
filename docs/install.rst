@@ -26,8 +26,10 @@ pip
 GitHub
 ******
 
-If you are interested in following the development of ``naps-track``, you may want to install the latest development version of ``naps-track`` directly from the `GitHub repository <htto://github.com/kocherlab/naps-track>`_.
+If you are interested in following the development of ``naps``, you may want to install the latest development version of ``naps-track`` directly from the `GitHub repository <htto://github.com/kocherlab/naps-track>`_.
 
+
+To do that, do the following:
 
 1. Ensure git is installed:
 
@@ -39,7 +41,7 @@ If you are interested in following the development of ``naps-track``, you may wa
 
 .. code-block:: bash
 
-    git clone https://github.com/talmolab/sleap && cd sleap
+    git clone https://github.com/kocherlab/naps.git && cd naps
 
 3. Install NAPS:
 
