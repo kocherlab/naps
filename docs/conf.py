@@ -123,21 +123,10 @@ html_theme = "press"
 # Customization options.
 # https://pradyunsg.me/furo/customisation/
 html_theme_options = {
-    # Set this to add a site-wide banner:
-    # "announcement": "<em>Important</em> announcement!",
-    # "light_logo": "logo.png",
-    # "dark_logo": "logo.png",
-    # https://sphinx-book-theme.readthedocs.io/en/stable/customize/index.html#theme-options
-    "repository_url": "https://github.com/kocherlab/naps",
-    "use_download_button": False,
-    "use_fullscreen_button": False,
-    "use_repository_button": True,
-    "use_issues_button": True,
-    "extra_navbar": "",
-    # https://sphinx-book-theme.readthedocs.io/en/stable/launch.html
-    # "launch_buttons": {
-    #     "colab_url": "https://{your-colab-url}"
-    # },
+  "external_links": [
+      ("GitHub", "https://github.com/kocherlab/naps"),
+  ],
+  "collapse_navigation" : False
 }
 
 myst_number_code_blocks = ["python"]

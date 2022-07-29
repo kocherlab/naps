@@ -1,6 +1,6 @@
 .. _basic-tutorial:
 
-Basic NAPS Tutorial
+Basic NAPS Usage
 --------------------------
 
 .. _preparing-dataset:
@@ -10,7 +10,7 @@ Preparing a dataset for NAPS
 
 What you need to proceed:
 
-#. `.slp` file with putative tracks from SLEAP
+#. A `.slp` file with putative tracks from SLEAP
 #. The video used to generate the tracks
 #. Knowledge of the tag node in your SLEAP skeleton
 

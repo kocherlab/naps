@@ -19,25 +19,28 @@ def build_parser():
 
     parser.add_argument(
         "--slp-path",
-        help="The filepath of the SLEAP (.slp or .h5) file to generate coordinates from, corresponding with the input video file",
+        help="The filepath of the SLEAP (.slp or .h5) file to pull coordinates from. This should correspond with the input video file",
         type=str,
-        #required=True
-        default="tests/data/example.slp"
+        required=True
 
+    )
+    parser.add_argument(
+        "--h5-path",
+        help="The filepath of the analysis h5 file to pull coordinates from. This should correspond with the input video file and slp file",
+        type=str,
+        default=None
     )
 
     parser.add_argument(
         "--video-path",
         help="The filepath of the video used with SLEAP",
         type=str,
-        #required=True
-        default="tests/data/example.mp4"
-
+        required=True
     )
 
     parser.add_argument(
         "--tag-node",
-        help="The ArUco tag SLEAP node id",
+        help="The ArUco tag SLEAP node ID",
         type=int,
         required=True
     )
@@ -46,16 +49,14 @@ def build_parser():
         "--start-frame",
         help="The frame to begin NAPS assignment",
         type=int,
-        #required=True
-        default=0
+        required=True
     )
 
     parser.add_argument(
         "--end-frame",
         help="The frame to stop NAPS assignment",
         type=int,
-        #required=True
-        default=1203
+        rquired=True
     )
 
     parser.add_argument(
@@ -69,8 +70,7 @@ def build_parser():
         "--aruco-marker-set",
         help="The ArUco markers used in the video",
         type=str,
-        #required=True
-        default="DICT_4X4_100"
+        required=True
     )
 
     parser.add_argument(
@@ -132,7 +132,7 @@ def build_parser():
         "--output-path",
         help="Output path of the resulting SLEAP analysis file.",
         type=str,
-        default="tests/data/example_output.analysis.h5",
+        default="output.analysis.h5",
     )
 
     parser.add_argument(
@@ -148,10 +148,12 @@ def build_parser():
 def main(argv=None):
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.h5_path is None:
+        args.h5_path = args.slp_path
 
     logger.info("Loading predictions...")
     t0 = time.time()
-    locations, node_names = load_tracks_from_slp(args.slp_path)
+    locations, node_names = load_tracks_from_slp(args.h5_path)
     logger.info(f"Using {node_names[args.tag_node].name} as the tag node.")
     logger.info(f"Done loading predictions in {time.time() - t0} seconds.")
     tag_locations = locations[:, args.tag_node, :, :]
