@@ -119,6 +119,8 @@ default_role = "py:obj"
 # html_theme = "furo"
 # Gotta have sphinx-press-theme installed
 html_theme = "press"
+html_favicon = "_static/favicon.png"
+
 
 # Customization options.
 # https://pradyunsg.me/furo/customisation/
@@ -127,6 +129,7 @@ html_theme_options = {
         ("GitHub", "https://github.com/kocherlab/naps"),
     ],
     "collapse_navigation": False,
+    'logo_only': False,
 }
 
 myst_number_code_blocks = ["python"]

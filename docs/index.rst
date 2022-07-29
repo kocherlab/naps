@@ -8,7 +8,8 @@ Here we present NAPS (NAPS is ArUco Plus SLEAP), a hybrid behavioral tracking te
 
 .. toctree::
    :maxdepth: 2
-   :caption: Documentation
+   :titlesonly:
+   :caption: NAPS Documentation
 
    install
    tutorials/index
