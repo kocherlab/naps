@@ -2,12 +2,13 @@
 NAPS (NAPS is ArUco Plus SLEAP)
 ###############################
 
-Small introduction here - can be ripped from the paper introduction/background for now.
+Here we present NAPS (NAPS is ArUco Plus SLEAP), a hybrid behavioral tracking technique combining state-of-the-art deep learning-based tracking methods and fiducial tags for identity persistence while reducing overhead, such as cost and setup time, for high-throughput tracking.
+
+NAPS Documentation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-   :hidden:
+   :maxdepth: 1
 
    Contents/install
    Tutorials/tutorial
