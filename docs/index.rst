@@ -1,3 +1,7 @@
+.. image:: _static/logo.png
+   :height: 2.2em
+   :align: left
+
 ###############################
 NAPS (NAPS is ArUco Plus SLEAP)
 ###############################
