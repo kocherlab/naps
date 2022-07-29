@@ -13,3 +13,4 @@ dependencies:
     - sphinx-copybutton
     - sphinx-press-theme
     - myst_nb
+    - sphinx-argparse

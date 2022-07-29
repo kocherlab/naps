@@ -12,7 +12,7 @@ from naps.sleap_utils import load_tracks_from_slp, update_labeled_frames
 logger = logging.getLogger("NAPS Logger")
 
 
-def parse_args(argv):
+def build_parser():
     parser = argparse.ArgumentParser(
         description="NAPS -- Hybrid tracking using SLEAP and ArUco tags"
     )
@@ -23,7 +23,7 @@ def parse_args(argv):
         type=str,
         #required=True
         default="tests/data/example.slp"
-        
+
     )
 
     parser.add_argument(
@@ -32,12 +32,12 @@ def parse_args(argv):
         type=str,
         #required=True
         default="tests/data/example.mp4"
-        
+
     )
 
     parser.add_argument(
         "--tag-node",
-        help="The aruco SLEAP node",
+        help="The ArUco tag SLEAP node id",
         type=int,
         required=True
     )
@@ -67,7 +67,7 @@ def parse_args(argv):
 
     parser.add_argument(
         "--aruco-marker-set",
-        help="The aruco markers used in the video",
+        help="The ArUco markers used in the video",
         type=str,
         #required=True
         default="DICT_4X4_100"
@@ -119,7 +119,7 @@ def parse_args(argv):
         type=float,
         default=0.13
     )
-    
+
     parser.add_argument(
         "--aruco-error-correction-rate",
         dest='errorCorrectionRate',
@@ -142,12 +142,12 @@ def parse_args(argv):
         default=1
     )
 
-    args = parser.parse_args()
-    return args
+    return parser
 
 
 def main(argv=None):
-    args = parse_args(argv)
+    parser = build_parser()
+    args = parser.parse_args(argv)
 
     logger.info("Loading predictions...")
     t0 = time.time()
@@ -180,7 +180,7 @@ def main(argv=None):
         half_rolling_window_size=args.half_rolling_window_size,
         tag_node_matrix=tag_locations,
         threads= args.threads,
-        
+
     )
     matching_dict = matching.match()
     logger.info(f"Done matching in {time.time() - t0} seconds.")

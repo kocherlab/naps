@@ -10,6 +10,8 @@ Small introduction here - can be ripped from the paper introduction/background f
    :hidden:
 
    Contents/install
+   Tutorials/tutorial
+   Contents/cli
    Contents/functions
    Contents/contact
 

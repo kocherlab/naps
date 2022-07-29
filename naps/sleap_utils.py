@@ -122,10 +122,10 @@ def get_location_matrix(
 
 
 def load_tracks_from_slp(slp_path: str) -> Tuple[np.ndarray, List[str]]:
-    """_summary_
+    """Loads tracks from a sleap project file or analysis h5
 
     Args:
-        slp_path (str): Path to SLEAP analysis h5. This file is typically generated using `sleap-convert`.
+        slp_path (str): Path to SLEAP project file or analysis h5. This file is typically generated using `sleap-convert`. Analysis h5s are much faster to load and thus preferable.
 
     Returns:
         Tuple[np.ndarray, List[str]]: Tuple of (locations_matrix, node_names) where location matrix is a numpy array with shape (frames, nodes, 2, tracks) and node_names is a list of node names.
@@ -141,7 +141,7 @@ def load_tracks_from_slp(slp_path: str) -> Tuple[np.ndarray, List[str]]:
 
 
 def update_labeled_frames(slp_path: str, matching_dict: dict, first_frame_idx:int, last_frame_idx:int) -> List[sleap.LabeledFrame]:
-    """_summary_
+    """Updates
 
     Args:
         slp_path (str): Path to SLEAP project file (.slp) file.
