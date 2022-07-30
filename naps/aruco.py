@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-
-import cv2
-from cv2.aruco import Dictionary_get, DetectorParameters_create, detectMarkers
-
+import cv2.aruco
 
 class ArUcoModel:
+    """Class providing a wrapper around the cv2.aruco library
+    """
     def __init__(
         self,
         tag_set: str,
@@ -52,11 +51,11 @@ class ArUcoModel:
         These thresholding parameters DRAMATICALLY improve detection rate, while DRAMATICALLY hurting performance.
         Since super fast processing isn't really necessary here they should be fine as is.
         """
-        self.aruco_params = DetectorParameters_create()
+        self.aruco_params = cv2.aruco.DetectorParameters_create()
 
         """
         Assign the corner refinement method:
-        
+
         Should we permit all options?
         """
         self.aruco_params.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_SUBPIX
@@ -79,7 +78,7 @@ class ArUcoModel:
 
     def detect(self, img):
 
-        return detectMarkers(img, self.aruco_dict, parameters=self.aruco_params)
+        return cv2.aruco.detectMarkers(img, self.aruco_dict, parameters=self.aruco_params)
 
     def _assignArucoDict(self, tag_set):
 
@@ -115,4 +114,4 @@ class ArUcoModel:
             raise Exception(f"Unable to assign tag set: {tag_set}")
 
         # Return the OpenCV tags
-        return Dictionary_get(ARUCO_DICT[tag_set])
+        return cv2.aruco.Dictionary_get(ARUCO_DICT[tag_set])

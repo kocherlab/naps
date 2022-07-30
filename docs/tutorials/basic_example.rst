@@ -63,7 +63,7 @@ After NAPS
 The resulting HDF5 can be imported back into SLEAP using SLEAP's import function -- treating it as a SLEAP analysis HDF5.
 
 Example of importing the HDF5 into Python
-*************
+*****************************************
 
 The resulting HDF5 can also be read into Python, as shown in the SLEAP tutorial, as follows:
 

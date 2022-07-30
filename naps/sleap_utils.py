@@ -1,37 +1,34 @@
+"""sleap_utils.py: General helper functions for interfacing with SLEAP.
+"""
 #!/usr/bin/env python
-import h5py
-import numpy as np
-import sleap
 import pathlib
-import h5py
 import logging
-import time
-from tqdm import tqdm
 import operator
 import itertools
 from typing import Tuple, List
 
+import h5py
+import numpy as np
+import sleap
+
+from tqdm import tqdm
+
+
 logger = logging.getLogger(__name__)
 
-
+# Pulled from SLEAP's codebase
 def get_location_matrix(
     labels: sleap.Labels, all_frames: bool, video: sleap.Video = None
 ) -> Tuple[np.ndarray, List[str]]:
-    """Builds numpy matrix with point location data.
-    Note: This function assumes either all instances have tracks or no instances have
-    tracks.
+    """Builds numpy matrix with point location data. Note: This function assumes either all instances have tracks or no instances have tracks.
+
     Args:
-        labels: The :py:class:`Labels` from which to get data.
-        all_frames: If True, then includes zeros so that frame index
-            will line up with columns in the output. Otherwise,
-            there will only be columns for the frames between the
-            first and last frames with labeling data.
-        video: The :py:class:`Video` from which to get data. If no `video` is specified,
-            then the first video in `source_object` videos list will be used. If there
-            are no labeled frames in the `video`, then None will be returned.
+        labels (sleap.Labels): The :py:class:`sleap.Labels` from which to get data.
+        all_frames (bool): If True, then includes zeros so that frame index will line up with columns in the output. Otherwise, there will only be columns for the frames between the first and last frames with labeling data.
+        video (sleap.Video, optional): The :py:class:`Video` from which to get data. If no `video` is specified, then the first video in `source_object` videos list will be used. If there are no labeled frames in the `video`, then None will be returned. Defaults to None.
+
     Returns:
-        np.ndarray: point location array with shape (frames, nodes, 2, tracks)
-        List[str]: list of node names
+        Tuple[np.ndarray, List[str]]: point location array with shape (frames, nodes, 2, tracks) List[str]: list of node names
     """
     # Assumes either all instances have tracks or no instances have tracks
     track_count = len(labels.tracks) or 1
@@ -42,7 +39,7 @@ def get_location_matrix(
         if video is None:
             video = labels.videos[0]
     except IndexError:
-        print(f"There are no videos in this project. No occupancy matrix to return.")
+        print("There are no videos in this project. No occupancy matrix to return.")
         return
     labeled_frames = labels.get(video)
 
@@ -143,7 +140,7 @@ def load_tracks_from_slp(slp_path: str) -> Tuple[np.ndarray, List[str]]:
 def update_labeled_frames(
     slp_path: str, matching_dict: dict, first_frame_idx: int, last_frame_idx: int
 ) -> List[sleap.LabeledFrame]:
-    """Updates
+    """Generates a list of labeled frames from a sleap project file with tracks updated from the provided matching_dict.
 
     Args:
         slp_path (str): Path to SLEAP project file (.slp) file.
@@ -163,7 +160,7 @@ def update_labeled_frames(
 
     # Set of all tags
     tags = set(itertools.chain(*tags))
-    logger.info(f"Total tags: {len(tags)}")
+    logger.info("Total tags: %s", len(tags))
     new_tracks = {tag: sleap.Track(spawned_on=0, name=f"track_{tag}") for tag in tags}
 
     new_lfs = []

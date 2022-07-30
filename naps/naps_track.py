@@ -13,6 +13,11 @@ logger = logging.getLogger("NAPS Logger")
 
 
 def build_parser():
+    """Builds the argument parser for the main function.
+
+    Returns:
+        argparse.ArgumentParser: Parser for command line arguments.
+    """
     parser = argparse.ArgumentParser(
         description="NAPS -- Hybrid tracking using SLEAP and ArUco tags"
     )
@@ -139,6 +144,7 @@ def build_parser():
 
 
 def main(argv=None):
+    """Main function for the NAPS tracking script."""
     parser = build_parser()
     args = parser.parse_args(argv)
     if args.h5_path is None:
@@ -147,8 +153,8 @@ def main(argv=None):
     logger.info("Loading predictions...")
     t0 = time.time()
     locations, node_names = load_tracks_from_slp(args.h5_path)
-    logger.info(f"Using {node_names[args.tag_node].name} as the tag node.")
-    logger.info(f"Done loading predictions in {time.time() - t0} seconds.")
+    logger.info("Using %s as the tag node.", node_names[args.tag_node].name)
+    logger.info("Done loading predictions in %s seconds.", time.time() - t0)
     tag_locations = locations[:, args.tag_node, :, :]
 
     logger.info("Building ArUco model...")
@@ -162,7 +168,7 @@ def main(argv=None):
         perspectiveRemoveIgnoredMarginPerCell=args.perspectiveRemoveIgnoredMarginPerCell,
         errorCorrectionRate=args.errorCorrectionRate,
     )
-    logger.info(f"ArUco model built in {time.time() - t0} seconds.")
+    logger.info(f"ArUco model built in %s seconds.", time.time() - t0)
 
     logger.info("Starting matching...")
     t0 = time.time()
@@ -177,7 +183,7 @@ def main(argv=None):
         threads=args.threads,
     )
     matching_dict = matching.match()
-    logger.info(f"Done matching in {time.time() - t0} seconds.")
+    logger.info("Done matching in %s seconds.", time.time() - t0)
 
     logger.info("Reconstructing SLEAP file...")
     t0 = time.time()
@@ -189,7 +195,7 @@ def main(argv=None):
 
     # Temporary workaround to write out a SLEAP Analysis HDF5. These can be imported into SLEAP but aren't the base project format.
     new_labels.export(args.output_path)
-    logger.info(f"Done reconstructing SLEAP file in {time.time() - t0} seconds.")
+    logger.info("Done reconstructing SLEAP file in %s seconds.", time.time() - t0)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,12 @@
 #!/usr/bin/env python
-import math
-import cv2
-import numpy as np
 from collections import defaultdict
+from typing import Iterable, Tuple
+import math
+import numpy as np
+
+import cv2
 from ray.util.multiprocessing import Pool
+
 from naps.aruco import ArUcoModel
 from naps.cost_matrix import CostMatrix
 
@@ -44,10 +47,10 @@ class Matching:
         self.matching_dict = {}
 
     def match(self):
-        def framesPerThread():
-            """
-            Yield equal size windows based on the number of threads
-            """
+        """Perform matching"""
+
+        def framesPerThread() -> Iterable[Tuple[int, int]]:
+            """Yield equal size windows based on the number of threads"""
 
             # Adjust the start and end to account for the window
             rolling_window_start = (
@@ -91,8 +94,18 @@ class Matching:
 
         return self.matching_dict
 
-    def _matchJob(self, frame_start: int, frame_end: int):
+    def _matchJob(
+        self, frame_start: int, frame_end: int
+    ) -> defaultdict(lambda: defaultdict(str)):
+        """Performs a single matching job
 
+        Args:
+            frame_start (int): Frame to start at
+            frame_end (int): Frame to end at
+
+        Returns:
+            defaultdict(lambda: defaultdict(str)): Dictionary of matching results with the form dictionary[frame][track] = tag.
+        """
         # Build the aruco model
         self.aruco_model.buildModel()
 
@@ -131,6 +144,8 @@ class Matching:
 
 
 class MatchFrame:
+    """Class to hold the frame and associated data"""
+
     def __init__(self, frame_exists: bool, frame: np.ndarray, *args, **kwargs):
 
         # Image arguments
@@ -147,7 +162,15 @@ class MatchFrame:
         return cls(*args, **kwargs)
 
     def cropArUcoWithCoordsArray(self, coords_array: np.array, crop_size: int):
-        def croppedCoords(coord, crop_size, coord_max):
+        def croppedCoords(coord: float, crop_size: float, coord_max: int):
+            """Gets the cropped coordinates for a given single coordinate
+
+            Args:
+                coord (float): Coordinate to get crop range.
+                crop_size (float): Crop size.
+                coord_max (int): Maximum coordinate possible before leaving frame.
+
+            """
             return np.maximum(int(coord) - crop_size, 0), np.minimum(
                 int(coord) + crop_size, coord_max - 1
             )
@@ -167,6 +190,14 @@ class MatchFrame:
             self.frame_images[track] = self.frame[y_min:y_max, x_min:x_max, 0]
 
     def returnArUcoTags(self, aruco_model: ArUcoModel):
+        """Detect ArUco tags using
+
+        Args:
+            aruco_model (ArUcoModel): ArUco model to use for matching.
+
+        Returns:
+            defaultdict(list): Dictionary of matching results for a single frame.
+        """
 
         track_tag_dict = defaultdict(list)
 
@@ -174,14 +205,14 @@ class MatchFrame:
         for track, frame_image in self.frame_images.items():
 
             # Detect ArUco tags
-            corners, tags, rejected = aruco_model.detect(frame_image)
+            corners, tags, _ = aruco_model.detect(frame_image)
 
             # Skip to next track if no tags were found
             if len(corners) == 0:
                 continue
 
             # Iterate through detected tags and append results to a results list
-            for marker_corners, marker_tag in zip(corners, tags):
+            for _, marker_tag in zip(corners, tags):
                 track_tag_dict[track].append(marker_tag[0])
 
         return track_tag_dict

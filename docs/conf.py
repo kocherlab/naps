@@ -128,8 +128,6 @@ html_theme_options = {
     "external_links": [
         ("GitHub", "https://github.com/kocherlab/naps"),
     ],
-    "collapse_navigation": False,
-    'logo_only': False,
 }
 
 myst_number_code_blocks = ["python"]
