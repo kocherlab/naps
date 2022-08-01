@@ -25,3 +25,4 @@ jobs:
           use-only-tar-bz2: true
       - run: |
           conda install conda-build -y
+          conda-build .conda --output-folder build --python 3.7 -c sleap -c nvidia -c conda-forge
