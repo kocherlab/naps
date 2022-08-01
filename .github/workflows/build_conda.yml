@@ -1,4 +1,8 @@
-- name: Setup Miniconda
+name: Setup Miniconda
+
+on:
+  release:
+    types: [published]
 
 jobs:
   build-conda:
