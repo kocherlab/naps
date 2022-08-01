@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import cv2.aruco
 
+
 class ArUcoModel:
-    """Class providing a wrapper around the cv2.aruco library
-    """
+    """Class providing a wrapper around the cv2.aruco library"""
+
     def __init__(
         self,
         tag_set: str,
@@ -78,7 +79,9 @@ class ArUcoModel:
 
     def detect(self, img):
 
-        return cv2.aruco.detectMarkers(img, self.aruco_dict, parameters=self.aruco_params)
+        return cv2.aruco.detectMarkers(
+            img, self.aruco_dict, parameters=self.aruco_params
+        )
 
     def _assignArucoDict(self, tag_set):
 

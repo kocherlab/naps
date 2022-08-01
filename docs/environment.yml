@@ -14,3 +14,4 @@ dependencies:
     - sphinx-press-theme
     - myst_nb
     - sphinx-argparse
+    - linkify-it-py

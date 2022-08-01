@@ -83,7 +83,7 @@ def build_parser():
         dest="adaptiveThreshWinSizeMin",
         help="Specifies the value for adaptiveThreshWinSizeMin",
         type=int,
-        default=3,
+        default=10,
     )
 
     parser.add_argument(
@@ -99,7 +99,7 @@ def build_parser():
         dest="adaptiveThreshWinSizeStep",
         help="Specifies the value for adaptiveThreshWinSizeStep",
         type=int,
-        default=2,
+        default=12,
     )
 
     parser.add_argument(
@@ -145,6 +145,8 @@ def build_parser():
 
 def main(argv=None):
     """Main function for the NAPS tracking script."""
+
+    t0_total = time.time()
     parser = build_parser()
     args = parser.parse_args(argv)
     if args.h5_path is None:
@@ -153,7 +155,7 @@ def main(argv=None):
     logger.info("Loading predictions...")
     t0 = time.time()
     locations, node_names = load_tracks_from_slp(args.h5_path)
-    logger.info("Using %s as the tag node.", node_names[args.tag_node].name)
+    logger.info("Using %s as the tag node.", node_names[args.tag_node])
     logger.info("Done loading predictions in %s seconds.", time.time() - t0)
     tag_locations = locations[:, args.tag_node, :, :]
 
@@ -168,7 +170,7 @@ def main(argv=None):
         perspectiveRemoveIgnoredMarginPerCell=args.perspectiveRemoveIgnoredMarginPerCell,
         errorCorrectionRate=args.errorCorrectionRate,
     )
-    logger.info(f"ArUco model built in %s seconds.", time.time() - t0)
+    logger.info("ArUco model built in %s seconds.", time.time() - t0)
 
     logger.info("Starting matching...")
     t0 = time.time()
@@ -189,13 +191,15 @@ def main(argv=None):
     t0 = time.time()
     # Right now the reconstruction assumes that we each track has a single track ID assigned to it. We'll generalize so that a track can switch IDs over time.
     resulting_labeled_frames = update_labeled_frames(
-        args.slp_path, matching_dict, 0, 1203
+        args.slp_path, matching_dict, args.start_frame, args.end_frame
     )
     new_labels = sleap.Labels(labeled_frames=resulting_labeled_frames)
 
     # Temporary workaround to write out a SLEAP Analysis HDF5. These can be imported into SLEAP but aren't the base project format.
     new_labels.export(args.output_path)
     logger.info("Done reconstructing SLEAP file in %s seconds.", time.time() - t0)
+
+    logger.info("Complete pipeline runtime: %s", time.time() - t0)
 
 
 if __name__ == "__main__":

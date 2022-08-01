@@ -130,6 +130,7 @@ def load_tracks_from_slp(slp_path: str) -> Tuple[np.ndarray, List[str]]:
     if pathlib.Path(slp_path).suffix == ".slp":
         dset = sleap.load_file(slp_path)
         locations, node_names = get_location_matrix(dset, all_frames=True)
+        node_names = [node.name for node in node_names]
     elif pathlib.Path(slp_path).suffix == ".h5":
         with h5py.File(slp_path, "r") as f:
             locations = f["tracks"][:].T
