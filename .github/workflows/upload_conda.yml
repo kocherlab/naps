@@ -26,4 +26,4 @@ jobs:
       - run: |
           conda install conda-build -y
           conda-build .conda --output-folder build --python 3.7 -c sleap -c nvidia -c conda-forge
-          anaconda -t $CONDA_UPLOAD_TOKEN upload -u KocherLab -v upload build/linux-64/*.tar.bz2
+          anaconda -t $CONDA_UPLOAD_TOKEN upload -u KocherLab -v build/linux-64/*.tar.bz2
