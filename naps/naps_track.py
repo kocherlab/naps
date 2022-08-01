@@ -193,8 +193,9 @@ def main(argv=None):
     resulting_labeled_frames = update_labeled_frames(
         args.slp_path, matching_dict, args.start_frame, args.end_frame
     )
-    new_labels = sleap.Labels(labeled_frames=resulting_labeled_frames)
 
+    t0 = time.time()
+    new_labels = sleap.Labels(labeled_frames=resulting_labeled_frames)
     # Temporary workaround to write out a SLEAP Analysis HDF5. These can be imported into SLEAP but aren't the base project format.
     new_labels.export(args.output_path)
     logger.info("Done reconstructing SLEAP file in %s seconds.", time.time() - t0)
