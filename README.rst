@@ -1,4 +1,4 @@
-|conda| |travis ci| |Documentation|
+|conda| |travis ci| |Documentation| |PyPI Upload| |Conda Upload|
 
 .. |travis ci| image::
    https://app.travis-ci.com/kocherlab/naps.svg?branch=main
@@ -13,7 +13,14 @@
 .. |conda| image::
    https://anaconda.org/kocherlab/naps-track/badges/version.svg
    :target: https://anaconda.org/kocherlab/naps-track
+   
+.. |Conda Upload| image:: 
+   https://github.com/kocherlab/naps/actions/workflows/upload_conda.yml/badge.svg
+   :target: https://github.com/kocherlab/naps/actions/workflows/upload_conda.yml
 
+.. |PyPI Upload| image:: 
+   https://github.com/kocherlab/naps/actions/workflows/python-publish.yml/badge.svg
+   :target: https://github.com/kocherlab/naps/actions/workflows/python-publish.yml
 
 NAPS
 ====

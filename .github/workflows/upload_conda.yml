@@ -1,8 +1,8 @@
-name: Upload Conda Package
+name: Conda Upload
 
 on:
-  push:
-    branches: [ "main" ]
+  release:
+    types: [published]
 
 jobs:
   ubuntu:
