@@ -1,0 +1,7 @@
+name: naps
+
+dependencies:
+    - python=3.7
+    - conda-forge::numpy=1.19.5
+    - anaconda:conda-build
+    - anaconda:anaconda-client
