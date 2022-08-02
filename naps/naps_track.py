@@ -200,7 +200,7 @@ def main(argv=None):
     new_labels.export(args.output_path)
     logger.info("Done reconstructing SLEAP file in %s seconds.", time.time() - t0)
 
-    logger.info("Complete pipeline runtime: %s", time.time() - t0)
+    logger.info("Complete NAPS runtime: %s", time.time() - t0_total)
 
 
 if __name__ == "__main__":
