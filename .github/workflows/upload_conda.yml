@@ -1,4 +1,4 @@
-name: Upload Conda Package
+name: Conda Upload
 
 on:
   release:
