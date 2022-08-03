@@ -56,7 +56,7 @@ Features
 ========
 * Easy, direct installation across platforms
 * Built directly on top of `OpenCV <https://opencv.org/>`_ and `SLEAP <https://sleap.ai/>`_ with a modular, extensible codebase
-* Flexible API allows drop in of different methods for marker identification
+* Flexible API that allows drop in of different methods for marker identification
 * Multiprocessing through `Ray <https://docs.ray.io/>`_
 
 ============
