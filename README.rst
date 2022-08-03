@@ -1,5 +1,5 @@
 .. Template taken from https://github.com/talmolab/sleap
-|conda| |conda| |travis ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE| |
+|conda| |conda| |travis ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|
 
 .. |travis ci| image::
    https://app.travis-ci.com/kocherlab/naps.svg?branch=main
@@ -27,29 +27,37 @@
    https://anaconda.org/kocherlab/naps-track/badges/license.svg
    :target: https://github.com/kocherlab/naps/blob/main/LICENSE.md
 
-NAPS
-====
-
-NAPS documentation can be found at `naps.readthedocs.io <https://naps.readthedocs.io/en/latest/>`_.
-
-###############################
+=================================
 NAPS (NAPS is ArUco Plus SLEAP)
-###############################
+=================================
 
-
-NAPS (NAPS is ArUco Plus SLEAP), is a tool for researchers with two goals: (1) to quantify animal behavior over a long timescale and high resolution, with minimal human bias, and (2) to track the behavior of individuals with a high level of identity-persistence. This could be of use to researchers studying social network analysis, animal communication, task specialization, or gene-by-environment interactions. By combining deep-learning based pose estimation software with easily read and minimally invasive fiducial markers ("tags"), we provide an easy-to-use solution for producing high-quality, high-dimensional behavioral data.
+NAPS is a tool for researchers with two goals: (1) to quantify animal behavior over a long timescale and high resolution, with minimal human bias, and (2) to track the behavior of individuals with a high level of identity-persistence. This could be of use to researchers studying social network analysis, animal communication, task specialization, or gene-by-environment interactions. By combining deep-learning based pose estimation software with easily read and minimally invasive fiducial markers ("tags"), we provide an easy-to-use solution for producing high-quality, high-dimensional behavioral data.
 
 .. figure:: https://naps.readthedocs.io/en/latest/_static/example_tracking.gif
    :width: 600px
    :align: center
    :alt: Example usage of NAPS to track a colony of common eastern bumblebees.
 
+
+Documentation
+-------------------------------
+
+NAPS documentation can be found at `naps.rtfd.io <https://naps.rtfd.io/>`_.
+
+Features
+--------
+* Easy, direct installation across platforms
+* Built directly on top of OpenCV and SLEAP with modular, extensible codebase
+* Flexible API allows drop in of different methods for marker identification
+* Multiprocessing of marker detection through `Ray <https://docs.ray.io/>`_
+
+
 Getting NAPS
 --------------
 
 Easy install
 ^^^^^^^^^^^^^
-`conda` **(Windows/Linux/GPU)**:
+`conda` **(Windows/Linux)**:
 
 .. code-block:: bash
 
@@ -84,17 +92,26 @@ BibTeX:
       year = {n.d.}
    }
 
+-----------
+Issues
+-----------
+** Issues with NAPS? **
+
+1. Check the `docs <https://sleap.ai/help.html>`_.
+2. Search the `issues on GitHub <https://github.com/kocherlab/naps/issues>`_ or open a new one.
 
 ------------
 Contributors
 ------------
 
 * **Scott Wolf**, Lewis-Sigler Institute, Princeton University
-* **Dee Ruttenberg**, Physics, Princeton University
+* **Dee Ruttenberg**, Lewis-Sigler Institute, Princeton University
 * **Daniel Knapp**, Physics, Princeton University
 * **Andrew Webb**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
 * **Joshua Shaevitz**, Physics and Lewis-Sigler Institute, Princeton University
 * **Sarah Kocher**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
+
+NAPS was created between the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
 
 -----------
 License
@@ -102,3 +119,8 @@ License
 
 NAPS is licensed under the MIT license. See the `LICENSE <https://github.com/kocherlab/naps/blob/main/LICENSE.md>`_ file for details.
 
+---------------------
+Acknowledgements
+---------------------
+
+Much of the structure README and the documentation is borrowed from the `SLEAP repository <https://github.com/talmolab/sleap>`_ .

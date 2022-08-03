@@ -1,4 +1,5 @@
-|conda| |travis ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE| |
+.. Template taken from https://github.com/talmolab/sleap
+|conda| |conda| |travis ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|
 
 .. |travis ci| image::
    https://app.travis-ci.com/kocherlab/naps.svg?branch=main
@@ -26,22 +27,58 @@
    https://anaconda.org/kocherlab/naps-track/badges/license.svg
    :target: https://github.com/kocherlab/naps/blob/main/LICENSE.md
 
-
-.. image:: _static/logo.png
-   :height: 2.2em
-   :align: left
-
-###############################
+=================================
 NAPS (NAPS is ArUco Plus SLEAP)
-###############################
+=================================
 
+NAPS is a tool for researchers with two goals: (1) to quantify animal behavior over a long timescale and high resolution, with minimal human bias, and (2) to track the behavior of individuals with a high level of identity-persistence. This could be of use to researchers studying social network analysis, animal communication, task specialization, or gene-by-environment interactions. By combining deep-learning based pose estimation software with easily read and minimally invasive fiducial markers ("tags"), we provide an easy-to-use solution for producing high-quality, high-dimensional behavioral data.
 
-NAPS (NAPS is ArUco Plus SLEAP), is a tool for researchers with two goals: (1) to quantify animal behavior over a long timescale and high resolution, with minimal human bias, and (2) to track the behavior of individuals with a high level of identity-persistence. This could be of use to researchers studying social network analysis, animal communication, task specialization, or gene-by-environment interactions. By combining deep-learning based pose estimation software with easily read and minimally invasive fiducial markers ("tags"), we provide an easy-to-use solution for producing high-quality, high-dimensional behavioral data.
-
-.. figure:: _static/example_tracking.gif
+.. figure:: https://naps.readthedocs.io/en/latest/_static/example_tracking.gif
    :width: 600px
    :align: center
    :alt: Example usage of NAPS to track a colony of common eastern bumblebees.
+
+
+.. toctree::
+   :hidden:
+   :maxdepth: 2
+   :titlesonly:
+   :caption: NAPS Documentation
+
+   installation
+   tutorials/index
+   notebooks/index
+   cli
+   functions
+   contact
+
+
+Features
+--------
+* Easy, direct installation across platforms
+* Built directly on top of OpenCV and SLEAP with modular, extensible codebase
+* Flexible API allows drop in of different methods for marker identification
+* Multiprocessing of marker detection through `Ray <https://docs.ray.io/>`_
+
+
+Getting NAPS
+--------------
+
+Easy install
+^^^^^^^^^^^^^
+`conda` **(Windows/Linux)**:
+
+.. code-block:: bash
+
+    conda create -n naps naps-track -c kocherlab -c sleap -c nvidia -c conda-forge
+
+
+`pip` **(any OS)**:
+
+.. code-block:: bash
+
+    pip install naps-track
+
 
 -----------
 References
@@ -64,17 +101,36 @@ BibTeX:
       year = {n.d.}
    }
 
+-----------
+Issues
+-----------
+**Issues with NAPS?**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
-   :caption: NAPS Documentation
+1. Check the `docs <https://naps.rtfd.io/>`_.
+2. Search the `issues on GitHub <https://github.com/kocherlab/naps/issues>`_ or open a new one.
 
-   installation
-   tutorials/index
-   notebooks/index
-   cli
-   functions
-   contact
+------------
+Contributors
+------------
 
+* **Scott Wolf**, Lewis-Sigler Institute, Princeton University
+* **Dee Ruttenberg**, Lewis-Sigler Institute, Princeton University
+* **Daniel Knapp**, Physics, Princeton University
+* **Andrew Webb**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
+* **Joshua Shaevitz**, Physics and Lewis-Sigler Institute, Princeton University
+* **Sarah Kocher**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
+
+NAPS was created between the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
+
+-----------
+License
+-----------
+
+NAPS is licensed under the MIT license. See the `LICENSE <https://github.com/kocherlab/naps/blob/main/LICENSE.md>`_ file for details.
+
+---------------------
+Acknowledgements
+---------------------
+
+Much of the structure README and the documentation is borrowed from the `SLEAP repository <https://github.com/talmolab/sleap>`_ .
 
