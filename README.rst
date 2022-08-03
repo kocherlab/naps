@@ -46,9 +46,10 @@ NAPS documentation can be found at `naps.rtfd.io <https://naps.rtfd.io/>`_.
 Features
 ========
 * Easy, direct installation across platforms
-* Built directly on top of OpenCV and SLEAP with modular, extensible codebase
+* Built directly on top of `OpenCV <https://opencv.org/>`_ and `SLEAP <https://sleap.ai/>`_ with a modular, extensible codebase
 * Flexible API allows drop in of different methods for marker identification
-* Multiprocessing of marker detection through `Ray <https://docs.ray.io/>`_
+* Multiprocessing through `Ray <https://docs.ray.io/>`_
+
 
 ============
 Getting NAPS
