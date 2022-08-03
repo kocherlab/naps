@@ -97,7 +97,7 @@ Issues
 -----------
 **Issues with NAPS?**
 
-1. Check the `docs <https://sleap.ai/help.html>`_.
+1. Check the `docs <https://naps.rtfd.io/>`_.
 2. Search the `issues on GitHub <https://github.com/kocherlab/naps/issues>`_ or open a new one.
 
 ------------
@@ -123,4 +123,4 @@ NAPS is licensed under the MIT license. See the `LICENSE <https://github.com/koc
 Acknowledgements
 ---------------------
 
-Much of the structure README and the documentation is borrowed from the `SLEAP repository <https://github.com/talmolab/sleap>`_ .
+Much of the structure and content of the README and the documentation is borrowed from the `SLEAP repository <https://github.com/talmolab/sleap>`_ .
