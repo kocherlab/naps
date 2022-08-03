@@ -40,7 +40,7 @@ NAPS is a tool for researchers with two goals: (1) to quantify animal behavior o
 
 .. toctree::
    :hidden:
-   :maxdepth: 2
+   :maxdepth: 1
    :titlesonly:
    :caption: NAPS Documentation
 
