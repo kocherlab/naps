@@ -2,7 +2,7 @@
 {% set data = load_setup_py_data() %}
 
 package:
-  name: naps
+  name: naps-track
   version: {{ data.get('version') }}
 
 about:
@@ -22,21 +22,17 @@ requirements:
   host:
     - pip
     - python=3.7
-    - numpy>=1.19.5,<=1.21.5
-    - sleap>=1.2.4
+
   run:
+    - pip
     - python=3.7
     - numpy>=1.19.5,<=1.21.5
     - scipy>=1.4.1,<=1.7.3
     - h5py>=3.1.0,<=3.6.0
-    - attrs==21.2.0
     - sleap>=1.2.4
     - pandas
     - pytest
     - tqdm
-
-outputs:
-  - name: naps-track
 
 test:
   imports:
@@ -44,4 +40,3 @@ test:
     - cv2.aruco
   commands:
     - naps-track --help
-
