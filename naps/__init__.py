@@ -13,9 +13,10 @@ __copyright__ = "2022"
 __authors__ = "Scott Wolf, Dee Ruttenberg, Daniel Knapp, Andrew Webb, and Sarah Kocher"
 __email__ = "22243650+Wolfffff@users.noreply.github.com, 19213578+aewebb80@users.noreply.github.com"
 
+import logging
+
 # Start
 import sys
-import logging
 
 logging.basicConfig(
     stream=sys.stdout,

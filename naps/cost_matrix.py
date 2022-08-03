@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-import pandas as pd
-
 from collections import defaultdict
+
+import pandas as pd
 from scipy.optimize import linear_sum_assignment
 
 

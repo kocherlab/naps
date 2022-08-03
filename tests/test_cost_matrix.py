@@ -1,6 +1,5 @@
-import pytest
-
 import pandas as pd
+import pytest
 
 from naps.cost_matrix import CostMatrix
 

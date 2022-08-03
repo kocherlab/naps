@@ -1,10 +1,10 @@
 #!/usr/bin/env python
+import math
 from collections import defaultdict
 from typing import Iterable, Tuple
-import math
-import numpy as np
 
 import cv2
+import numpy as np
 from ray.util.multiprocessing import Pool
 
 from naps.aruco import ArUcoModel

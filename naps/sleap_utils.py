@@ -1,18 +1,16 @@
 """sleap_utils.py: General helper functions for interfacing with SLEAP.
 """
 #!/usr/bin/env python
-import pathlib
+import itertools
 import logging
 import operator
-import itertools
-from typing import Tuple, List
+import pathlib
+from typing import List, Tuple
 
 import h5py
 import numpy as np
 import sleap
-
 from tqdm import tqdm
-
 
 logger = logging.getLogger(__name__)
 

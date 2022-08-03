@@ -1,9 +1,11 @@
-from naps.sleap_utils import load_tracks_from_slp
 import logging
+import os
+
 import numpy as np
 import pytest
 import sleap
-import os
+
+from naps.sleap_utils import load_tracks_from_slp
 
 logger = logging.getLogger(__name__)
 

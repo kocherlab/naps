@@ -1,13 +1,13 @@
 #!/usr/bin/env python
-import time
-import sleap
-import logging
 import argparse
+import logging
+import time
+
+import sleap
 
 from naps.aruco import ArUcoModel
 from naps.matching import Matching
 from naps.sleap_utils import load_tracks_from_slp, update_labeled_frames
-
 
 logger = logging.getLogger("NAPS Logger")
 
@@ -43,10 +43,7 @@ def build_parser():
     )
 
     parser.add_argument(
-        "--tag-node", 
-        help="The ArUco tag SLEAP node ID", 
-        type=int, 
-        required=True
+        "--tag-node", help="The ArUco tag SLEAP node ID", type=int, required=True
     )
 
     parser.add_argument(
@@ -57,10 +54,10 @@ def build_parser():
     )
 
     parser.add_argument(
-        "--end-frame", 
+        "--end-frame",
         help="The zero-based fully-closed frame to stop NAPS assignment",
-        type=int, 
-        required=True
+        type=int,
+        required=True,
     )
 
     parser.add_argument(

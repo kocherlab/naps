@@ -13,10 +13,11 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
 import os
-import sys
 import shutil
-import docs.utils
+import sys
 from datetime import date
+
+import docs.utils
 
 sys.path.insert(0, os.path.abspath(".."))
 

@@ -1,7 +1,9 @@
 import io
-import naps
-from setuptools import setup
 import os
+
+from setuptools import setup
+
+import naps
 
 with io.open("README.rst", "rt", encoding="utf8") as f:
     readme = f.read()
