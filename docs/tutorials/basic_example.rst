@@ -55,7 +55,7 @@ The most direct usage of NAPS is through the CLI. After installing NAPS, :ref:`n
 
 .. code-block:: text
 
-    naps-track --slp-path tests/data/example.slp --h5-path tests/data/example.analysis.h5 --video-path tests/data/example.mp4 --tag-node 0 --start-frame 0 --end-frame 1203 --aruco-marker-set DICT_4X4_100 --output-path tests/data/example_output.analysis.h5
+    naps-track --slp-path tests/data/example.slp --h5-path tests/data/example.analysis.h5 --video-path tests/data/example.mp4 --tag-node 0 --start-frame 0 --end-frame 1199 --aruco-marker-set DICT_4X4_100 --output-path tests/data/example_output.analysis.h5
 
 The resulting file, `example_output.analysis.h5`, is the same form as SLEAP analysis HDF5s.
 

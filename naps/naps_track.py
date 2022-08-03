@@ -43,18 +43,24 @@ def build_parser():
     )
 
     parser.add_argument(
-        "--tag-node", help="The ArUco tag SLEAP node ID", type=int, required=True
+        "--tag-node", 
+        help="The ArUco tag SLEAP node ID", 
+        type=int, 
+        required=True
     )
 
     parser.add_argument(
         "--start-frame",
-        help="The frame to begin NAPS assignment",
+        help="The zero-based fully-closed frame to begin NAPS assignment",
         type=int,
         required=True,
     )
 
     parser.add_argument(
-        "--end-frame", help="The frame to stop NAPS assignment", type=int, required=True
+        "--end-frame", 
+        help="The zero-based fully-closed frame to stop NAPS assignment",
+        type=int, 
+        required=True
     )
 
     parser.add_argument(
