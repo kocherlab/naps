@@ -56,9 +56,9 @@ NAPS is a tool for researchers with two goals: (1) to quantify animal behavior o
 Features
 --------
 * Easy, direct installation across platforms
-* Built directly on top of OpenCV and SLEAP with modular, extensible codebase
+* Built directly on top of `OpenCV <https://opencv.org/>`_` and `SLEAP <https://sleap.ai/>`_ with a modular, extensible codebase
 * Flexible API allows drop in of different methods for marker identification
-* Multiprocessing of marker detection through `Ray <https://docs.ray.io/>`_
+* Multiprocessing through `Ray <https://docs.ray.io/>`_
 
 
 Getting NAPS
@@ -120,7 +120,7 @@ Contributors
 * **Joshua Shaevitz**, Physics and Lewis-Sigler Institute, Princeton University
 * **Sarah Kocher**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
 
-NAPS was created between the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
+NAPS was created in the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
 
 -----------
 License

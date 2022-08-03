@@ -95,7 +95,7 @@ BibTeX:
 -----------
 Issues
 -----------
-** Issues with NAPS? **
+**Issues with NAPS?**
 
 1. Check the `docs <https://sleap.ai/help.html>`_.
 2. Search the `issues on GitHub <https://github.com/kocherlab/naps/issues>`_ or open a new one.
@@ -111,7 +111,7 @@ Contributors
 * **Joshua Shaevitz**, Physics and Lewis-Sigler Institute, Princeton University
 * **Sarah Kocher**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
 
-NAPS was created between the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
+NAPS was created in the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
 
 -----------
 License
