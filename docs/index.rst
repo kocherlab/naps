@@ -131,4 +131,4 @@ NAPS is licensed under the MIT license. See the `LICENSE <https://github.com/koc
 Acknowledgements
 ================
 
-Much of the structure and content of the README and the documentation is borrowed from the `SLEAP repository <https://github.com/talmolab/sleap>`_ .
+Much of the structure and content of the README and the documentation is borrowed from the `SLEAP repository <https://github.com/talmolab/sleap>`_.
