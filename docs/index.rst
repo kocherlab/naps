@@ -93,7 +93,7 @@ BibTeX:
 
    @UNPUBLISHED{Wolf_undated,
       author = {Wolf, Scott W and Ruttenberg, Dee M and Knapp, Daniel Y and Webb,
-               Andrew E and Shaevitz, Joshua W and Kocher, Sarah D},
+               Andrew E and McKenzie-Smith, Grace C and Shaevitz, Joshua W and Kocher, Sarah D},
       title = {Hybrid tracking to capture dynamic social networks},
       year = {n.d.}
    }
@@ -115,6 +115,7 @@ Contributors
 * **Dee Ruttenberg**, Lewis-Sigler Institute, Princeton University
 * **Daniel Knapp**, Physics, Princeton University
 * **Andrew Webb**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
+* **Grace McKenzie-Smith**, Lewis-Sigler Institute, Princeton University
 * **Joshua Shaevitz**, Physics and Lewis-Sigler Institute, Princeton University
 * **Sarah Kocher**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
 
