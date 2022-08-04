@@ -10,7 +10,7 @@ __license__ = "MIT"
 __copyright__ = "2022"
 
 # Author Information
-__authors__ = "Scott Wolf, Dee Ruttenberg, Daniel Knapp, Andrew Webb, and Sarah Kocher"
+__authors__ = "Scott Wolf, Dee Ruttenberg, Daniel Knapp, Andrew Webb, Grace McKenzie-Smith, Joshua Shaevitz and Sarah Kocher"
 __email__ = "22243650+Wolfffff@users.noreply.github.com, 19213578+aewebb80@users.noreply.github.com"
 
 import logging
