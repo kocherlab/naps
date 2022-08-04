@@ -83,7 +83,7 @@ References
 
 If you use NAPS in your research, please cite:
 
-   \S. W. Wolf, D. M. Ruttenberg*, D. Y. Knapp*, A. W. Webb, J. W. Shaevitz, S. D. Kocher. `Hybrid tracking to capture dynamic social networks <https://naps.rtfd.io/>`__. *In Prep*, n.d.
+   \S. W. Wolf, D. M. Ruttenberg*, D. Y. Knapp*, A. W. Webb, G. C. McKenzie-Smith, J. W. Shaevitz, and S. D. Kocher. `Hybrid tracking to capture dynamic social networks <https://naps.rtfd.io/>`__. *In Prep*, n.d.
 
 -------
 BibTeX:
