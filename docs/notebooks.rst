@@ -8,5 +8,6 @@ Here are a few Jupyter notebooks you can use show the full pipeline of NAPS. The
 
 
 .. toctree::
+	:maxdepth: 1
 
     notebooks/naps_basic_workflow

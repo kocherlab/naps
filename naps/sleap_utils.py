@@ -1,4 +1,7 @@
-"""sleap_utils.py: General helper functions for interfacing with SLEAP.
+"""
+    -------------------------------------------------------------------
+    sleap_utils.py: General helper functions for interfacing with SLEAP
+    -------------------------------------------------------------------
 """
 #!/usr/bin/env python
 import itertools
