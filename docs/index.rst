@@ -44,7 +44,6 @@ NAPS is a tool for researchers with two goals: (1) to quantify animal behavior o
 
    installation
    tutorials
-   notebooks
    notebooks/naps_basic_workflow
    cli
    functions
