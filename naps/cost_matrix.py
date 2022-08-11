@@ -55,12 +55,12 @@ class CostMatrix:
             ):
                 continue
 
-            # Assign the frame that should be removed this iteration
-            frame_to_remove = match_frame - self.half_rolling_window_size
+            # Assign the first frame of the window
+            start_of_window = match_frame - self.half_rolling_window_size
 
             # Remove a frame, if needed
-            if frame_to_remove > self.first_frame:
-                track_tag_dict = self.unmatched_dict[frame_to_remove]
+            if start_of_window > self.first_frame:
+                track_tag_dict = self.unmatched_dict[start_of_window - 1]
                 for track, tag_list in track_tag_dict.items():
                     for tag in tag_list:
                         cost_dict[track][tag] += 1
