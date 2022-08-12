@@ -1,9 +1,9 @@
 .. Template taken from https://github.com/talmolab/sleap
-|conda| |travis ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|
+|conda| |github ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|
 
-.. |travis ci| image::
-   https://app.travis-ci.com/kocherlab/naps.svg?branch=main
-   :target: https://app.travis-ci.com/kocherlab/naps
+.. |github ci| image::
+   https://github.com/kocherlab/naps/actions/workflows/ci.yml/badge.svg
+   :target: https://github.com/kocherlab/naps/actions/workflows/ci.yml
    :alt: Continuous integration status
 
 .. |Documentation| image::
