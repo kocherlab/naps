@@ -2,7 +2,7 @@
 |conda| |github ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|
 
 .. |github ci| image::
-   https://github.com/kocherlab/naps/actions/workflows/ci.yml/badge.svg
+   https://github.com/kocherlab/naps/actions/workflows/ci.yml/badge.svg?branch=main
    :target: https://github.com/kocherlab/naps/actions/workflows/ci.yml
    :alt: Continuous integration status
 
