@@ -190,7 +190,7 @@ def main(argv=None):
     matching_array = matching.match()
     logger.info("Done matching in %s seconds.", time.time() - t0)
 
-    print(print(matching_array[: 100]))
+    print(matching_array)
 
     '''
     logger.info("Reconstructing SLEAP file...")
