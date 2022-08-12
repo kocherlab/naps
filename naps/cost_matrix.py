@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from collections import defaultdict
 
+import numpy as np
 import pandas as pd
 from scipy.optimize import linear_sum_assignment
 
@@ -8,7 +9,7 @@ from scipy.optimize import linear_sum_assignment
 class CostMatrix:
     def __init__(
         self,
-        unmatched_dict: dict,
+        unmatched_array: dict,
         first_frame: int,
         last_frame: int,
         half_rolling_window_size: int,
@@ -16,7 +17,8 @@ class CostMatrix:
     ):
 
         # Matrix arguments
-        self.unmatched_dict = unmatched_dict
+        self.unmatched_array = unmatched_array
+        self.matched_array = np.full([unmatched_array.shape[0] - (2 * half_rolling_window_size), unmatched_array.shape[1]], np.nan)
 
         # Matching arguments
         self.first_frame = first_frame
@@ -27,56 +29,52 @@ class CostMatrix:
         self.assignment_method = self._linearAssignment
 
     @classmethod
-    def fromDict(cls, *args, **kwargs):
+    def fromArray(cls, *args, **kwargs):
         return cls(*args, **kwargs)
 
     def assignTrackTagPairs(self):
 
         # Create the cost matrix
         cost_dict = defaultdict(lambda: defaultdict(int))
-        matched_dict = defaultdict(lambda: defaultdict(str))
 
-        # Loop the frames in the unmatched matrix
-        for frame in range(self.first_frame, self.last_frame + 1):
+        # Loop the positions in the unmatched array
+        for pos in range(0, self.unmatched_array.shape[0]):
 
-            # Assign the track/tag combinations for this frame
-            track_tag_dict = self.unmatched_dict[frame]
-            for track, tag_list in track_tag_dict.items():
-                for tag in tag_list:
-                    cost_dict[track][tag] -= 1
+            # Assign the track/tag combinations for this position
+            for track, tag in enumerate(self.unmatched_array[pos]):
+                if not np.isnan(tag): cost_dict[track][int(tag)] -= 1
 
-            # Assign the rolling window frame
-            match_frame = frame - self.half_rolling_window_size
+            # Assign the rolling window position
+            match_pos = pos - self.half_rolling_window_size
 
-            # Check if the match frame should undergo linear assignment
+            # Check if the match position should undergo linear assignment
             if (
-                match_frame < self.first_frame + self.half_rolling_window_size
-                or match_frame > self.last_frame - self.half_rolling_window_size
+                match_pos < self.half_rolling_window_size
+                or match_pos > self.unmatched_array.shape[0] - self.half_rolling_window_size
             ):
                 continue
 
-            # Assign the frame that should be removed this iteration
-            frame_to_remove = match_frame - self.half_rolling_window_size
+            # Assign the first frame of the window
+            start_of_window = match_pos - self.half_rolling_window_size
 
-            # Remove a frame, if needed
-            if frame_to_remove > self.first_frame:
-                track_tag_dict = self.unmatched_dict[frame_to_remove]
-                for track, tag_list in track_tag_dict.items():
-                    for tag in tag_list:
-                        cost_dict[track][tag] += 1
-                        if cost_dict[track][tag] == 0:
-                            del cost_dict[track][tag]
+            # Remove a position, if needed
+            if start_of_window > 0:
+                for track, tag in enumerate(self.unmatched_array[start_of_window - 1]):
+                    if not np.isnan(tag):
+                        cost_dict[track][int(tag)] += 1
+                        if cost_dict[track][int(tag)] == 0:
+                            del cost_dict[track][int(tag)]
 
             # Create a dataframe of the matrix
             cost_dataframe = pd.DataFrame.from_dict(cost_dict).fillna(0)
 
             # Store the assignments
             for track_index, tag_index in self.assignment_method(cost_dataframe.values):
-                matched_dict[match_frame][
+                self.matched_array[start_of_window][
                     cost_dataframe.columns[track_index]
                 ] = cost_dataframe.index[tag_index]
 
-        return matched_dict
+        return self.matched_array
 
     @staticmethod
     def _linearAssignment(value_array):

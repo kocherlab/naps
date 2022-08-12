@@ -44,6 +44,10 @@ class Matching:
         self.threads = threads
 
         # Output
+        self.matching_array = np.full(self.tag_node_matrix.shape, np.nan)
+        #self.matching_array = np.full([self.tag_node_matrix.shape[0], self.tag_node_matrix.shape[2]], np.nan)
+
+        # Output
         self.matching_dict = {}
 
     def match(self):
@@ -83,16 +87,14 @@ class Matching:
         # Run the multiprocessing job, then convert the resulting list into a dict
         if self.threads > 1:
             with Pool(processes=self.threads) as matching_pool:
-                results_list = matching_pool.starmap(self._matchJob, framesPerThread())
-                for results_dict in results_list:
-                    self.matching_dict.update(results_dict)
+                matching_pool.starmap(self._matchJob, framesPerThread())
 
         # Run the job as normal
         else:
             for frame_start, frame_end in framesPerThread():
-                self.matching_dict.update(self._matchJob(frame_start, frame_end))
-
-        return self.matching_dict
+                self._matchJob(frame_start, frame_end)
+                
+        return self.matching_array
 
     def _matchJob(
         self, frame_start: int, frame_end: int
@@ -110,7 +112,7 @@ class Matching:
         self.aruco_model.buildModel()
 
         # Create a dict to store the matches for this job
-        job_match_dict = {}
+        job_unmatch_array = np.full([frame_end - frame_start + 1, self.tag_node_matrix.shape[2]], np.nan)
 
         # Set the current frame of the job
         current_frame = frame_start
@@ -129,18 +131,26 @@ class Matching:
 
             # Crop and return the ArUco tags
             frame.cropArUcoWithCoordsArray(tag_locations, self.aruco_crop_size)
-            job_match_dict[current_frame] = frame.returnArUcoTags(self.aruco_model)
+            for track, tag in frame.returnArUcoTags(self.aruco_model):
+                job_unmatch_array[current_frame - frame_start][track] = tag
 
             # Advance to the next frame
             frame = MatchFrame.fromCV2(*video.read())
             current_frame += 1
 
         # Create the cost matrix and assign the track/tag pairs for each frame
-        job_cost_matrix = CostMatrix.fromDict(
-            job_match_dict, frame_start, frame_end, self.half_rolling_window_size
+        job_cost_matrix = CostMatrix.fromArray(
+            job_unmatch_array, frame_start, frame_end, self.half_rolling_window_size
         )
-        job_track_tag_pair_dict = job_cost_matrix.assignTrackTagPairs()
-        return job_track_tag_pair_dict
+        job_match_array = job_cost_matrix.assignTrackTagPairs()
+
+        # Assign the start and end match sites
+        match_start = frame_start + self.half_rolling_window_size
+        match_end = frame_end - self.half_rolling_window_size
+
+        # Assign the matching data
+        self.matching_array[match_start:match_end + 1, 0] = job_unmatch_array[self.half_rolling_window_size:-self.half_rolling_window_size]
+        self.matching_array[match_start:match_end + 1, 1] = job_match_array
 
 
 class MatchFrame:
@@ -199,7 +209,8 @@ class MatchFrame:
             defaultdict(list): Dictionary of matching results for a single frame.
         """
 
-        track_tag_dict = defaultdict(list)
+        # Create dict to store results
+        track_tag_dict = {}
 
         # Loop the frame track images
         for track, frame_image in self.frame_images.items():
@@ -213,6 +224,4 @@ class MatchFrame:
 
             # Iterate through detected tags and append results to a results list
             for _, marker_tag in zip(corners, tags):
-                track_tag_dict[track].append(marker_tag[0])
-
-        return track_tag_dict
+                yield track, marker_tag[0]

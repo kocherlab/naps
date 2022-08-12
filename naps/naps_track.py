@@ -187,9 +187,12 @@ def main(argv=None):
         tag_node_matrix=tag_locations,
         threads=args.threads,
     )
-    matching_dict = matching.match()
+    matching_array = matching.match()
     logger.info("Done matching in %s seconds.", time.time() - t0)
 
+    print(print(matching_array[: 100]))
+
+    '''
     logger.info("Reconstructing SLEAP file...")
     t0 = time.time()
     # Right now the reconstruction assumes that we each track has a single track ID assigned to it. We'll generalize so that a track can switch IDs over time.
@@ -204,6 +207,7 @@ def main(argv=None):
     logger.info("Done reconstructing SLEAP file in %s seconds.", time.time() - t0)
 
     logger.info("Complete NAPS runtime: %s", time.time() - t0_total)
+    '''
 
 
 if __name__ == "__main__":
