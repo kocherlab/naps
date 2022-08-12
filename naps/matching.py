@@ -97,16 +97,13 @@ class Matching:
         return self.matching_array
 
     def _matchJob(
-        self, frame_start: int, frame_end: int
-    ) -> defaultdict(lambda: defaultdict(str)):
+        self, frame_start: int, frame_end: int):
         """Performs a single matching job
 
         Args:
             frame_start (int): Frame to start at
             frame_end (int): Frame to end at
 
-        Returns:
-            defaultdict(lambda: defaultdict(str)): Dictionary of matching results with the form dictionary[frame][track] = tag.
         """
         # Build the aruco model
         self.aruco_model.buildModel()
