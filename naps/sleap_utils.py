@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 # Pulled from SLEAP's codebase
 def get_location_matrix(
     labels: sleap.Labels, all_frames: bool, video: sleap.Video = None
-) -> Tuple[np.ndarray, List[str]]:
+) -> Tuple[np.ndarray, List]:
     """Builds numpy matrix with point location data. Note: This function assumes either all instances have tracks or no instances have tracks.
 
     Args:
