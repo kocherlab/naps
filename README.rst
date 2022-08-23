@@ -1,5 +1,4 @@
-.. Template taken from https://github.com/talmolab/sleap
-|conda| |github ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|
+|conda| |github ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|;
 
 .. |github ci| image::
    https://github.com/kocherlab/naps/actions/workflows/ci.yml/badge.svg?branch=main
@@ -30,6 +29,7 @@
 *******************************
 NAPS (NAPS is ArUco Plus SLEAP)
 *******************************
+
 NAPS is a tool for researchers with two goals: (1) to quantify animal behavior over a long timescale and high resolution, with minimal human bias, and (2) to track the behavior of individuals with a high level of identity-persistence. This could be of use to researchers studying social network analysis, animal communication, task specialization, or gene-by-environment interactions. By combining deep-learning based pose estimation software with easily read and minimally invasive fiducial markers ("tags"), we provide an easy-to-use solution for producing high-quality, high-dimensional behavioral data.
 
 .. figure:: https://naps.readthedocs.io/en/latest/_static/example_tracking.gif
@@ -54,6 +54,7 @@ Features
 ============
 Getting NAPS
 ============
+
 ------------
 Easy install
 ------------
@@ -93,9 +94,10 @@ BibTeX:
 ======
 Issues
 ======
-------------
+
+------------------
 Issues with NAPS?
-------------
+------------------
 
 1. Check the `docs <https://naps.rtfd.io/>`_.
 2. Search the `issues on GitHub <https://github.com/kocherlab/naps/issues>`_ or open a new one.

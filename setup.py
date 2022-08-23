@@ -30,6 +30,7 @@ setup(
     license=naps.__license__,
     url=naps.__url__,
     description=naps.__summary__,
+    long_description_content_type="text/x-rst",
     long_description=readme,
     packages=["naps"],
     install_requires=requirements,
