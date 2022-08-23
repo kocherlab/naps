@@ -1,3 +1,4 @@
+import cv2
 import pytest
 
 from naps.aruco import ArUcoModel
@@ -76,3 +77,39 @@ def test_ArUcoModel_params_type_error(param, value):
     with pytest.raises(Exception) as e_info:
         test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
         test_model.buildModel()
+
+@pytest.mark.parametrize(
+    "coords, tag",
+    [
+        ([100, 350,100, 350], 1),
+        ([100, 350,800,1050], 2),
+        ([450, 700,450, 700], 3),
+        ([800,1050,100, 350], 4),
+        ([800,1050,800,1050], 5),
+    ],
+)
+def test_ArUcoModel_detect(coords, tag):
+
+    param_dict = {
+        "adaptiveThreshWinSizeMin": 3,
+        "adaptiveThreshWinSizeMax": 10,
+        "adaptiveThreshWinSizeStep": 3,
+        "adaptiveThreshConstant": 10,
+        "perspectiveRemoveIgnoredMarginPerCell": 0.1,
+        "errorCorrectionRate": 0.1,
+    }
+
+    # Confirm the model loads without error
+    try:
+        test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
+        test_model.buildModel()
+    except Exception as exc:
+        assert False, f"Tag set {tag_set} raised an exception {exc}"
+
+    # Open the aruco image
+    aruco_image = cv2.imread("tests/data/example_ArUco_image.jpg", 0)
+    tag_image = aruco_image[coords[0] - 100:coords[1] + 100, coords[2] - 100:coords[3] + 100]
+
+    # Detect ArUco tags
+    _, tags, _ = test_model.detect(tag_image)
+    assert tags[0][0] == tag
