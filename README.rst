@@ -1,14 +1,27 @@
-|conda| |github ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE| |Stable version| |Latest version|
+|Stable version| |Latest version| |Documentation| |github ci| |Coverage| |conda| |Conda Upload| |PyPI Upload| |LICENSE|
+
+.. |Stable version| image:: https://img.shields.io/github/v/release/kocherlab/naps?label=stable
+   :target: https://github.com/kocherlab/naps/releases/
+   :alt: Stable version
+
+.. |Latest version| image:: https://img.shields.io/github/v/release/kocherlab/naps?include_prereleases&label=latest
+   :target: https://github.com/kocherlab/naps/releases/
+   :alt: Latest version
+
+.. |Documentation| image::
+   https://readthedocs.org/projects/naps/badge/?version=latest
+   :target: https://naps.readthedocs.io/en/latest/?badge=latest
+   :alt: Documentation Status
 
 .. |github ci| image::
    https://github.com/kocherlab/naps/actions/workflows/ci.yml/badge.svg?branch=main
    :target: https://github.com/kocherlab/naps/actions/workflows/ci.yml
    :alt: Continuous integration status
 
-.. |Documentation| image::
-   https://readthedocs.org/projects/naps/badge/?version=latest
-   :target: https://naps.readthedocs.io/en/latest/?badge=latest
-   :alt: Documentation Status
+.. |Coverage| image::
+   https://codecov.io/gh/kocherlab/naps/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/kocherlab/naps
+   :alt: Coverage
 
 .. |conda| image::
    https://anaconda.org/kocherlab/naps-track/badges/version.svg
@@ -25,14 +38,6 @@
 .. |LICENSE| image::
    https://anaconda.org/kocherlab/naps-track/badges/license.svg
    :target: https://github.com/kocherlab/naps/blob/main/LICENSE.md
-
-.. |Stable version| image:: https://img.shields.io/github/v/release/kocherlab/naps?label=stable
-   :target: https://github.com/kocherlab/naps/releases/
-   :alt: Stable version
-
-.. |Latest version| image:: https://img.shields.io/github/v/release/kocherlab/naps?include_prereleases&label=latest
-   :target: https://github.com/kocherlab/naps/releases/
-   :alt: Latest version
 
 *******************************
 NAPS (NAPS is ArUco Plus SLEAP)

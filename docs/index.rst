@@ -1,15 +1,27 @@
-.. Template taken from https://github.com/talmolab/sleap
-|conda| |travis ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|
+|Stable version| |Latest version| |Documentation| |github ci| |Coverage| |conda| |Conda Upload| |PyPI Upload| |LICENSE|
 
-.. |travis ci| image::
-   https://app.travis-ci.com/kocherlab/naps.svg?branch=main
-   :target: https://app.travis-ci.com/kocherlab/naps
-   :alt: Continuous integration status
+.. |Stable version| image:: https://img.shields.io/github/v/release/kocherlab/naps?label=stable
+   :target: https://github.com/kocherlab/naps/releases/
+   :alt: Stable version
+
+.. |Latest version| image:: https://img.shields.io/github/v/release/kocherlab/naps?include_prereleases&label=latest
+   :target: https://github.com/kocherlab/naps/releases/
+   :alt: Latest version
 
 .. |Documentation| image::
    https://readthedocs.org/projects/naps/badge/?version=latest
    :target: https://naps.readthedocs.io/en/latest/?badge=latest
    :alt: Documentation Status
+
+.. |github ci| image::
+   https://github.com/kocherlab/naps/actions/workflows/ci.yml/badge.svg?branch=main
+   :target: https://github.com/kocherlab/naps/actions/workflows/ci.yml
+   :alt: Continuous integration status
+
+.. |Coverage| image::
+   https://codecov.io/gh/kocherlab/naps/branch/main/graph/badge.svg
+   :target: https://codecov.io/gh/kocherlab/naps
+   :alt: Coverage
 
 .. |conda| image::
    https://anaconda.org/kocherlab/naps-track/badges/version.svg
@@ -82,17 +94,16 @@ References
 
 If you use NAPS in your research, please cite:
 
-   \S. W. Wolf, D. M. Ruttenberg*, D. Y. Knapp*, A. W. Webb, G. C. McKenzie-Smith, J. W. Shaevitz, and S. D. Kocher. `Hybrid tracking to capture dynamic social networks <https://naps.rtfd.io/>`__. *In Prep*, n.d.
+   \S. W. Wolf, D. M. Ruttenberg*, D. Y. Knapp*, A. W. Webb, I. M. Traniello, G. C. McKenzie-Smith, J. W. Shaevitz, and S. D. Kocher. `Hybrid tracking to capture dynamic social networks <https://naps.rtfd.io/>`__. *In Prep*, n.d.
 
 -------
 BibTeX:
 -------
-
 .. code-block::
 
    @UNPUBLISHED{Wolf_undated,
       author = {Wolf, Scott W and Ruttenberg, Dee M and Knapp, Daniel Y and Webb,
-               Andrew E and McKenzie-Smith, Grace C and Shaevitz, Joshua W and Kocher, Sarah D},
+               Andrew E and Traniello, Ian M and McKenzie-Smith, Grace C and Shaevitz, Joshua W and Kocher, Sarah D},
       title = {Hybrid tracking to capture dynamic social networks},
       year = {n.d.}
    }
@@ -100,9 +111,11 @@ BibTeX:
 ======
 Issues
 ======
-------------
+
+------------------
 Issues with NAPS?
-------------
+------------------
+
 1. Check the `docs <https://naps.rtfd.io/>`_.
 2. Search the `issues on GitHub <https://github.com/kocherlab/naps/issues>`_ or open a new one.
 
@@ -110,15 +123,16 @@ Issues with NAPS?
 Contributors
 ============
 
-* **Scott Wolf**, Lewis-Sigler Institute, Princeton University
-* **Dee Ruttenberg**, Lewis-Sigler Institute, Princeton University
-* **Daniel Knapp**, Physics, Princeton University
-* **Andrew Webb**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
-* **Grace McKenzie-Smith**, Lewis-Sigler Institute, Princeton University
-* **Joshua Shaevitz**, Physics and Lewis-Sigler Institute, Princeton University
-* **Sarah Kocher**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
+* **Scott Wolf**, Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Dee Ruttenberg**, Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Daniel Knapp**, Department of Physics, Princeton University
+* **Andrew Webb**, Department of Ecology and Evolutionary Biology and Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Ian Traniello**, Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Grace McKenzie-Smith**, Department of Physics and Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Joshua Shaevitz**, Department of Physics and Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Sarah Kocher**, Department of Ecology and Evolutionary Biology and Lewis-Sigler Institute for Integrative Genomics, Princeton University
 
-NAPS was created in the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
+NAPS was created in the  `Kocher <https://kocherlab.princeton.edu/>`_  and `Shaevitz <https://shaevitzlab.princeton.edu/>`_ labs at Princeton University.
 
 =======
 License
