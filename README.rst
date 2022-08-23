@@ -1,4 +1,4 @@
-|conda| |github ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE|;
+|conda| |github ci| |Documentation| |PyPI Upload| |Conda Upload| |LICENSE| |Stable version| |Latest version|
 
 .. |github ci| image::
    https://github.com/kocherlab/naps/actions/workflows/ci.yml/badge.svg?branch=main
@@ -25,6 +25,14 @@
 .. |LICENSE| image::
    https://anaconda.org/kocherlab/naps-track/badges/license.svg
    :target: https://github.com/kocherlab/naps/blob/main/LICENSE.md
+
+.. |Stable version| image:: https://img.shields.io/github/v/release/kocherlab/naps?label=stable
+   :target: https://github.com/kocherlab/naps/releases/
+   :alt: Stable version
+
+.. |Latest version| image:: https://img.shields.io/github/v/release/kocherlab/naps?include_prereleases&label=latest
+   :target: https://github.com/kocherlab/naps/releases/
+   :alt: Latest version
 
 *******************************
 NAPS (NAPS is ArUco Plus SLEAP)
@@ -77,7 +85,7 @@ References
 
 If you use NAPS in your research, please cite:
 
-   \S. W. Wolf, D. M. Ruttenberg*, D. Y. Knapp*, A. W. Webb, G. C. McKenzie-Smith, J. W. Shaevitz, and S. D. Kocher. `Hybrid tracking to capture dynamic social networks <https://naps.rtfd.io/>`__. *In Prep*, n.d.
+   \S. W. Wolf, D. M. Ruttenberg*, D. Y. Knapp*, A. W. Webb, I. M. Traniello, G. C. McKenzie-Smith, J. W. Shaevitz, and S. D. Kocher. `Hybrid tracking to capture dynamic social networks <https://naps.rtfd.io/>`__. *In Prep*, n.d.
 
 -------
 BibTeX:
@@ -86,7 +94,7 @@ BibTeX:
 
    @UNPUBLISHED{Wolf_undated,
       author = {Wolf, Scott W and Ruttenberg, Dee M and Knapp, Daniel Y and Webb,
-               Andrew E and McKenzie-Smith, Grace C and Shaevitz, Joshua W and Kocher, Sarah D},
+               Andrew E and Traniello, Ian M and McKenzie-Smith, Grace C and Shaevitz, Joshua W and Kocher, Sarah D},
       title = {Hybrid tracking to capture dynamic social networks},
       year = {n.d.}
    }
@@ -106,15 +114,16 @@ Issues with NAPS?
 Contributors
 ============
 
-* **Scott Wolf**, Lewis-Sigler Institute, Princeton University
-* **Dee Ruttenberg**, Lewis-Sigler Institute, Princeton University
-* **Daniel Knapp**, Physics, Princeton University
-* **Andrew Webb**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
-* **Grace McKenzie-Smith**, Lewis-Sigler Institute, Princeton University
-* **Joshua Shaevitz**, Physics and Lewis-Sigler Institute, Princeton University
-* **Sarah Kocher**, Ecology and Evolutionary Biology and Lewis-Sigler Institute, Princeton University
+* **Scott Wolf**, Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Dee Ruttenberg**, Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Daniel Knapp**, Department of Physics, Princeton University
+* **Andrew Webb**, Department of Ecology and Evolutionary Biology and Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Ian Traniello**, Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Grace McKenzie-Smith**, Department of Physics and Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Joshua Shaevitz**, Department of Physics and Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Sarah Kocher**, Department of Ecology and Evolutionary Biology and Lewis-Sigler Institute for Integrative Genomics, Princeton University
 
-NAPS was created in the `Shaevitz <https://shaevitzlab.princeton.edu/>`_ and `Kocher <https://kocherlab.princeton.edu/>`_ labs at Princeton University.
+NAPS was created in the  `Kocher <https://kocherlab.princeton.edu/>`_  and `Shaevitz <https://shaevitzlab.princeton.edu/>`_ labs at Princeton University.
 
 =======
 License
