@@ -13,6 +13,7 @@ def test_CostMatrix():
                             [ 3.,  1.,  3.],
                             [ 3.,  1.,  3.],
                             [ 2.,  1., np.nan],
+                            [ 2.,  1., np.nan],
                             [ 2.,  1., np.nan]])
 
 
@@ -22,8 +23,9 @@ def test_CostMatrix():
     assignment_array = cost_matrix.assignTrackTagPairs()
 
     # Confirm the contents of the assignment dictionary
-    assert assignment_array.shape == (1, 3)
+    assert assignment_array.shape == (2, 3)
     assert list(assignment_array[0]) == [2, 1, 3]
+    assert list(assignment_array[1]) == [2, 1, 3]
 
 
 def test_CostMatrix_linearAssignment():
