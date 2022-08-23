@@ -13,16 +13,18 @@ def test_CostMatrix():
         2: {"a": [3], "b": [1, 2, 3], "c": [3]},
         3: {"a": [2], "b": [1, 2, 3], "c": []},
         4: {"a": [2], "b": [1, 2, 3], "c": []},
+        5: {"a": [1, 2], "b": [2], "c": [1, 3]}
     }
 
     # Create the cost matrix, the assign the track/tag pairs
-    cost_matrix = CostMatrix.fromDict(value_dict, 0, 4, 2)
+    cost_matrix = CostMatrix.fromDict(value_dict, 0, 5, 2)
     assignment_dict = cost_matrix.assignTrackTagPairs()
 
     # Confirm the contents of the assignment dictionary
     assert 2 in assignment_dict
-    assert list(assignment_dict) == [2]
+    assert list(assignment_dict) == [2, 3]
     assert list(assignment_dict[2]) == ["b", "a", "c"]
+    assert list(assignment_dict[3]) == ["b", "a", "c"]
 
 
 def test_CostMatrix_linearAssignment():
