@@ -104,7 +104,7 @@ def test_ArUcoModel_detect(coords, tag):
         test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
         test_model.buildModel()
     except Exception as exc:
-        assert False, f"Tag set {tag_set} raised an exception {exc}"
+        assert False, f"Tag set DICT_4X4_100 raised an exception {exc}"
 
     # Open the aruco image
     aruco_image = cv2.imread("tests/data/example_ArUco_image.jpg", 0)
