@@ -12,7 +12,7 @@ from naps.sleap_utils import load_tracks_from_slp, update_labeled_frames
 logger = logging.getLogger("NAPS Logger")
 
 
-def build_parser(args = []):
+def build_parser():
     """Builds the argument parser for the main function.
 
     Returns:
@@ -143,7 +143,7 @@ def build_parser(args = []):
         default=1,
     )
 
-    return parser.parse_args(args)
+    return parser
 
 
 def main(argv=None):
@@ -152,8 +152,8 @@ def main(argv=None):
     # Set the start time for the entire pipeline
     t0_total = time.time()
 
-    # Build the arguments from the
-    args = build_parser(argv)
+    # Build the arguments from the .parse_args(args)
+    args = build_parser().parse_args(argv)
 
     # Assign the h5 path if not specified
     if args.h5_path is None:
