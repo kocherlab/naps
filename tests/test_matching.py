@@ -213,3 +213,45 @@ def test_Matching_match():
     assert list(frame_match_dict[7]) == [0, 1, 2, 3, 4]
     assert list(frame_match_dict[7].values()) == [[1], [2], [3], [4], [5]]
 
+def test_Matching_match():
+
+    # Assign the parameters for the ArUcoModel
+    param_dict = {
+        "adaptiveThreshWinSizeMin": 3,
+        "adaptiveThreshWinSizeMax": 10,
+        "adaptiveThreshWinSizeStep": 3,
+        "adaptiveThreshConstant": 10,
+        "perspectiveRemoveIgnoredMarginPerCell": 0.1,
+        "errorCorrectionRate": 0.1,
+    }
+
+    # Assign the centroid coords for each tag
+    coords_image_list = [
+        [225, 925, 575, 225, 925],
+        [225, 225, 575, 925, 925]
+    ]
+
+    matcher = Matching(
+        "tests/data/example_ArUco_video.avi",
+        0,
+        14,
+        aruco_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+        aruco_crop_size = 200,
+        half_rolling_window_size = 6,
+        tag_node_matrix = np.array([coords_image_list] * 15),
+        threads = 2,
+    )
+
+    # Match the tags for the video
+    frame_match_dict = matcher.match()
+
+    # Check frames that matched
+    assert len(frame_match_dict) == 3
+    assert list(frame_match_dict) == [6, 7, 8]
+    
+    # Check matching results by frame
+    for frame in [6, 7, 8]:
+        assert len(frame_match_dict[frame]) == 5
+        assert list(frame_match_dict[frame]) == [0, 1, 2, 3, 4]
+        assert list(frame_match_dict[frame].values()) == [[1], [2], [3], [4], [5]]
+
