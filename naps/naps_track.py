@@ -12,7 +12,7 @@ from naps.sleap_utils import load_tracks_from_slp, update_labeled_frames
 logger = logging.getLogger("NAPS Logger")
 
 
-def build_parser():
+def build_parser(args):
     """Builds the argument parser for the main function.
 
     Returns:
@@ -143,18 +143,23 @@ def build_parser():
         default=1,
     )
 
-    return parser
+    return parser.parse_args(args)
 
 
 def main(argv=None):
     """Main function for the NAPS tracking script."""
 
+    # Set the start time for the entire pipeline
     t0_total = time.time()
-    parser = build_parser()
-    args = parser.parse_args(argv)
+
+    # Build the arguments from the
+    args = build_parser(argv)
+
+    # Assign the h5 path if not specified
     if args.h5_path is None:
         args.h5_path = args.slp_path
 
+    # Create a track array from the SLEAP file(s)
     logger.info("Loading predictions...")
     t0 = time.time()
     locations, node_names = load_tracks_from_slp(args.h5_path)
@@ -162,7 +167,8 @@ def main(argv=None):
     logger.info("Done loading predictions in %s seconds.", time.time() - t0)
     tag_locations = locations[:, args.tag_node, :, :]
 
-    logger.info("Building ArUco model...")
+    # Create an ArUcoModel with the default/specified parameters
+    logger.info("Create ArUco model...")
     t0 = time.time()
     aruco_model = ArUcoModel.withTagSet(
         args.aruco_marker_set,
@@ -175,6 +181,7 @@ def main(argv=None):
     )
     logger.info("ArUco model built in %s seconds.", time.time() - t0)
 
+    # Match the track to the ArUco markers
     logger.info("Starting matching...")
     t0 = time.time()
     matching = Matching(
@@ -190,14 +197,13 @@ def main(argv=None):
     matching_dict = matching.match()
     logger.info("Done matching in %s seconds.", time.time() - t0)
 
+    # Create the output
     logger.info("Reconstructing SLEAP file...")
     t0 = time.time()
     # Right now the reconstruction assumes that we each track has a single track ID assigned to it. We'll generalize so that a track can switch IDs over time.
     resulting_labeled_frames = update_labeled_frames(
         args.slp_path, matching_dict, args.start_frame, args.end_frame
     )
-
-    t0 = time.time()
     new_labels = sleap.Labels(labeled_frames=resulting_labeled_frames)
     # Temporary workaround to write out a SLEAP Analysis HDF5. These can be imported into SLEAP but aren't the base project format.
     new_labels.export(args.output_path)

@@ -213,7 +213,7 @@ def test_Matching_match():
     assert list(frame_match_dict[7]) == [0, 1, 2, 3, 4]
     assert list(frame_match_dict[7].values()) == [[1], [2], [3], [4], [5]]
 
-def test_Matching_match():
+def test_Matching_match_mpi():
 
     # Assign the parameters for the ArUcoModel
     param_dict = {
