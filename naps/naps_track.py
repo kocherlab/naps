@@ -12,7 +12,7 @@ from naps.sleap_utils import load_tracks_from_slp, update_labeled_frames
 logger = logging.getLogger("NAPS Logger")
 
 
-def build_parser(args):
+def build_parser(args = []):
     """Builds the argument parser for the main function.
 
     Returns:
