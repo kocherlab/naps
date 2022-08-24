@@ -1,10 +1,12 @@
 #!/usr/bin/env python
+import os
+import cv2
 import math
+
+import numpy as np
+
 from collections import defaultdict
 from typing import Iterable, Tuple
-
-import cv2
-import numpy as np
 from ray.util.multiprocessing import Pool
 
 from naps.aruco import ArUcoModel
@@ -24,7 +26,10 @@ class Matching:
         threads: int,
         min_sleap_score: float = 0.1,
         **kwargs
-    ):
+    ):  
+
+        # Confirm the video file exists
+        if not os.path.isfile(video_filename): raise Exception (f'{video_filename} does not exist')
 
         # Video arguments
         self.video_filename = video_filename
