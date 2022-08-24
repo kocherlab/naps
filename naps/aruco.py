@@ -111,8 +111,6 @@ class ArUcoModel:
         }
 
         # Check there are no problem with the tag set
-        if not tag_set:
-            raise Exception("No tag set defined")
         if tag_set not in ARUCO_DICT:
             raise Exception(f"Unable to assign tag set: {tag_set}")
 

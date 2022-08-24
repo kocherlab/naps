@@ -48,6 +48,34 @@ def test_ArUcoModel_tag_sets(tag_set):
     except Exception as exc:
         assert False, f"Tag set {tag_set} raised an exception {exc}"
 
+def test_ArUcoModel_tag_set_dict_error():
+
+    param_dict = {
+        "adaptiveThreshWinSizeMin": 10,
+        "adaptiveThreshWinSizeMax": 10,
+        "adaptiveThreshWinSizeStep": 10,
+        "adaptiveThreshConstant": 10,
+        "perspectiveRemoveIgnoredMarginPerCell": 0.1,
+        "errorCorrectionRate": 0.1,
+    }
+
+    with pytest.raises(Exception) as e_info:
+        test_model = ArUcoModel.withTagSet("DICT_4X4_FAIL", **param_dict)
+        test_model.buildModel()
+
+def test_ArUcoModel_no_tag_set_error():
+
+    param_dict = {
+        "adaptiveThreshWinSizeMin": 10,
+        "adaptiveThreshWinSizeMax": 10,
+        "adaptiveThreshWinSizeStep": 10,
+        "adaptiveThreshConstant": 10,
+        "perspectiveRemoveIgnoredMarginPerCell": 0.1,
+        "errorCorrectionRate": 0.1,
+    }
+
+    with pytest.raises(Exception) as e_info:
+        test_model = ArUcoModel.withTagSet(**param_dict)
 
 @pytest.mark.parametrize(
     "param, value",
