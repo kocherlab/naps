@@ -48,6 +48,7 @@ def test_ArUcoModel_tag_sets(tag_set):
     except Exception as exc:
         assert False, f"Tag set {tag_set} raised an exception {exc}"
 
+
 def test_ArUcoModel_tag_set_dict_error():
 
     param_dict = {
@@ -63,6 +64,7 @@ def test_ArUcoModel_tag_set_dict_error():
         test_model = ArUcoModel.withTagSet("DICT_4X4_FAIL", **param_dict)
         test_model.buildModel()
 
+
 def test_ArUcoModel_no_tag_set_error():
 
     param_dict = {
@@ -76,6 +78,7 @@ def test_ArUcoModel_no_tag_set_error():
 
     with pytest.raises(Exception) as e_info:
         test_model = ArUcoModel.withTagSet(**param_dict)
+
 
 @pytest.mark.parametrize(
     "param, value",
@@ -106,14 +109,15 @@ def test_ArUcoModel_params_type_error(param, value):
         test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
         test_model.buildModel()
 
+
 @pytest.mark.parametrize(
     "coords, tag",
     [
-        ([100, 350,100, 350], 1),
-        ([100, 350,800,1050], 2),
-        ([450, 700,450, 700], 3),
-        ([800,1050,100, 350], 4),
-        ([800,1050,800,1050], 5),
+        ([100, 350, 100, 350], 1),
+        ([100, 350, 800, 1050], 2),
+        ([450, 700, 450, 700], 3),
+        ([800, 1050, 100, 350], 4),
+        ([800, 1050, 800, 1050], 5),
     ],
 )
 def test_ArUcoModel_detect(coords, tag):
@@ -136,7 +140,9 @@ def test_ArUcoModel_detect(coords, tag):
 
     # Open the aruco image
     aruco_image = cv2.imread("tests/data/example_ArUco_image.jpg", 0)
-    tag_image = aruco_image[coords[0] - 100:coords[1] + 100, coords[2] - 100:coords[3] + 100]
+    tag_image = aruco_image[
+        coords[0] - 100 : coords[1] + 100, coords[2] - 100 : coords[3] + 100
+    ]
 
     # Detect ArUco tags
     _, tags, _ = test_model.detect(tag_image)

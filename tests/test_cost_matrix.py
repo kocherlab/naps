@@ -1,5 +1,4 @@
 import pandas as pd
-import pytest
 
 from naps.cost_matrix import CostMatrix
 
@@ -13,7 +12,7 @@ def test_CostMatrix():
         2: {"a": [3], "b": [1, 2, 3], "c": [3]},
         3: {"a": [2], "b": [1, 2, 3], "c": []},
         4: {"a": [2], "b": [1, 2, 3], "c": []},
-        5: {"a": [1, 2], "b": [2], "c": [1, 3]}
+        5: {"a": [1, 2], "b": [2], "c": [1, 3]},
     }
 
     # Create the cost matrix, the assign the track/tag pairs

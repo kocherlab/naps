@@ -1,6 +1,6 @@
 # Basic Information
 __name__ = "naps-track"
-__version__ = "0.1.15"
+__version__ = "1.0.0"
 __summary__ = "NAPS (NAPS is ArUco Plus SLEAP)"
 __url__ = "https://github.com/kocherlab/naps"
 __code__ = "https://github.com/kocherlab/naps"
@@ -10,7 +10,7 @@ __license__ = "MIT"
 __copyright__ = "2022"
 
 # Author Information
-__authors__ = "Scott Wolf, Dee Ruttenberg, Daniel Knapp, Andrew Webb, Ian Traniello Grace McKenzie-Smith, Joshua Shaevitz and Sarah Kocher"
+__authors__ = "Scott Wolf, Dee Ruttenberg, Daniel Knapp, Andrew Webb, Ian Traniello, Grace McKenzie-Smith, Joshua Shaevitz, and Sarah Kocher"
 __email__ = "22243650+Wolfffff@users.noreply.github.com, 19213578+aewebb80@users.noreply.github.com"
 
 import logging

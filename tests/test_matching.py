@@ -1,10 +1,10 @@
 import cv2
-import pytest
-
 import numpy as np
+import pytest
 
 from naps.aruco import ArUcoModel
 from naps.matching import MatchFrame, Matching
+
 
 def test_imread():
 
@@ -17,6 +17,7 @@ def test_imread():
     except Exception as exc:
         assert False, f"Unable to read image: {aruco_image_file}"
 
+
 def test_MatchFrame():
 
     # Assign the image file
@@ -28,6 +29,7 @@ def test_MatchFrame():
         MatchFrame.fromCV2(True, aruco_image)
     except Exception as exc:
         assert False, f"MatchFrame assignment error: (True, {aruco_image_file})"
+
 
 def test_MatchFrame_error():
 
@@ -44,6 +46,7 @@ def test_MatchFrame_error():
     with pytest.raises(Exception) as e_info:
         MatchFrame.fromCV2(aruco_image)
 
+
 def test_MatchFrame_cropArUcoWithCoordsArray():
 
     # Assign the image file
@@ -51,13 +54,7 @@ def test_MatchFrame_cropArUcoWithCoordsArray():
     aruco_image = cv2.imread(aruco_image_file)
 
     # Assign the centroid coords for each tag
-    coords_image_list = [
-        (225, 225),
-        (925, 225),
-        (575, 575),
-        (225, 925),
-        (925, 925)
-    ]
+    coords_image_list = [(225, 225), (925, 225), (575, 575), (225, 925), (925, 925)]
 
     match_frame = MatchFrame.fromCV2(True, aruco_image)
     match_frame.cropArUcoWithCoordsArray(coords_image_list, 200)
@@ -69,6 +66,7 @@ def test_MatchFrame_cropArUcoWithCoordsArray():
     # Check the cropped images
     for match_image in match_frame.frame_images.values():
         assert match_image.shape == (400, 400)
+
 
 def test_MatchFrame_returnArUcoTags():
 
@@ -91,14 +89,8 @@ def test_MatchFrame_returnArUcoTags():
     aruco_image = cv2.imread(aruco_image_file)
 
     # Assign the centroid coords for each tag
-    coords_image_list = [
-        (225, 225),
-        (925, 225),
-        (575, 575),
-        (225, 925),
-        (925, 925)
-    ]
- 
+    coords_image_list = [(225, 225), (925, 225), (575, 575), (225, 925), (925, 925)]
+
     match_frame = MatchFrame.fromCV2(True, aruco_image)
     match_frame.cropArUcoWithCoordsArray(coords_image_list, 200)
     match_dict = match_frame.returnArUcoTags(test_model)
@@ -107,6 +99,7 @@ def test_MatchFrame_returnArUcoTags():
     assert len(match_dict) == 5
     assert list(match_dict) == [0, 1, 2, 3, 4]
     assert list(match_dict.values()) == [[1], [2], [3], [4], [5]]
+
 
 def test_Matching():
 
@@ -121,10 +114,7 @@ def test_Matching():
     }
 
     # Assign the centroid coords for each tag
-    coords_image_list = [
-        [225, 925, 575, 225, 925],
-        [225, 225, 575, 925, 925]
-    ]
+    coords_image_list = [[225, 925, 575, 225, 925], [225, 225, 575, 925, 925]]
 
     # Confirm the model loads without error
     try:
@@ -132,14 +122,15 @@ def test_Matching():
             "tests/data/example_ArUco_video.avi",
             0,
             14,
-            aruco_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
-            aruco_crop_size = 200,
-            half_rolling_window_size = 7,
-            tag_node_matrix = np.array([coords_image_list] * 15),
-            threads = 1,
+            aruco_model=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+            aruco_crop_size=200,
+            half_rolling_window_size=7,
+            tag_node_matrix=np.array([coords_image_list] * 15),
+            threads=1,
         )
     except Exception as exc:
         assert False, exc
+
 
 def test_Matching_error():
 
@@ -154,25 +145,23 @@ def test_Matching_error():
     }
 
     # Assign the centroid coords for each tag
-    coords_image_list = [
-        [225, 925, 575, 225, 925],
-        [225, 225, 575, 925, 925]
-    ]
+    coords_image_list = [[225, 925, 575, 225, 925], [225, 225, 575, 925, 925]]
 
     with pytest.raises(Exception) as e_info:
         Matching()
 
     with pytest.raises(Exception) as e_info:
         Matching(
-            video_filename = "tests/data/example_ArUco_video.null",
-            video_first_frame = 0,
-            video_last_frame = 14,
-            aruco_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
-            aruco_crop_size = 200,
-            half_rolling_window_size = 7,
-            tag_node_matrix = np.array([coords_image_list] * 15),
-            threads = 1,
+            video_filename="tests/data/example_ArUco_video.null",
+            video_first_frame=0,
+            video_last_frame=14,
+            aruco_model=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+            aruco_crop_size=200,
+            half_rolling_window_size=7,
+            tag_node_matrix=np.array([coords_image_list] * 15),
+            threads=1,
         )
+
 
 def test_Matching_match():
 
@@ -187,20 +176,17 @@ def test_Matching_match():
     }
 
     # Assign the centroid coords for each tag
-    coords_image_list = [
-        [225, 925, 575, 225, 925],
-        [225, 225, 575, 925, 925]
-    ]
+    coords_image_list = [[225, 925, 575, 225, 925], [225, 225, 575, 925, 925]]
 
     matcher = Matching(
         "tests/data/example_ArUco_video.avi",
         0,
         14,
-        aruco_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
-        aruco_crop_size = 200,
-        half_rolling_window_size = 7,
-        tag_node_matrix = np.array([coords_image_list] * 15),
-        threads = 1,
+        aruco_model=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+        aruco_crop_size=200,
+        half_rolling_window_size=7,
+        tag_node_matrix=np.array([coords_image_list] * 15),
+        threads=1,
     )
 
     # Match the tags for the video
@@ -212,6 +198,7 @@ def test_Matching_match():
     assert len(frame_match_dict[7]) == 5
     assert list(frame_match_dict[7]) == [0, 1, 2, 3, 4]
     assert list(frame_match_dict[7].values()) == [[1], [2], [3], [4], [5]]
+
 
 def test_Matching_match_mpi():
 
@@ -226,20 +213,17 @@ def test_Matching_match_mpi():
     }
 
     # Assign the centroid coords for each tag
-    coords_image_list = [
-        [225, 925, 575, 225, 925],
-        [225, 225, 575, 925, 925]
-    ]
+    coords_image_list = [[225, 925, 575, 225, 925], [225, 225, 575, 925, 925]]
 
     matcher = Matching(
         "tests/data/example_ArUco_video.avi",
         0,
         14,
-        aruco_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
-        aruco_crop_size = 200,
-        half_rolling_window_size = 6,
-        tag_node_matrix = np.array([coords_image_list] * 15),
-        threads = 2,
+        aruco_model=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+        aruco_crop_size=200,
+        half_rolling_window_size=6,
+        tag_node_matrix=np.array([coords_image_list] * 15),
+        threads=2,
     )
 
     # Match the tags for the video
@@ -248,10 +232,9 @@ def test_Matching_match_mpi():
     # Check frames that matched
     assert len(frame_match_dict) == 3
     assert list(frame_match_dict) == [6, 7, 8]
-    
+
     # Check matching results by frame
     for frame in [6, 7, 8]:
         assert len(frame_match_dict[frame]) == 5
         assert list(frame_match_dict[frame]) == [0, 1, 2, 3, 4]
         assert list(frame_match_dict[frame].values()) == [[1], [2], [3], [4], [5]]
-
