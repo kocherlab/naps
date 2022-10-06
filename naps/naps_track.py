@@ -2,12 +2,13 @@
 import argparse
 import logging
 import time
+from collections import defaultdict
 
 import sleap
 
 from naps.aruco import ArUcoModel
 from naps.matching import Matching
-from naps.sleap_utils import load_tracks_from_slp, update_labeled_frames
+from naps.sleap_utils import update_labeled_frames
 
 logger = logging.getLogger("NAPS Logger")
 
@@ -43,7 +44,11 @@ def build_parser():
     )
 
     parser.add_argument(
-        "--tag-node", help="The ArUco tag SLEAP node ID", type=int, required=True
+        "--tag-node-name",
+        help="The ArUco tag SLEAP node name",
+        type=str,
+        required=True,
+        default="tag",
     )
 
     parser.add_argument(
@@ -162,10 +167,17 @@ def main(argv=None):
     # Create a track array from the SLEAP file(s)
     logger.info("Loading predictions...")
     t0 = time.time()
-    locations, node_names = load_tracks_from_slp(args.h5_path)
-    logger.info("Using %s as the tag node.", node_names[args.tag_node])
-    logger.info("Done loading predictions in %s seconds.", time.time() - t0)
-    tag_locations = locations[:, args.tag_node, :, :]
+    # locations, node_names = load_tracks_from_slp(args.h5_path)
+    tag_locations_dict = defaultdict(lambda: defaultdict(tuple))
+    labels = sleap.Labels.load_file(args.slp_path)
+    for lf in labels.labeled_frames:
+        if lf.frame_idx < args.start_frame or lf.frame_idx > args.end_frame:
+            continue
+        for instance in lf.instances:
+            tag_idx = instance.skeleton.node_names.index(args.tag_node_name)
+            track_name = int(instance.track.name.split("_")[-1])
+            # print(f'Frame {lf.frame_idx} track {track_name} has points {instance.numpy()[tag_idx]}')
+            tag_locations_dict[lf.frame_idx][track_name] = instance.numpy()[tag_idx]
 
     # Create an ArUcoModel with the default/specified parameters
     logger.info("Create ArUco model...")
@@ -191,7 +203,7 @@ def main(argv=None):
         aruco_model=aruco_model,
         aruco_crop_size=args.aruco_crop_size,
         half_rolling_window_size=args.half_rolling_window_size,
-        tag_node_matrix=tag_locations,
+        tag_node_dict=tag_locations_dict,
         threads=args.threads,
     )
     matching_dict = matching.match()
@@ -201,12 +213,10 @@ def main(argv=None):
     logger.info("Reconstructing SLEAP file...")
     t0 = time.time()
     # Right now the reconstruction assumes that we each track has a single track ID assigned to it. We'll generalize so that a track can switch IDs over time.
-    resulting_labeled_frames = update_labeled_frames(
+    labels = update_labeled_frames(
         args.slp_path, matching_dict, args.start_frame, args.end_frame
     )
-    new_labels = sleap.Labels(labeled_frames=resulting_labeled_frames)
-    # Temporary workaround to write out a SLEAP Analysis HDF5. These can be imported into SLEAP but aren't the base project format.
-    new_labels.export(args.output_path)
+    labels.save(args.output_path)
     logger.info("Done reconstructing SLEAP file in %s seconds.", time.time() - t0)
 
     logger.info("Complete NAPS runtime: %s", time.time() - t0_total)

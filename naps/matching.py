@@ -21,7 +21,7 @@ class Matching:
         aruco_model: ArUcoModel,
         aruco_crop_size: int,
         half_rolling_window_size: int,
-        tag_node_matrix: np.ndarray,
+        tag_node_dict,
         threads: int,
         min_sleap_score: float = 0.1,
         **kwargs,
@@ -37,7 +37,7 @@ class Matching:
         self.video_last_frame = video_last_frame
 
         # SLEAP arguments
-        self.tag_node_matrix = tag_node_matrix
+        self.tag_node_dict = tag_node_dict
         self.min_sleap_score = min_sleap_score
 
         # Matching arguments
@@ -119,21 +119,24 @@ class Matching:
 
         # Set the current frame of the job
         current_frame = frame_start
+        print(f"Processing frames {frame_start} to {frame_end}")
 
         # Initialize OpenCV, then set the starting frame (0-based)
         video = cv2.VideoCapture(self.video_filename)
         video.set(cv2.CAP_PROP_POS_FRAMES, current_frame)
 
-        # Read in the frame, confirm it was sucessful
+        # Read in the frame, confirm it was successful
         frame = MatchFrame.fromCV2(*video.read())
         while frame and current_frame <= frame_end:
 
             # Just get [x,y] for each
-            tag_locations = self.tag_node_matrix[current_frame, :, :].T
-            tag_locations = [tag_locations[i, :] for i in range(tag_locations.shape[0])]
+            # tag_locations = self.tag_node_matrix[current_frame, :, :].T
+            # tag_locations = [tag_locations[i, :] for i in range(tag_locations.shape[0])]
 
             # Crop and return the ArUco tags
-            frame.cropArUcoWithCoordsArray(tag_locations, self.aruco_crop_size)
+            frame.cropArUcoWithCoordsArray(
+                self.tag_node_dict[current_frame], self.aruco_crop_size
+            )
             job_match_dict[current_frame] = frame.returnArUcoTags(self.aruco_model)
 
             # Advance to the next frame
@@ -166,7 +169,7 @@ class MatchFrame:
 
         return cls(*args, **kwargs)
 
-    def cropArUcoWithCoordsArray(self, coords_array: np.array, crop_size: int):
+    def cropArUcoWithCoordsArray(self, coords_dict, crop_size: int):
         def croppedCoords(coord: float, crop_size: float, coord_max: int):
             """Gets the cropped coordinates for a given single coordinate
 
@@ -181,10 +184,11 @@ class MatchFrame:
             )
 
         # Loop the frame track coordinates
-        for track, coords in enumerate(coords_array):
+        for track, coords in coords_dict.items():
 
             # Skip track if NaN found in coordinates
             if np.isnan(coords).any():
+                self.frame_images[track] = None
                 continue
 
             # Assign the min/max coords for cropping
@@ -209,11 +213,16 @@ class MatchFrame:
         # Loop the frame track images
         for track, frame_image in self.frame_images.items():
 
+            if type(frame_image) == type(None):
+                track_tag_dict[track].append(None)
+                continue
+
             # Detect ArUco tags
             corners, tags, _ = aruco_model.detect(frame_image)
 
             # Skip to next track if no tags were found
             if len(corners) == 0:
+                track_tag_dict[track].append(None)
                 continue
 
             # Iterate through detected tags and append results to a results list

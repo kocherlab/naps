@@ -38,12 +38,13 @@ class CostMatrix:
 
         # Loop the frames in the unmatched matrix
         for frame in range(self.first_frame, self.last_frame + 1):
-
+            # cost_dict = defaultdict(lambda: defaultdict(int))
             # Assign the track/tag combinations for this frame
             track_tag_dict = self.unmatched_dict[frame]
             for track, tag_list in track_tag_dict.items():
                 for tag in tag_list:
-                    cost_dict[track][tag] -= 1
+                    if tag != None:
+                        cost_dict[track][tag] -= 1
 
             # Assign the rolling window frame
             match_frame = frame - self.half_rolling_window_size
@@ -63,12 +64,15 @@ class CostMatrix:
                 track_tag_dict = self.unmatched_dict[start_of_window - 1]
                 for track, tag_list in track_tag_dict.items():
                     for tag in tag_list:
-                        cost_dict[track][tag] += 1
-                        if cost_dict[track][tag] == 0:
-                            del cost_dict[track][tag]
+                        if tag != -1:
+                            cost_dict[track][tag] += 1
+                            if cost_dict[track][tag] == 0:
+                                del cost_dict[track][tag]
 
             # Create a dataframe of the matrix
             cost_dataframe = pd.DataFrame.from_dict(cost_dict).fillna(0)
+            cost_dataframe = cost_dataframe.loc[~(cost_dataframe == 0).all(axis=1)]
+            cost_dataframe = cost_dataframe.loc[:, ~(cost_dataframe == 0).all(axis=0)]
 
             # Store the assignments
             for track_index, tag_index in self.assignment_method(cost_dataframe.values):
@@ -76,11 +80,17 @@ class CostMatrix:
                     cost_dataframe.columns[track_index]
                 ] = cost_dataframe.index[tag_index]
 
+        for frame in range(self.first_frame + 1, self.last_frame + 1):
+            for track, tag in matched_dict[frame - 1].items():
+                if (
+                    track in self.unmatched_dict[frame].keys()
+                    and tag not in matched_dict[frame].values()
+                ):
+                    matched_dict[frame][track] = matched_dict[frame - 1][track]
         return matched_dict
 
     @staticmethod
     def _linearAssignment(value_array):
-
         # Solve the linear assignment problem using Jonker-Volgenant algorithm
         tag_indices, track_indices = linear_sum_assignment(value_array)
 

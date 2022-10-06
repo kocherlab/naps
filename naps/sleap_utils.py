@@ -6,14 +6,13 @@
 #!/usr/bin/env python
 import itertools
 import logging
-import operator
 import pathlib
 from typing import List, Tuple
 
+import attr
 import h5py
 import numpy as np
 import sleap
-from tqdm import tqdm
 
 logger = logging.getLogger(__name__)
 
@@ -154,7 +153,7 @@ def update_labeled_frames(
         List[sleap.LabeledFrame]: List of labeled frames with updated tracks.
     """
     labels = sleap.load_file(slp_path)
-    frames = sorted(labels.labeled_frames, key=operator.attrgetter("frame_idx"))
+    # frames = sorted(labels.labeled_frames, key=operator.attrgetter("frame_idx"))
 
     # Matching dict is of the form [Frame][Track][Tag]
     # List of lists of tracks
@@ -164,28 +163,19 @@ def update_labeled_frames(
     tags = set(itertools.chain(*tags))
     logger.info("Total tags: %s", len(tags))
     new_tracks = {tag: sleap.Track(spawned_on=0, name=f"track_{tag}") for tag in tags}
-
     new_lfs = []
-    for lf in tqdm(frames):
-        # Skips frames outside matching window
-        if lf.frame_idx < first_frame_idx or lf.frame_idx > last_frame_idx:
-            continue
+
+    # Run tracking on every frame
+    for lf in labels.labeled_frames[first_frame_idx : last_frame_idx + 1]:
+        tracked_instances = []
         for inst in lf.instances:
-            # Confirm frame was assigned matches, could be used above, likely slower
-            if lf.frame_idx not in matching_dict:
-                for inst in lf.instances:
-                    inst.track = None
+            try:
+                inst_name = int(inst.track.name.split("_")[-1])
+                track = matching_dict[lf.frame_idx][inst_name]
+                tracked_instances.append(attr.evolve(inst, track=new_tracks[track]))
+            except:
+                tracked_instances.append(attr.evolve(inst, track=None))
                 continue
-
-            # Confirm the instance was assigned a tag
-            inst_name = int(inst.track.name.split("_")[-1])
-            inst.track = None
-            if inst_name not in matching_dict[lf.frame_idx] or inst_name == "":
-                continue
-            inst.track = new_tracks[matching_dict[lf.frame_idx][inst_name]]
-
-        new_lf = sleap.LabeledFrame(
-            frame_idx=lf.frame_idx, video=lf.video, instances=lf.instances
-        )
-        new_lfs.append(new_lf)
-    return new_lfs
+        new_lfs.append(attr.evolve(lf, instances=tracked_instances))
+    tracked_labels = sleap.Labels(new_lfs)
+    return tracked_labels

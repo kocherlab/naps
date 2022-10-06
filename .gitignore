@@ -10,3 +10,6 @@ dist
 
 # Sphinx documentation
 docs/_build/
+
+# Other
+models/
