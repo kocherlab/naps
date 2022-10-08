@@ -38,5 +38,5 @@ setup(
     entry_points={
         "console_scripts": ["naps-track=naps.naps_track:main"],
     },
-    python_requires=">=3.7",
+    python_requires=">=3.6",
 )
