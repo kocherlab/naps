@@ -21,7 +21,7 @@ def test_CostMatrix():
 
     # Confirm the contents of the assignment dictionary
     assert 2 in assignment_dict
-    assert list(assignment_dict) == [2, 3]
+    assert sorted(list(assignment_dict)) == [0, 1, 2, 3, 4, 5]
     assert list(assignment_dict[2]) == ["b", "a", "c"]
     assert list(assignment_dict[3]) == ["b", "a", "c"]
 
