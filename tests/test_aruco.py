@@ -44,7 +44,7 @@ def test_ArUcoModel_tag_sets(tag_set):
     # Confirm the model loads without error for each tag set
     try:
         test_model = ArUcoModel.withTagSet(tag_set, **param_dict)
-        test_model.buildModel()
+        test_model.build()
     except Exception as exc:
         assert False, f"Tag set {tag_set} raised an exception {exc}"
 
@@ -62,7 +62,7 @@ def test_ArUcoModel_tag_set_dict_error():
 
     with pytest.raises(Exception) as e_info:
         test_model = ArUcoModel.withTagSet("DICT_4X4_FAIL", **param_dict)
-        test_model.buildModel()
+        test_model.build()
 
 
 def test_ArUcoModel_no_tag_set_error():
@@ -107,7 +107,7 @@ def test_ArUcoModel_params_type_error(param, value):
 
     with pytest.raises(Exception) as e_info:
         test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
-        test_model.buildModel()
+        test_model.build()
 
 
 @pytest.mark.parametrize(
@@ -134,7 +134,7 @@ def test_ArUcoModel_detect(coords, tag):
     # Confirm the model loads without error
     try:
         test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
-        test_model.buildModel()
+        test_model.build()
     except Exception as exc:
         assert False, f"Tag set DICT_4X4_100 raised an exception {exc}"
 
@@ -145,5 +145,5 @@ def test_ArUcoModel_detect(coords, tag):
     ]
 
     # Detect ArUco tags
-    _, tags, _ = test_model.detect(tag_image)
-    assert tags[0][0] == tag
+    tags = test_model.detect(tag_image)
+    assert tags[0] == tag

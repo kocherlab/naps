@@ -47,7 +47,7 @@ def test_MatchFrame_error():
         MatchFrame.fromCV2(aruco_image)
 
 
-def test_MatchFrame_cropArUcoWithCoordsArray():
+def test_MatchFrame_cropMarkerWithCoordsArray():
 
     # Assign the image file
     aruco_image_file = "tests/data/example_ArUco_image.jpg"
@@ -57,7 +57,7 @@ def test_MatchFrame_cropArUcoWithCoordsArray():
     coords_image_dict = {0:(225, 225), 1:(925, 225), 2:(575, 575), 3:(225, 925), 4:(925, 925)}
 
     match_frame = MatchFrame.fromCV2(True, aruco_image)
-    match_frame.cropArUcoWithCoordsArray(coords_image_dict, 200)
+    match_frame.cropMarkerWithCoordsArray(coords_image_dict, 200)
 
     # Confirm the cropped images were created
     assert len(match_frame.frame_images) == 5
@@ -68,7 +68,7 @@ def test_MatchFrame_cropArUcoWithCoordsArray():
         assert match_image.shape == (400, 400)
 
 
-def test_MatchFrame_returnArUcoTags():
+def test_MatchFrame_returnMarkerTags():
 
     # Assign the parameters for the ArUcoModel
     param_dict = {
@@ -82,7 +82,6 @@ def test_MatchFrame_returnArUcoTags():
 
     # Build the ArUcoModel
     test_model = ArUcoModel.withTagSet("DICT_4X4_100", **param_dict)
-    test_model.buildModel()
 
     # Assign the image file
     aruco_image_file = "tests/data/example_ArUco_image.jpg"
@@ -92,8 +91,8 @@ def test_MatchFrame_returnArUcoTags():
     coords_image_dict = {0:(225, 225), 1:(925, 225), 2:(575, 575), 3:(225, 925), 4:(925, 925)}
 
     match_frame = MatchFrame.fromCV2(True, aruco_image)
-    match_frame.cropArUcoWithCoordsArray(coords_image_dict, 200)
-    match_dict = match_frame.returnArUcoTags(test_model)
+    match_frame.cropMarkerWithCoordsArray(coords_image_dict, 200)
+    match_dict = match_frame.returnMarkerTags(test_model.detect)
 
     # Create the matching results
     assert len(match_dict) == 5
@@ -122,7 +121,7 @@ def test_Matching():
             "tests/data/example_ArUco_video.avi",
             0,
             14,
-            aruco_model=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+            marker_detector=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict).detect,
             aruco_crop_size=200,
             half_rolling_window_size=7,
             tag_node_dict={n:coords_image_dict for n in range(15)},
@@ -155,7 +154,7 @@ def test_Matching_error():
             video_filename="tests/data/example_ArUco_video.null",
             video_first_frame=0,
             video_last_frame=14,
-            aruco_model=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+            marker_detector=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict).detect,
             aruco_crop_size=200,
             half_rolling_window_size=7,
             tag_node_dict={n:coords_image_dict for n in range(15)},
@@ -182,7 +181,7 @@ def test_Matching_match():
         "tests/data/example_ArUco_video.avi",
         0,
         14,
-        aruco_model=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict),
+        marker_detector=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict).detect,
         aruco_crop_size=200,
         half_rolling_window_size=7,
         tag_node_dict={n:coords_image_dict for n in range(15)},

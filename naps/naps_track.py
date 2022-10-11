@@ -200,7 +200,7 @@ def main(argv=None):
         args.video_path,
         args.start_frame,
         args.end_frame,
-        aruco_model=aruco_model,
+        marker_detector=aruco_model.detect,
         aruco_crop_size=args.aruco_crop_size,
         half_rolling_window_size=args.half_rolling_window_size,
         tag_node_dict=tag_locations_dict,

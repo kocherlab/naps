@@ -2,13 +2,12 @@
 import math
 import os
 from collections import defaultdict
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, Callable
 
 import cv2
 import numpy as np
 from ray.util.multiprocessing import Pool
 
-from naps.aruco import ArUcoModel
 from naps.cost_matrix import CostMatrix
 
 
@@ -18,7 +17,7 @@ class Matching:
         video_filename: str,
         video_first_frame: int,
         video_last_frame: int,
-        aruco_model: ArUcoModel,
+        marker_detector: Callable,
         aruco_crop_size: int,
         half_rolling_window_size: int,
         tag_node_dict,
@@ -43,7 +42,7 @@ class Matching:
         # Matching arguments
         self.half_rolling_window_size = half_rolling_window_size
         self.aruco_crop_size = aruco_crop_size
-        self.aruco_model = aruco_model
+        self.marker_detector = marker_detector
 
         # General arguments
         self.threads = threads
@@ -111,8 +110,6 @@ class Matching:
         Returns:
             defaultdict(lambda: defaultdict(str)): Dictionary of matching results with the form dictionary[frame][track] = tag.
         """
-        # Build the aruco model
-        self.aruco_model.buildModel()
 
         # Create a dict to store the matches for this job
         job_match_dict = {}
@@ -134,10 +131,10 @@ class Matching:
             # tag_locations = [tag_locations[i, :] for i in range(tag_locations.shape[0])]
 
             # Crop and return the ArUco tags
-            frame.cropArUcoWithCoordsArray(
+            frame.cropMarkerWithCoordsArray(
                 self.tag_node_dict[current_frame], self.aruco_crop_size
             )
-            job_match_dict[current_frame] = frame.returnArUcoTags(self.aruco_model)
+            job_match_dict[current_frame] = frame.returnMarkerTags(self.marker_detector)
 
             # Advance to the next frame
             frame = MatchFrame.fromCV2(*video.read())
@@ -169,7 +166,7 @@ class MatchFrame:
 
         return cls(*args, **kwargs)
 
-    def cropArUcoWithCoordsArray(self, coords_dict, crop_size: int):
+    def cropMarkerWithCoordsArray(self, coords_dict, crop_size: int):
         def croppedCoords(coord: float, crop_size: float, coord_max: int):
             """Gets the cropped coordinates for a given single coordinate
 
@@ -198,11 +195,11 @@ class MatchFrame:
             # Assign and store the cropped track image
             self.frame_images[track] = self.frame[y_min:y_max, x_min:x_max, 0]
 
-    def returnArUcoTags(self, aruco_model: ArUcoModel):
-        """Detect ArUco tags using
+    def returnMarkerTags(self, marker_detect: Callable):
+        """Detect Marker tags using
 
         Args:
-            aruco_model (ArUcoModel): ArUco model to use for matching.
+            marker_detect (Callable): Marker model detection function
 
         Returns:
             defaultdict(list): Dictionary of matching results for a single frame.
@@ -217,8 +214,12 @@ class MatchFrame:
                 track_tag_dict[track].append(None)
                 continue
 
+            # Assign model markers
+            track_tag_dict[track].extend(marker_detect(frame_image))
+
+            '''
             # Detect ArUco tags
-            corners, tags, _ = aruco_model.detect(frame_image)
+            corners, tags, _ = marker_model.detect(frame_image)
 
             # Skip to next track if no tags were found
             if len(corners) == 0:
@@ -228,5 +229,6 @@ class MatchFrame:
             # Iterate through detected tags and append results to a results list
             for _, marker_tag in zip(corners, tags):
                 track_tag_dict[track].append(marker_tag[0])
+            '''
 
         return track_tag_dict

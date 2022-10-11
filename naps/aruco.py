@@ -36,12 +36,13 @@ class ArUcoModel:
         """
         self.aruco_dict = None
         self.aruco_params = None
+        self.model_built = False
 
     @classmethod
     def withTagSet(cls, tag_set, **kwargs):
         return cls(tag_set, **kwargs)
 
-    def buildModel(self):
+    def build(self):
 
         # Assign the aruco dict
         self.aruco_dict = self._assignArucoDict(self.tag_set)
@@ -77,11 +78,22 @@ class ArUcoModel:
         # If false positives are a problem, lower this parameter.
         self.aruco_params.errorCorrectionRate = self.errorCorrectionRate
 
+        # Indicate the model has been built
+        self.model_built = True
+
     def detect(self, img):
 
-        return cv2.aruco.detectMarkers(
-            img, self.aruco_dict, parameters=self.aruco_params
-        )
+        # Build the model if needed
+        if not self.model_built: self.build()
+
+        # Detect ArUco tag(s) within the image
+        corners, tags, _ = cv2.aruco.detectMarkers(img, self.aruco_dict, parameters=self.aruco_params)
+
+        # Return None if no ArUco tag was found
+        if len(corners) == 0: return [None]
+
+        # Return detected ArUco tags
+        return [marker_tag[0] for _, marker_tag in zip(corners, tags)]
 
     def _assignArucoDict(self, tag_set):
 
