@@ -126,10 +126,6 @@ class Matching:
         frame = MatchFrame.fromCV2(*video.read())
         while frame and current_frame <= frame_end:
 
-            # Just get [x,y] for each
-            # tag_locations = self.tag_node_matrix[current_frame, :, :].T
-            # tag_locations = [tag_locations[i, :] for i in range(tag_locations.shape[0])]
-
             # Crop and return the ArUco tags
             frame.cropMarkerWithCoordsArray(
                 self.tag_node_dict[current_frame], self.aruco_crop_size
@@ -216,19 +212,5 @@ class MatchFrame:
 
             # Assign model markers
             track_tag_dict[track].extend(marker_detect(frame_image))
-
-            '''
-            # Detect ArUco tags
-            corners, tags, _ = marker_model.detect(frame_image)
-
-            # Skip to next track if no tags were found
-            if len(corners) == 0:
-                track_tag_dict[track].append(None)
-                continue
-
-            # Iterate through detected tags and append results to a results list
-            for _, marker_tag in zip(corners, tags):
-                track_tag_dict[track].append(marker_tag[0])
-            '''
 
         return track_tag_dict
