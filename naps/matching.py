@@ -12,6 +12,20 @@ from naps.cost_matrix import CostMatrix
 
 
 class Matching:
+    """Matching pipeline.
+
+    Attributes:
+        video_filename (str): Matching video filename (i.e. path).
+        video_first_frame (str): Frame to start matching.
+        video_last_frame (str): Frame to end matching.
+        marker_detector (Callable): Function used to detect/assign markers.
+        aruco_crop_size (int): Crop size used for marker detection.
+        half_rolling_window_size (int): Window size (upstream/downstream) used by the cost matrix.
+        tag_node_dict (dict): Dictionary of frames, tracks, and node coordinates.
+        threads (int): The number of CPU threads to use.
+        min_sleap_score (float): Minimum sleap score required for matching. Should this be removed?
+    """
+
     def __init__(
         self,
         video_filename: str,
@@ -20,7 +34,7 @@ class Matching:
         marker_detector: Callable,
         aruco_crop_size: int,
         half_rolling_window_size: int,
-        tag_node_dict,
+        tag_node_dict: dict,
         threads: int,
         min_sleap_score: float = 0.1,
         **kwargs,
@@ -51,7 +65,8 @@ class Matching:
         self.matching_dict = {}
 
     def match(self):
-        """Perform matching"""
+        """Perform matching based on the number of threads and half_rolling_window_size"""
+
 
         def framesPerThread() -> Iterable[Tuple[int, int]]:
             """Yield equal size windows based on the number of threads"""
@@ -101,7 +116,7 @@ class Matching:
     def _matchJob(
         self, frame_start: int, frame_end: int
     ) -> defaultdict(lambda: defaultdict(str)):
-        """Performs a single matching job
+        """Performs a single matching job between frame_start and frame_end.
 
         Args:
             frame_start (int): Frame to start at
@@ -145,7 +160,14 @@ class Matching:
 
 
 class MatchFrame:
-    """Class to hold the frame and associated data"""
+    """Class used to assign markers for a frame and associated data.
+
+    Attributes:
+        frame (np.ndarray): Value array of the frame image.
+        frame_exists (bool): Boolean indicating if the frame was read correctly.
+        frame_images (dict): Dictionary to store value arrays for each marker image.
+
+    """
 
     def __init__(self, frame_exists: bool, frame: np.ndarray, *args, **kwargs):
 
@@ -155,21 +177,47 @@ class MatchFrame:
         self.frame_images = {}
 
     def __nonzero__(self):
+        """Replaces nonzero for the class
+
+        Returns:
+            bool: Boolean indicating if the frame was read correctly.
+        """
+
         return self.frame_exists
 
     @classmethod
     def fromCV2(cls, *args, **kwargs):
+        """Class methods to create a MatchFrame from CV2.read()
+
+        Args:
+            bool: Boolean indicating if the frame was read correctly.
+            np.ndarray: Value array of the frame image.
+
+        Returns:
+            MatchFrame: A MatchFrame object.
+        """
 
         return cls(*args, **kwargs)
 
     def cropMarkerWithCoordsArray(self, coords_dict, crop_size: int):
+        """Creates cropped images for each marker in the coords_dict.
+
+        Args:
+            coords_dict (dict): Dictionary of marker coordinates to crop for each track.
+            crop_size (float): Crop size.
+
+        """
+
         def croppedCoords(coord: float, crop_size: float, coord_max: int):
-            """Gets the cropped coordinates for a given single coordinate
+            """Gets the cropped coordinates for the given single coordinate
 
             Args:
                 coord (float): Coordinate to get crop range.
                 crop_size (float): Crop size.
                 coord_max (int): Maximum coordinate possible before leaving frame.
+
+            Returns:
+                tuple(int): The minimum and maximum coordinates for the given single coordinate 
 
             """
             return np.maximum(int(coord) - crop_size, 0), np.minimum(
@@ -192,10 +240,11 @@ class MatchFrame:
             self.frame_images[track] = self.frame[y_min:y_max, x_min:x_max, 0]
 
     def returnMarkerTags(self, marker_detect: Callable):
-        """Detect Marker tags using
+        """Detect marker tags using the specified marker_detect function
 
         Args:
-            marker_detect (Callable): Marker model detection function
+            marker_detect (Callable): Marker detector function. Function is expected
+            to return a list of marker assignments.
 
         Returns:
             defaultdict(list): Dictionary of matching results for a single frame.
@@ -204,13 +253,14 @@ class MatchFrame:
         track_tag_dict = defaultdict(list)
 
         # Loop the frame track images
-        for track, frame_image in self.frame_images.items():
+        for track, track_image in self.frame_images.items():
 
-            if type(frame_image) == type(None):
+            # Store None if no image was found
+            if type(track_image) == type(None):
                 track_tag_dict[track].append(None)
                 continue
 
-            # Assign model markers
-            track_tag_dict[track].extend(marker_detect(frame_image))
+            # Assign the marker using the detector function
+            track_tag_dict[track].extend(marker_detect(track_image))
 
         return track_tag_dict
