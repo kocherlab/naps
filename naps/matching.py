@@ -65,7 +65,7 @@ class Matching:
         self.matching_dict = {}
 
     def match(self):
-        """Perform matching based on the number of threads and half_rolling_window_size"""
+        """Perform matching based on the number of threads and half_rolling_window_size."""
 
 
         def framesPerThread() -> Iterable[Tuple[int, int]]:
