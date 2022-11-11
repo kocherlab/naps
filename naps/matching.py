@@ -35,7 +35,6 @@ class Matching:
         aruco_crop_size: int,
         half_rolling_window_size: int,
         tag_node_dict: dict,
-        threads: int,
         min_sleap_score: float = 0.1,
         **kwargs,
     ):
@@ -58,69 +57,8 @@ class Matching:
         self.aruco_crop_size = aruco_crop_size
         self.marker_detector = marker_detector
 
-        # General arguments
-        self.threads = threads
-
-        # Output
-        self.matching_dict = {}
-
-    def match(self):
-        """Perform matching based on the number of threads and half_rolling_window_size."""
-
-
-        def framesPerThread() -> Iterable[Tuple[int, int]]:
-            """Yield equal size windows based on the number of threads"""
-
-            # Adjust the start and end to account for the window
-            rolling_window_start = (
-                self.video_first_frame + self.half_rolling_window_size
-            )
-            rolling_window_end = (
-                self.video_last_frame - self.half_rolling_window_size + 1
-            )
-
-            # Assign the frames per thread
-            frames_per_thread = math.ceil(
-                (rolling_window_end - rolling_window_start) / self.threads
-            )
-
-            # Return windows of equal size for each thread
-            for frame in range(
-                rolling_window_start, rolling_window_end, frames_per_thread
-            ):
-                frame_start = max(
-                    [self.video_first_frame, frame - self.half_rolling_window_size]
-                )
-                frame_end = min(
-                    [
-                        self.video_last_frame,
-                        frame + frames_per_thread + self.half_rolling_window_size - 1,
-                    ]
-                )
-                yield frame_start, frame_end
-
-        # Run the multiprocessing job, then convert the resulting list into a dict
-        if self.threads > 1:
-            with Pool(processes=self.threads) as matching_pool:
-                results_list = matching_pool.starmap(self._matchJob, framesPerThread())
-                for results_dict in results_list:
-                    self.matching_dict.update(results_dict)
-
-        # Run the job as normal
-        else:
-            for frame_start, frame_end in framesPerThread():
-                self.matching_dict.update(self._matchJob(frame_start, frame_end))
-
-        return self.matching_dict
-
-    def _matchJob(
-        self, frame_start: int, frame_end: int
-    ) -> defaultdict(lambda: defaultdict(str)):
-        """Performs a single matching job between frame_start and frame_end.
-
-        Args:
-            frame_start (int): Frame to start at
-            frame_end (int): Frame to end at
+    def match(self) -> defaultdict(lambda: defaultdict(str)):
+        """Performs matching.
 
         Returns:
             defaultdict(lambda: defaultdict(str)): Dictionary of matching results with the form dictionary[frame][track] = tag.
@@ -130,8 +68,8 @@ class Matching:
         job_match_dict = {}
 
         # Set the current frame of the job
-        current_frame = frame_start
-        print(f"Processing frames {frame_start} to {frame_end}")
+        current_frame = self.video_first_frame
+        print(f"Processing frames {self.video_first_frame} to {self.video_last_frame}")
 
         # Initialize OpenCV, then set the starting frame (0-based)
         video = cv2.VideoCapture(self.video_filename)
@@ -139,7 +77,7 @@ class Matching:
 
         # Read in the frame, confirm it was successful
         frame = MatchFrame.fromCV2(*video.read())
-        while frame and current_frame <= frame_end:
+        while frame and current_frame <= self.video_last_frame:
 
             # Crop and return the ArUco tags
             frame.cropMarkerWithCoordsArray(
@@ -153,11 +91,9 @@ class Matching:
 
         # Create the cost matrix and assign the track/tag pairs for each frame
         job_cost_matrix = CostMatrix.fromDict(
-            job_match_dict, frame_start, frame_end, self.half_rolling_window_size
+            job_match_dict, self.video_first_frame, self.video_last_frame, self.half_rolling_window_size
         )
-        job_track_tag_pair_dict = job_cost_matrix.assignTrackTagPairs()
-        return job_track_tag_pair_dict
-
+        return job_cost_matrix.assignTrackTagPairs()
 
 class MatchFrame:
     """Class used to assign markers for a frame and associated data.

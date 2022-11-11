@@ -141,13 +141,6 @@ def build_parser():
         default="output.analysis.h5",
     )
 
-    parser.add_argument(
-        "--threads",
-        help="Specifies the number of threads to use in the analysis",
-        type=int,
-        default=1,
-    )
-
     return parser
 
 
@@ -204,7 +197,6 @@ def main(argv=None):
         aruco_crop_size=args.aruco_crop_size,
         half_rolling_window_size=args.half_rolling_window_size,
         tag_node_dict=tag_locations_dict,
-        threads=args.threads,
     )
     matching_dict = matching.match()
     logger.info("Done matching in %s seconds.", time.time() - t0)
