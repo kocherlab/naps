@@ -7,4 +7,3 @@ opencv-contrib-python-headless
 pytest
 pytest-cov
 tqdm
-ray
