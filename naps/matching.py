@@ -6,7 +6,6 @@ from typing import Iterable, Tuple, Callable
 
 import cv2
 import numpy as np
-from ray.util.multiprocessing import Pool
 
 from naps.cost_matrix import CostMatrix
 
