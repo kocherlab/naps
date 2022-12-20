@@ -8,6 +8,7 @@ import numpy as np
 import naps.naps_track as naps_track
 from naps.sleap_utils import load_tracks_from_slp
 
+
 def test_naps_track():
 
     # Create a temporary directory
@@ -25,7 +26,7 @@ def test_naps_track():
         "--video-path",
         "tests/data/example.mp4",
         "--tag-node-name",
-        'Tag',
+        "Tag",
         "--start-frame",
         "0",
         "--end-frame",
@@ -34,7 +35,6 @@ def test_naps_track():
         "DICT_4X4_100",
         "--output-path",
         test_output,
-
     ]
 
     # Run naps-track with the argument list
@@ -42,11 +42,13 @@ def test_naps_track():
 
     # Get the contents of the file, since we cannot directly compare the files
     test_locations, test_node_names = load_tracks_from_slp(test_output)
-    example_locations, example_node_names = load_tracks_from_slp("tests/data/example_naps_track_output.h5.slp")
+    example_locations, example_node_names = load_tracks_from_slp(
+        "tests/data/example_naps_track_output.h5.slp"
+    )
 
     # Check if we get the expected output
-    assert np.array_equal(test_locations, example_locations, equal_nan = True)
+    assert np.array_equal(test_locations, example_locations, equal_nan=True)
     assert test_node_names == example_node_names
 
     # Remove the temporary directory
-    shutil.rmtree(test_dir)   
+    shutil.rmtree(test_dir)

@@ -84,13 +84,17 @@ class ArUcoModel:
     def detect(self, img):
 
         # Build the model if needed
-        if not self.model_built: self.build()
+        if not self.model_built:
+            self.build()
 
         # Detect ArUco tag(s) within the image
-        corners, tags, _ = cv2.aruco.detectMarkers(img, self.aruco_dict, parameters=self.aruco_params)
+        corners, tags, _ = cv2.aruco.detectMarkers(
+            img, self.aruco_dict, parameters=self.aruco_params
+        )
 
         # Return None if no ArUco tag was found
-        if len(corners) == 0: return [None]
+        if len(corners) == 0:
+            return [None]
 
         # Return detected ArUco tags
         return [marker_tag[0] for _, marker_tag in zip(corners, tags)]

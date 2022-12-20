@@ -2,7 +2,7 @@
 import math
 import os
 from collections import defaultdict
-from typing import Iterable, Tuple, Callable
+from typing import Callable, Iterable, Tuple
 
 import cv2
 import numpy as np
@@ -90,9 +90,13 @@ class Matching:
 
         # Create the cost matrix and assign the track/tag pairs for each frame
         job_cost_matrix = CostMatrix.fromDict(
-            job_match_dict, self.video_first_frame, self.video_last_frame, self.half_rolling_window_size
+            job_match_dict,
+            self.video_first_frame,
+            self.video_last_frame,
+            self.half_rolling_window_size,
         )
         return job_cost_matrix.assignTrackTagPairs()
+
 
 class MatchFrame:
     """Class used to assign markers for a frame and associated data.
@@ -152,7 +156,7 @@ class MatchFrame:
                 coord_max (int): Maximum coordinate possible before leaving frame.
 
             Returns:
-                tuple(int): The minimum and maximum coordinates for the given single coordinate 
+                tuple(int): The minimum and maximum coordinates for the given single coordinate
 
             """
             return np.maximum(int(coord) - crop_size, 0), np.minimum(

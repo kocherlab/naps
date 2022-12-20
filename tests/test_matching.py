@@ -54,7 +54,13 @@ def test_MatchFrame_cropMarkerWithCoordsArray():
     aruco_image = cv2.imread(aruco_image_file)
 
     # Assign the centroid coords for each tag
-    coords_image_dict = {0:(225, 225), 1:(925, 225), 2:(575, 575), 3:(225, 925), 4:(925, 925)}
+    coords_image_dict = {
+        0: (225, 225),
+        1: (925, 225),
+        2: (575, 575),
+        3: (225, 925),
+        4: (925, 925),
+    }
 
     match_frame = MatchFrame.fromCV2(True, aruco_image)
     match_frame.cropMarkerWithCoordsArray(coords_image_dict, 200)
@@ -88,7 +94,13 @@ def test_MatchFrame_returnMarkerTags():
     aruco_image = cv2.imread(aruco_image_file)
 
     # Assign the centroid coords for each tag
-    coords_image_dict = {0:(225, 225), 1:(925, 225), 2:(575, 575), 3:(225, 925), 4:(925, 925)}
+    coords_image_dict = {
+        0: (225, 225),
+        1: (925, 225),
+        2: (575, 575),
+        3: (225, 925),
+        4: (925, 925),
+    }
 
     match_frame = MatchFrame.fromCV2(True, aruco_image)
     match_frame.cropMarkerWithCoordsArray(coords_image_dict, 200)
@@ -113,7 +125,13 @@ def test_Matching():
     }
 
     # Assign the centroid coords for each tag
-    coords_image_dict = {0:(225, 225), 1:(925, 225), 2:(575, 575), 3:(225, 925), 4:(925, 925)}
+    coords_image_dict = {
+        0: (225, 225),
+        1: (925, 225),
+        2: (575, 575),
+        3: (225, 925),
+        4: (925, 925),
+    }
 
     # Confirm the model loads without error
     try:
@@ -124,7 +142,7 @@ def test_Matching():
             marker_detector=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict).detect,
             aruco_crop_size=200,
             half_rolling_window_size=7,
-            tag_node_dict={n:coords_image_dict for n in range(15)},
+            tag_node_dict={n: coords_image_dict for n in range(15)},
         )
     except Exception as exc:
         assert False, exc
@@ -143,7 +161,13 @@ def test_Matching_error():
     }
 
     # Assign the centroid coords for each tag
-    coords_image_dict = {0:(225, 225), 1:(925, 225), 2:(575, 575), 3:(225, 925), 4:(925, 925)}
+    coords_image_dict = {
+        0: (225, 225),
+        1: (925, 225),
+        2: (575, 575),
+        3: (225, 925),
+        4: (925, 925),
+    }
 
     with pytest.raises(Exception) as e_info:
         Matching()
@@ -156,7 +180,7 @@ def test_Matching_error():
             marker_detector=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict).detect,
             aruco_crop_size=200,
             half_rolling_window_size=7,
-            tag_node_dict={n:coords_image_dict for n in range(15)},
+            tag_node_dict={n: coords_image_dict for n in range(15)},
         )
 
 
@@ -173,7 +197,13 @@ def test_Matching_match():
     }
 
     # Assign the centroid coords for each tag
-    coords_image_dict = {0:(225, 225), 1:(925, 225), 2:(575, 575), 3:(225, 925), 4:(925, 925)}
+    coords_image_dict = {
+        0: (225, 225),
+        1: (925, 225),
+        2: (575, 575),
+        3: (225, 925),
+        4: (925, 925),
+    }
 
     matcher = Matching(
         "tests/data/example_ArUco_video.avi",
@@ -182,7 +212,7 @@ def test_Matching_match():
         marker_detector=ArUcoModel.withTagSet("DICT_4X4_100", **param_dict).detect,
         aruco_crop_size=200,
         half_rolling_window_size=7,
-        tag_node_dict={n:coords_image_dict for n in range(15)},
+        tag_node_dict={n: coords_image_dict for n in range(15)},
     )
 
     # Match the tags for the video

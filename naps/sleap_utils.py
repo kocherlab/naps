@@ -162,7 +162,9 @@ def update_labeled_frames(
     # Set of all tags
     tags = set(itertools.chain(*tags))
     logger.info("Total tags: %s", len(tags))
-    new_tracks = {tag: sleap.Track(spawned_on=0, name=f"ArUcoTag#{tag}") for tag in tags}
+    new_tracks = {
+        tag: sleap.Track(spawned_on=0, name=f"ArUcoTag#{tag}") for tag in tags
+    }
     new_lfs = []
 
     # Run tracking on every frame
