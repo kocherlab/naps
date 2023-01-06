@@ -38,12 +38,12 @@ class CostMatrix:
 
         # Loop the frames in the unmatched matrix
         for frame in range(self.first_frame, self.last_frame + 1):
-            
+
             # Assign the track/tag combinations for this frame
             track_tag_dict = self.unmatched_dict[frame]
             for track, tag_list in track_tag_dict.items():
                 for tag in tag_list:
-                    if tag != None:
+                    if tag is not None:
                         cost_dict[track][tag] -= 1
 
             # Assign the rolling window frame

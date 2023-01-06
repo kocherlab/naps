@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-import math
 import os
 from collections import defaultdict
-from typing import Callable, Iterable, Tuple
+from typing import Callable
 
 import cv2
 import numpy as np
@@ -195,7 +194,7 @@ class MatchFrame:
         for track, track_image in self.frame_images.items():
 
             # Store None if no image was found
-            if type(track_image) == type(None):
+            if track_image is None:
                 track_tag_dict[track].append(None)
                 continue
 

@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 import pytest
 
 from naps.aruco import ArUcoModel

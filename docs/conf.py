@@ -16,12 +16,13 @@ import os
 import sys
 
 import docs.utils
+import naps
 
 sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
-import naps
+
 
 project = "NAPS Documentation"
 copyright = naps.__copyright__
@@ -79,6 +80,7 @@ exclude_patterns = ["_build", "build", "_templates", "Thumbs.db", ".DS_Store"]
 pygments_style = "sphinx"
 pygments_dark_style = "monokai"
 
+
 # Autosummary linkcode resolution
 # https://www.sphinx-doc.org/en/master/usage/extensions/linkcode.html
 def linkcode_resolve(domain, info):
@@ -95,9 +97,9 @@ def linkcode_resolve(domain, info):
         if filename is None:
             return None
         return f"https://github.com/kocherlab/naps/blob/{release}/{filename}"
-    except:
+    except Exception as e:
         print(info)
-        raise
+        raise e
 
 
 autosummary_generate = True

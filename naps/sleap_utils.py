@@ -3,7 +3,7 @@
     sleap_utils.py: General helper functions for interfacing with SLEAP
     -------------------------------------------------------------------
 """
-#!/usr/bin/env python
+
 import itertools
 import logging
 import pathlib
@@ -15,6 +15,7 @@ import numpy as np
 import sleap
 
 logger = logging.getLogger(__name__)
+
 
 # Pulled from SLEAP's codebase
 def get_location_matrix(
@@ -38,9 +39,9 @@ def get_location_matrix(
     try:
         if video is None:
             video = labels.videos[0]
-    except IndexError:
+    except IndexError as e:
         print("There are no videos in this project. No occupancy matrix to return.")
-        return
+        raise e
     labeled_frames = labels.get(video)
 
     frame_idxs = [lf.frame_idx for lf in labeled_frames]
@@ -52,9 +53,9 @@ def get_location_matrix(
         frame_count = (
             frame_idxs[-1] - first_frame_idx + 1
         )  # count should include unlabeled frames
-    except IndexError:
+    except IndexError as e:
         print(f"No labeled frames in {video.filename}. No occupancy matrix to return.")
-        return
+        raise e
 
     # Desired MATLAB format:
     # "tracks"              frames * nodes * 2 * tracks
@@ -175,7 +176,7 @@ def update_labeled_frames(
                 inst_name = int(inst.track.name.split("_")[-1])
                 track = matching_dict[lf.frame_idx][inst_name]
                 tracked_instances.append(attr.evolve(inst, track=new_tracks[track]))
-            except:
+            except Exception as e:
                 tracked_instances.append(attr.evolve(inst, track=None))
                 continue
         new_lfs.append(attr.evolve(lf, instances=tracked_instances))

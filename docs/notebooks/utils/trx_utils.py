@@ -1,11 +1,25 @@
+import copyreg
+import io
 import logging
+from pathlib import Path
 
+import cv2
 import h5py
 import matplotlib.colors as colors
+import matplotlib.patheffects as path_effects
+import matplotlib.pyplot as plt
 import numpy as np
+import palettable
 import pandas as pd
 import scipy.ndimage
-from scipy.signal import savgol_filter
+import scipy.stats
+import seaborn as sns
+import skvideo
+import skvideo.io
+from matplotlib.collections import LineCollection
+from matplotlib.ticker import FormatStrFormatter
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from scipy.interpolate import interp1d
 from tqdm import tqdm
 
 logging.basicConfig(
@@ -324,10 +338,6 @@ def smooth_diff(node_loc, win=25, poly=3):
     return node_vel
 
 
-from scipy.interpolate import interp1d
-from tqdm import tqdm
-
-
 def fill_missing_np(Y, kind="linear"):
     """Fills missing values independently along each dimension after the first."""
 
@@ -382,9 +392,6 @@ def hist_sort(
     assignment_indices = np.argsort(assignments)
     locations = locations[:, :, :, assignment_indices]
     return assignment_indices, locations, freq
-
-
-import scipy.stats
 
 
 def hist_sort_rowwise(
@@ -455,9 +462,6 @@ def alpha_cmap(cmap):
     return my_cmap
 
 
-import cv2
-
-
 def blob_detector(video_path):
 
     cap = cv2.VideoCapture(video_path)
@@ -515,9 +519,6 @@ def blob_detector(video_path):
     return keypoints, blobs, median_frame
 
 
-import copyreg
-
-
 def _pickle_keypoints(point):
     return cv2.KeyPoint, (
         *point.pt,
@@ -530,7 +531,6 @@ def _pickle_keypoints(point):
 
 
 copyreg.pickle(cv2.KeyPoint().__class__, _pickle_keypoints)
-import matplotlib.pyplot as plt
 
 
 def drawArrow(A, B):
@@ -564,13 +564,6 @@ def describe_hdf5(filename, attrs=True):
 
     with h5py.File(filename, "r") as f:
         f.visititems(desc)
-
-
-import palettable
-import skvideo
-
-skvideo.setFFmpegPath("/Genomics/argo/users/swwolf/.conda/envs/sleap_dev/bin")
-import skvideo.io
 
 
 def plot_trx(
@@ -654,20 +647,12 @@ def plot_trx(
     # return fig
 
 
-import cv2
-import numpy as np
-
-
 def rotate_image(image, angle):
     image_center = tuple(np.array(image.shape[1::-1]) / 2)
     rot_mat = cv2.getRotationMatrix2D(image_center, angle, 1.0)
     result = cv2.warpAffine(image, rot_mat, image.shape[1::-1], flags=cv2.INTER_LINEAR)
 
     return result
-
-
-import matplotlib.patheffects as path_effects
-from matplotlib.collections import LineCollection
 
 
 def plot_ego(
@@ -780,9 +765,6 @@ def plot_ego(
     ffmpeg_writer.close()
 
 
-import io
-
-
 def get_img_from_fig(fig, dpi=300):
     buf = io.BytesIO()
     fig.savefig(buf, format="png", dpi=dpi)
@@ -807,14 +789,6 @@ def rotate(p, origin=(0, 0), angle=0):
     o = np.atleast_2d(origin)
     p = np.atleast_2d(p)
     return np.squeeze((R @ (p.T - o.T) + o.T).T)
-
-
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-from matplotlib.ticker import FormatStrFormatter, MaxNLocator
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 def plot_timeseries(
@@ -878,7 +852,7 @@ def plot_timeseries(
             fig.text(-0.02, 0.45 / 2, "Rel vel", ha="center", va="center", rotation=90)
 
             ax[2].set_title(f"{title} fly {fly_idx} velocity by time")
-            divider = make_axes_locatable(ax[2])
+            make_axes_locatable(ax[2])
             # cax = divider.append_axes('right', size='5%', pad=0.05)
             # fig.colorbar(im, cax=cax, orientation='vertical')
             fig.savefig(
@@ -933,7 +907,6 @@ def load_tracks(expmt_dict):
 
         with h5py.File(expmt["h5s"][0], "r") as f:
             logger.info(expmt["h5s"][0])
-            dset_names = list(f.keys())
             # Note the assignment of node_names here!
             node_names = [n.decode() for n in f["node_names"][:]]
             expmt_dict[key]["node_names"] = node_names
@@ -977,9 +950,6 @@ def load_tracks(expmt_dict):
         expmt_dict[expmt_name]["assignments"] = assignment_indices
         expmt_dict[expmt_name]["freq"] = freq
     return expmt_dict, tracks_dict_raw
-
-
-from pathlib import Path
 
 
 def ensure_dir(dir_path):
