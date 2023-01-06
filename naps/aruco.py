@@ -131,4 +131,4 @@ class ArUcoModel:
             raise Exception(f"Unable to assign tag set: {tag_set}")
 
         # Return the OpenCV tags
-        return cv2.aruco.getPredefinedDictionary(ARUCO_DICT[tag_set])
+        return cv2.aruco.Dictionary_get(ARUCO_DICT[tag_set])
