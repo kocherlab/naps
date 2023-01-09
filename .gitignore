@@ -10,3 +10,9 @@ dist
 
 # Sphinx documentation
 docs/_build/
+
+# Other
+models/
+# docs/notebooks/example_data/
+docs/notebooks/figures/
+docs/notebooks/naps_data/
