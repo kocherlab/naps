@@ -84,25 +84,28 @@ Easy install
 
     pip install naps-track
 
+
 ==========
 References
 ==========
 
-If you use NAPS in your research, please cite:
+Manuscript: `https://doi.org/10.1101/2022.12.07.518416 <https://doi.org/10.1101/2022.12.07.518416>`_
 
-   \S. W. Wolf, D. M. Ruttenberg*, D. Y. Knapp*, A. W. Webb, I. M. Traniello, G. C. McKenzie-Smith, J. W. Shaevitz, and S. D. Kocher. `Hybrid tracking to capture dynamic social networks <https://naps.rtfd.io/>`__. *In Prep*, n.d.
+If you use NAPS in your research, please cite:
 
 -------
 BibTeX:
 -------
 .. code-block::
 
-   @UNPUBLISHED{Wolf_undated,
-      author = {Wolf, Scott W and Ruttenberg, Dee M and Knapp, Daniel Y and Webb,
-               Andrew E and Traniello, Ian M and McKenzie-Smith, Grace C and Shaevitz, Joshua W and Kocher, Sarah D},
-      title = {Hybrid tracking to capture dynamic social networks},
-      year = {n.d.}
+   @article{wolf2022naps,
+      title={NAPS: Integrating pose estimation and tag-based tracking},
+      author={Wolf, Scott W and Ruttenberg, Dee M and Knapp, Daniel Y and Webb, Andrew E and Traniello, Ian M and McKenzie-Smith, Grace C and Leheny, Sophie A and Shaevitz, Joshua W and Kocher, Sarah D},
+      journal={bioRxiv},
+      year={2022},
+      publisher={Cold Spring Harbor Laboratory}
    }
+
 
 ======
 Issues
@@ -125,10 +128,11 @@ Contributors
 * **Andrew Webb**, Department of Ecology and Evolutionary Biology and Lewis-Sigler Institute for Integrative Genomics, Princeton University
 * **Ian Traniello**, Lewis-Sigler Institute for Integrative Genomics, Princeton University
 * **Grace McKenzie-Smith**, Department of Physics and Lewis-Sigler Institute for Integrative Genomics, Princeton University
+* **Sophie Leheny**, Department of Molecular Biology, Princeton University
 * **Joshua Shaevitz**, Department of Physics and Lewis-Sigler Institute for Integrative Genomics, Princeton University
 * **Sarah Kocher**, Department of Ecology and Evolutionary Biology and Lewis-Sigler Institute for Integrative Genomics, Princeton University
 
-NAPS was created in the  `Kocher <https://kocherlab.princeton.edu/>`_  and `Shaevitz <https://shaevitzlab.princeton.edu/>`_ labs at Princeton University.
+NAPS was created in the `Kocher <https://kocherlab.princeton.edu/>`_  and `Shaevitz <https://shaevitzlab.princeton.edu/>`_ labs at Princeton University.
 
 =======
 License
