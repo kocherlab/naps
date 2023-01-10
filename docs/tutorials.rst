@@ -45,7 +45,7 @@ The most direct usage of NAPS is through the CLI. After installing NAPS, :ref:`n
 .. code-block:: text
 
     naps-track [-h] --slp-path SLP_PATH [--h5-path H5_PATH] --video-path
-        VIDEO_PATH --tag-node TAG_NODE --start-frame START_FRAME
+        VIDEO_PATH --tag-node TAG_NODE_NAME --start-frame START_FRAME
         --end-frame END_FRAME
         [--half-rolling-window-size HALF_ROLLING_WINDOW_SIZE]
         --aruco-marker-set ARUCO_MARKER_SET
@@ -64,34 +64,35 @@ The most direct usage of NAPS is through the CLI. After installing NAPS, :ref:`n
 
 .. code-block:: text
 
-    naps-track --slp-path tests/data/example.slp --h5-path tests/data/example.analysis.h5 --video-path tests/data/example.mp4 --tag-node 0 --start-frame 0 --end-frame 1199 --aruco-marker-set DICT_4X4_100 --output-path tests/data/example_output.analysis.h5
+    naps-track --slp-path example.slp --video-path example.mp4 --tag-node-name tag --start-frame 0 --end-frame 1200 --aruco-marker-set DICT_5X5_50 --output-path example-naps.slp --aruco-error-correction-rate 0.6 --aruco-adaptive-thresh-constant 7 --aruco-adaptive-thresh-win-size-max 23 --aruco-adaptive-thresh-win-size-step 10 --aruco-adaptive-thresh-win-size-min 3 --half-rolling-window-size 20
 
-The resulting file, `example_output.analysis.h5`, is the same form as SLEAP analysis HDF5s.
+The resulting file, `example-naps.slp`, is in the SLEAP Project file format and can be opened directly with SLEAP.
 
 .. _post-tracking:
 
 ----------
 After NAPS
 ----------
-
-The resulting HDF5 can be imported back into SLEAP using SLEAP's import function -- treating it as a SLEAP analysis HDF5.
+If we want to post process data from NAPS, it's easy to follow directly with SLEAP tutorials. See `sleap.ai/tutorials/tutorial <https://sleap.ai/tutorials/tutorial>`_.
+We can also remove unassigned tracks by opening the SLEAP GUI > Custom Instance Delete > Delete all instances with no track identity. The remaining tracks with have been assigned to ArUco tags and the track names will expose the n
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Example: Importing HDF5 files into Python
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The resulting HDF5 can also be read into Python, as shown in the SLEAP tutorial, as follows:
+The resulting HDF5 can be read into Python, as shown in the SLEAP tutorial, as follows:
 
 .. code-block:: python
 
     import h5py
     import numpy as np
 
-    filename = "tests/data/example_output.analysis.h5"
+    filename = "example-naps.analysis.h5"
 
     with h5py.File(filename, "r") as f:
         dset_names = list(f.keys())
         locations = f["tracks"][:].T
+        track_names = f["track_names"]
         node_names = [n.decode() for n in f["node_names"][:]]
 
     print("===filename===")
@@ -104,6 +105,11 @@ The resulting HDF5 can also be read into Python, as shown in the SLEAP tutorial,
 
     print("===locations data shape===")
     print(locations.shape)
+    print()
+
+    print("===track names===")
+    for i, name in enumerate(track_names):
+        print(f"{i}: {name}")
     print()
 
     print("===nodes===")
