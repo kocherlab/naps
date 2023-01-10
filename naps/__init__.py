@@ -1,6 +1,6 @@
 # Basic Information
 __name__ = "naps-track"
-__version__ = "1.0.0"
+__version__ = "1.0.2"
 __summary__ = "NAPS (NAPS is ArUco Plus SLEAP)"
 __url__ = "https://github.com/kocherlab/naps"
 __code__ = "https://github.com/kocherlab/naps"
