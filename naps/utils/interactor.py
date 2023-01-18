@@ -83,20 +83,6 @@ class Interactor ():
 
 		def _processInteraction (name = '', origin = '', dest = '', symmetical = False, return_int = False):
 
-			def _inverse (comparison_dict):
-
-				if not comparison_dict: return
-
-				inverse_comparison_dict = comparison_dict.copy()
-
-				inverse_origin = comparison_dict['Destination interactor']
-				inverse_dest = comparison_dict['Origin interactor']
-
-				inverse_comparison_dict['Origin interactor'] = inverse_origin
-				inverse_comparison_dict['Destination interactor'] = inverse_dest
-
-				return inverse_comparison_dict
-
 			def _interact (origin_interactor, dest_interactor):
 
 				# Check if two interact
@@ -148,7 +134,6 @@ class Interactor ():
 			if inverse_interaction_bool:
 				return_interactions.append(_reportInteract(inverse_interaction_bool, other_interactor, self))
 
-			if not return_interactions: return []
 			return return_interactions
 
 		# Create a list to store the results
