@@ -18,7 +18,6 @@ class Interactor ():
 		self._skeleton = {}
 		self._models = {}
 		self._interactions = interactions
-		self.report_coords = {}
 	
 		# Update the skeleton using the coords_array and model 
 		for _sk in skeleton: self._updateSkeleton(coords_array, **_sk)
