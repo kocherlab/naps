@@ -1,6 +1,7 @@
 name: Conda Upload
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
