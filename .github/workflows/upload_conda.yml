@@ -40,4 +40,5 @@ jobs:
         shell: powershell
         run: |
           conda build .conda --output-folder build --python 3.7 -c sleap -c nvidia -c conda-forge
-          anaconda -t "$ANACONDA_API_TOKEN" upload --user kocherlab build/linux-64/*.tar.bz2
+          anaconda -t "$ANACONDA_API_TOKEN" login --username kocherlab
+          anaconda upload build/win-64/*.tar.bz2
