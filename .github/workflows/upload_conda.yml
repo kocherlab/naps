@@ -42,5 +42,5 @@ jobs:
           ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
         run: |
           conda build .conda --output-folder build --python 3.7 -c sleap -c nvidia -c conda-forge
-          anaconda -t "$env:ANACONDA_API_TOKEN" login --username kocherlab
+          echo "yes" | anaconda -t "$env:ANACONDA_API_TOKEN" login --username kocherlab
           anaconda upload build/win-64/*.tar.bz2
