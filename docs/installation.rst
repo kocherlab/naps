@@ -47,7 +47,7 @@ NAPS may also be installed using pip:
 
 .. note::
 
-    Requires Python 3.9.
+    Requires Python 3.7.
 
 
 ***********************

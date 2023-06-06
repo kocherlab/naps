@@ -20,7 +20,7 @@ jobs:
           miniconda-version: "latest"
           activate-environment: naps
           environment-file: .conda/environment_build.yml
-          python-version: 3.9
+          python-version: 3.7
           channels: conda-forge,sleap,nvidia
           allow-softlinks: true
           channel-priority: flexible
