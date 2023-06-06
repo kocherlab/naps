@@ -54,10 +54,21 @@ NAPS may also be installed using pip:
 Conda (Apple Silicon)
 ***********************
 
-To install on 
+First install SLEAP using the SLEAP installation for Apple Silicon Macs `here <https://sleap.ai/installation.html#apple-silicon-macs>`_.
+
+then install NAPS using the following:
+
+.. code-block:: bash
+
+    conda activate sleap
+    git clone https://github.com/kocherlab/naps.git
+    cd naps
+    conda env update --file environment_apple_silicon.yml
+
+
 
 ******
-GitHub
+GitHub 
 ******
 
 If you are interested in following the development of NAPS, you may want to install the latest development version of NAPS directly from the `GitHub repository <htto://github.com/kocherlab/naps-track>`_.
