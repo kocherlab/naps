@@ -9,7 +9,6 @@ from naps.sleap_utils import load_tracks_from_slp
 
 
 def test_naps_track():
-
     # Create a temporary directory
     test_dir = tempfile.mkdtemp()
 
@@ -32,6 +31,8 @@ def test_naps_track():
         "29",
         "--aruco-marker-set",
         "DICT_4X4_100",
+        "--aruco-crop-size",
+        "50",
         "--output-path",
         test_output,
     ]
