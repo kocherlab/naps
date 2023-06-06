@@ -42,5 +42,5 @@ setup(
                             "naps-plot=naps.naps_plot:main",
                             "naps-interactions=naps.naps_interactions:main"],
     },
-    python_requires=">=3.6",
+    python_requires="3.9",
 )

@@ -4,14 +4,19 @@
 NAPS Installation Instructions
 ##############################
 
-*************
-Conda (Linux)
-*************
-
 .. attention::
 
-    This is the recommended installation method. While it requires setting up conda prior to use, it provides a more stable and reliable environment.
+    We recommend testing out NAPS using Google Colaboratory before installing NAPS on your local machine. You can find the Google Colaboratory notebook `here <https://colab.research.google.com/github/kocherlab/naps/blob/main/docs/notebooks/naps_basic_workflow.ipynb>`_.
 
+
+Similar to SLEAP, NAPS operates on a complex set of dependencies and we recommend installing it in an isolated environment. As with SLEAP, we provide only experimental support for Appl Silicon Macs
+***********************
+Conda (Linux / Windows)
+***********************
+
+.. caution::
+
+    This method is *only* for Linux and Windows systems. If you are using a Mac with Apple Silicon, please use other methods or consider testing the Google Colaboratory notebook `here <https://colab.research.google.com/github/kocherlab/naps/blob/main/docs/notebooks/naps_basic_workflow.ipynb>`_.
 
 To install NAPS in a clean environment with `SLEAP <https://sleap.ai/>`_, run the following:
 
@@ -28,6 +33,8 @@ To install NAPS in a clean environment with `SLEAP <https://sleap.ai/>`_, run th
     1. Download the appropriate `Miniconda installer <https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links>`_.
     2. Follow the installer instructions.
 
+
+
 ***
 pip
 ***
@@ -40,9 +47,14 @@ NAPS may also be installed using pip:
 
 .. note::
 
-    Requires Python 3.7.
+    Requires Python 3.9.
 
 
+***********************
+Conda (Apple Silicon)
+***********************
+
+To install on 
 
 ******
 GitHub

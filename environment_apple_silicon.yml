@@ -1,0 +1,22 @@
+name: naps
+
+channels:
+  - conda-forge
+  - defaults
+  - apple
+  - kocherlab
+
+dependencies:
+  - python=3.9
+  - conda-forge::numpy=1.22.3
+  - conda-forge::scipy=1.7.3
+  - conda-forge::h5py=3.6.0
+  - conda-forge::pyside2=5.15.5
+  - conda-forge::pandas
+  - conda-forge::opencv=4.6.0
+  - conda-forge::pytest
+  - conda-forge::pytest-cov
+  - conda-forge::tqdm
+  - pip
+  - pip:
+      - "--editable=./"
