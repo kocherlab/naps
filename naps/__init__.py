@@ -1,8 +1,8 @@
-import sys
 import logging
+import sys
 
-#from naps import utils
-#import naps.utils
+# from naps import utils
+# import naps.utils
 
 # Basic Information
 __name__ = "naps-track"

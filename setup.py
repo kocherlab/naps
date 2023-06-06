@@ -17,9 +17,7 @@ if os.path.isfile(requirement_path):
         requirements = f.read().splitlines()
 
 # Executable scripts in the package
-tool_scripts = ["naps/naps_track.py",
-                "naps/naps_plot.py",
-                "naps/naps_interactions.py"]
+tool_scripts = ["naps/naps_track.py", "naps/naps_plot.py", "naps/naps_interactions.py"]
 
 setup(
     name=naps.__name__,
@@ -38,9 +36,11 @@ setup(
     install_requires=requirements,
     scripts=tool_scripts,
     entry_points={
-        "console_scripts": ["naps-track=naps.naps_track:main", 
-                            "naps-plot=naps.naps_plot:main",
-                            "naps-interactions=naps.naps_interactions:main"],
+        "console_scripts": [
+            "naps-track=naps.naps_track:main",
+            "naps-plot=naps.naps_plot:main",
+            "naps-interactions=naps.naps_interactions:main",
+        ],
     },
     python_requires=">=3.7",
 )

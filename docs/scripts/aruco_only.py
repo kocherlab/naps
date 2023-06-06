@@ -28,7 +28,6 @@ output_arr = np.empty((72000, 2, 100))
 output_arr[:] = np.nan
 cap = cv2.VideoCapture(videopath)
 while cap.isOpened():
-
     ret, frame = cap.read()
     frame_number = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
     # print(frame_number)
@@ -38,7 +37,7 @@ while cap.isOpened():
     print(len(corners))
     if len(corners) > 0:
         ids = ids.flatten()
-    for (markerCorner, markerID) in zip(corners, ids):
+    for markerCorner, markerID in zip(corners, ids):
         # extract the marker corners (which are always returned
         # in top-left, top-right, bottom-right, and bottom-left
         # order)

@@ -61,7 +61,6 @@ def connected_components1d(x, return_limits=False):
 
 
 def flatten_features(x, axis=0):
-
     if axis != 0:
         # Move time axis to the first dim
         x = np.moveaxis(x, axis, 0)
@@ -426,7 +425,6 @@ def acorr(x, normed=True, maxlags=10):
 
 
 def xcorr(x, y, normed=True, maxlags=10):
-
     Nx = len(x)
     if Nx != len(y):
         raise ValueError("x and y must be equal length")
@@ -463,7 +461,6 @@ def alpha_cmap(cmap):
 
 
 def blob_detector(video_path):
-
     cap = cv2.VideoCapture(video_path)
     frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     frames = []

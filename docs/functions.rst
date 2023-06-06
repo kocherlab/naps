@@ -13,3 +13,6 @@ NAPS Functions
 
 .. automodule:: naps.aruco
    :members:
+
+.. automodule:: naps.naps_track
+   :members:
