@@ -4,11 +4,10 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        python-version: ["3.7"]
+        python-version: ["3.9"]
         os: ["ubuntu-latest", "windows-latest"]
 
     steps:
@@ -39,4 +38,3 @@ jobs:
           files: coverage.xml
           fail_ci_if_error: true
           verbose: true
-
