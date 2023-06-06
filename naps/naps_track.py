@@ -20,71 +20,77 @@ def build_parser():
 
     parser.add_argument(
         "--slp-path",
-        help="The filepath of the SLEAP (.slp or .h5) file to pull coordinates from. This should correspond with the input video file. The SLEAP file contains pose estimation data required for tracking, which is essential for the functioning of this program.",
+        help="The filepath of the SLEAP (.slp or .h5) file to pull coordinates from. This should correspond with the input video file. The SLEAP file contains pose estimation data required for NAPS.",
         type=str,
         required=True,
     )
 
     parser.add_argument(
         "--h5-path",
-        help="The filepath of the analysis h5 file to pull coordinates from. This should correspond with the input video file and slp file. The h5 file can contain additional data that can aid in the analysis, but it's not essential. Therefore, it is not required, and the default is set to None.",
+        help="The filepath of the analysis h5 file to pull coordinates from. This should correspond with the input video file and slp file. Because NAPS relies on having data in the format given by SLEAP analysis h5s, you can skip a step by providing the analysis h5 file directly. If this is not provided, NAPS will pull the data from the SLEAP file.",
         type=str,
         default=None,
     )
 
     parser.add_argument(
         "--video-path",
-        help="The filepath of the video used with SLEAP. This should be the video file that the SLEAP and optionally the h5 file are based on. It is required for the program to know what video to process.",
+        help="The filepath of the video used with SLEAP. This should be the video file that SLEAP was run on.",
         type=str,
         required=True,
     )
 
     parser.add_argument(
         "--tag-node-name",
-        help="The ArUco tag SLEAP node name. This should correspond to the node name of the ArUco tag in the SLEAP data. 'tag' is set as the default value as it is a common name for tracking tags.",
+        help="The ArUco tag SLEAP node name. This should correspond to the node name of the ArUco tag in the SLEAP data. 'tag' is set as the default value.",
         type=str,
         default="tag",
     )
 
     parser.add_argument(
         "--start-frame",
-        help="The zero-based fully-closed frame to begin NAPS assignment. This value allows you to specify from which frame to start the processing. It is required for accurate processing and slicing of the video.",
+        help="The zero-based fully-closed frame to begin NAPS assignment. This value allows you to specify from which frame to start the processing.",
         type=int,
         required=True,
     )
 
     parser.add_argument(
         "--end-frame",
-        help="The zero-based fully-closed frame to stop NAPS assignment. This allows you to specify at which frame to end the processing. Like the start frame, this is essential for accurate slicing of the video.",
+        help="The zero-based fully-closed frame to stop NAPS assignment. This allows you to specify at which frame to end the processing.",
         type=int,
         required=True,
     )
 
     parser.add_argument(
         "--half-rolling-window-size",
-        help="Specifies the number of flanking frames (prior and subsequent) required in the rolling window for Hungarian matching a frame. The larger this window, the more frames will be used for matching, potentially improving the accuracy, but also increasing computational demand. The default value is 5, providing a balance between computational efficiency and accuracy.",
+        help="Specifies the number of flanking frames (prior and subsequent) required in the rolling window for Hungarian matching a frame. The larger this window, the more frames will be used for matching. This can result in more robust tracks but in the event of an identity swap, it may take longer to correct the identity. The default is set to 5, resulting in an 11 frame window. You should change this depending on your intended use and your recording setup. ",
         type=int,
         default=5,
     )
 
     parser.add_argument(
+        "--output-path",
+        help="Output path of the resulting SLEAP h5 analysis file. The default value is 'naps_output.analysis.h5', storing the output in the current working directory. If a different location or file name is preferred, it can be specified here.",
+        type=str,
+        default="naps_output.analysis.h5",
+    )
+
+    parser.add_argument(
+        "--aruco-crop-size",
+        help="The number of pixels horizontally and vertically around the ArUco SLEAP node to identify the marker. The cropping area should be large enough to include the whole marker for accurate detection, but not much larger, to keep the processing efficient and avoid capturing multiple tags. This is data set specific.",
+        type=int,
+    )
+
+    parser.add_argument(
         "--aruco-marker-set",
-        help="The ArUco markers used in the video. This must match the specific set of ArUco markers used in the video for accurate detection and tracking. This is directly related to the ArUco parameters in OpenCV.",
+        help="The ArUco markers used in the video. This must match the specific set of ArUco markers used in the video for accurate detection and tracking. An example would be DICT_5X5_50, which is a set of 50 5x5 markers. More information can be found in the OpenCV documentation.",
         type=str,
         required=True,
     )
 
     parser.add_argument(
-        "--aruco-crop-size",
-        help="The number of pixels horizontally and vertically around the ArUco SLEAP node to identify the marker. The cropping area should be large enough to include the whole marker for accurate detection, but not much larger, to keep the processing efficient. The default value of 50 pixels generally works well for typical marker sizes. This is a NAPS specific parameter and not directly related to OpenCV ArUco.",
-        type=int,
-        default=50,
-    )
-
-    parser.add_argument(
         "--aruco-adaptive-thresh-win-size-min",
         dest="adaptiveThreshWinSizeMin",
-        help="Specifies the value for adaptiveThreshWinSizeMin used in adaptive thresholding. This parameter affects the adaptive thresholding in the ArUco marker detection, which can impact the robustness of marker detection. The default value is 10, a commonly used value. This is directly related to the OpenCV ArUco parameters.",
+        help="Specifies the value for adaptiveThreshWinSizeMin used in adaptive thresholding. This parameter affects the adaptive thresholding in the ArUco marker detection, which can impact the robustness of marker detection. The default value is 10, a commonly used value. More information can be found in the OpenCV documentation.",
         type=int,
         default=10,
     )
@@ -92,7 +98,7 @@ def build_parser():
     parser.add_argument(
         "--aruco-adaptive-thresh-win-size-max",
         dest="adaptiveThreshWinSizeMax",
-        help="Specifies the value for adaptiveThreshWinSizeMax used in adaptive thresholding. This parameter, similar to adaptiveThreshWinSizeMin, influences the adaptive thresholding. The default value is 30, providing a larger window size for the thresholding process, improving marker detection under diverse lighting conditions. This is directly related to the OpenCV ArUco parameters.",
+        help="Specifies the value for adaptiveThreshWinSizeMax used in adaptive thresholding. This parameter, similar to adaptiveThreshWinSizeMin, influences the adaptive thresholding. The default value is 30, providing a larger window size for the thresholding process, improving marker detection under diverse lighting conditions. More information can be found in the OpenCV documentation.",
         type=int,
         default=30,
     )
@@ -100,7 +106,7 @@ def build_parser():
     parser.add_argument(
         "--aruco-adaptive-thresh-win-size-step",
         dest="adaptiveThreshWinSizeStep",
-        help="Specifies the value for adaptiveThreshWinSizeStep used in adaptive thresholding. This parameter determines the step size for the window in adaptive thresholding, affecting the granularity of the process. The default value is 12, offering a balanced choice between processing speed and thresholding precision. This is directly related to the OpenCV ArUco parameters.",
+        help="Specifies the value for adaptiveThreshWinSizeStep used in adaptive thresholding. This parameter determines the step size for the window in adaptive thresholding, affecting the granularity of the process. The default value is 12, offering a balanced choice between processing speed and thresholding precision. More information can be found in the OpenCV documentation.",
         type=int,
         default=12,
     )
@@ -108,7 +114,7 @@ def build_parser():
     parser.add_argument(
         "--aruco-adaptive-thresh-constant",
         dest="adaptiveThreshConstant",
-        help="Specifies the value for adaptiveThreshConstant used in adaptive thresholding. This parameter is a constant subtracted from the mean or weighted sum of the neighbourhood pixels. The default value is 3, which works well in most scenarios, but can be adjusted based on specific lighting conditions. This is directly related to the OpenCV ArUco parameters.",
+        help="Specifies the value for adaptiveThreshConstant used in adaptive thresholding. This parameter is a constant subtracted from the mean or weighted sum of the neighbourhood pixels. The default value is 3, which works well in most scenarios, but can be adjusted based on specific lighting conditions. More information can be found in the OpenCV documentation.",
         type=float,
         default=3,
     )
@@ -116,7 +122,7 @@ def build_parser():
     parser.add_argument(
         "--aruco-perspective-rm-ignored-margin",
         dest="perspectiveRemoveIgnoredMarginPerCell",
-        help="Specifies the value for perspectiveRemoveIgnoredMarginPerCell. This parameter is used in the perspective removal of the marker. The default value is 0.1, which is a reasonable value for many situations. This is directly related to the OpenCV ArUco parameters.",
+        help="Specifies the value for perspectiveRemoveIgnoredMarginPerCell. This parameter is used in the perspective removal of the marker. The default value is 0.1, which is a reasonable value for many situations. More information can be found in the OpenCV documentation.",
         type=float,
         default=0.1,
     )
@@ -124,16 +130,9 @@ def build_parser():
     parser.add_argument(
         "--aruco-error-correction-rate",
         dest="errorCorrectionRate",
-        help="Specifies the value for errorCorrectionRate. This parameter is used for error correction when decoding ArUco tags. The default value is 1, which means no error correction. Adjust this parameter can be necessary for improving the robustness of marker detection, especially in the presence of camera noise or occlusions. This is directly related to the OpenCV ArUco parameters.",
+        help="Specifies the value for errorCorrectionRate. This parameter is used for error correction when decoding ArUco tags. The default value is 1 is to fully utilize the error capability for each tag dictionary. Adjust this parameter can be necessary for improving the robustness of marker detection, especially in the presence of camera noise or occlusions. More information can be found in the OpenCV documentation.",
         type=float,
         default=1,
-    )
-
-    parser.add_argument(
-        "--output-path",
-        help="Output path of the resulting SLEAP analysis file. The default value is 'output.analysis.h5', storing the output in the current working directory. If a different location or file name is preferred, it can be specified here. This is a NAPS specific parameter and not directly related to OpenCV ArUco.",
-        type=str,
-        default="output.analysis.h5",
     )
 
     return parser
