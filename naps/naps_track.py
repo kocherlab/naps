@@ -61,6 +61,13 @@ def build_parser():
     )
 
     parser.add_argument(
+        "--aruco-marker-set",
+        help="The ArUco markers used in the video. This must match the specific set of ArUco markers used in the video for accurate detection and tracking. An example would be DICT_5X5_50, which is a set of 50 5x5 markers. More information can be found in the OpenCV documentation.",
+        type=str,
+        required=True,
+    )
+
+    parser.add_argument(
         "--half-rolling-window-size",
         help="Specifies the number of flanking frames (prior and subsequent) required in the rolling window for Hungarian matching a frame. The larger this window, the more frames will be used for matching. This can result in more robust tracks but in the event of an identity swap, it may take longer to correct the identity. The default is set to 5, resulting in an 11 frame window. You should change this depending on your intended use and your recording setup. ",
         type=int,
@@ -78,13 +85,6 @@ def build_parser():
         "--aruco-crop-size",
         help="The number of pixels horizontally and vertically around the ArUco SLEAP node to identify the marker. The cropping area should be large enough to include the whole marker for accurate detection, but not much larger, to keep the processing efficient and avoid capturing multiple tags. This is data set specific.",
         type=int,
-    )
-
-    parser.add_argument(
-        "--aruco-marker-set",
-        help="The ArUco markers used in the video. This must match the specific set of ArUco markers used in the video for accurate detection and tracking. An example would be DICT_5X5_50, which is a set of 50 5x5 markers. More information can be found in the OpenCV documentation.",
-        type=str,
-        required=True,
     )
 
     parser.add_argument(
