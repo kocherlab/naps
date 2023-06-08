@@ -10,6 +10,8 @@ NAPS Installation Instructions
 
 
 Similar to SLEAP, NAPS operates on a complex set of dependencies and we recommend installing it in an isolated environment. As with SLEAP, we provide only experimental support for Appl Silicon Macs
+
+
 ***********************
 Conda (Linux / Windows)
 ***********************
@@ -33,23 +35,6 @@ To install NAPS in a clean environment with `SLEAP <https://sleap.ai/>`_, run th
     1. Download the appropriate `Miniconda installer <https://docs.conda.io/en/latest/miniconda.html#latest-miniconda-installer-links>`_.
     2. Follow the installer instructions.
 
-
-
-***
-pip
-***
-
-NAPS may also be installed using pip:
-
-.. code-block:: bash
-
-    pip install naps-track
-
-.. note::
-
-    Requires Python 3.7.
-
-
 ***********************
 Conda (Apple Silicon)
 ***********************
@@ -65,6 +50,21 @@ then install NAPS using the following:
     cd naps
     conda env update --file environment_apple_silicon.yml
 
+
+
+***
+pip
+***
+
+NAPS may also be installed using pip:
+
+.. code-block:: bash
+
+    pip install naps-track
+
+.. note::
+
+    Requires Python 3.7.
 
 
 ******
@@ -90,7 +90,8 @@ To do that, do the following:
 
 .. code-block:: bash
 
-    git clone https://github.com/kocherlab/naps.git && cd naps
+    git clone https://github.com/kocherlab/naps.git
+    cd naps
 
 3. Install NAPS:
 

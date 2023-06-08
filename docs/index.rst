@@ -71,35 +71,18 @@ Features
 Getting NAPS
 ============
 ------------
-Easy install
+Easy install **(Windows/Linux)**
 ------------
-`conda` **(Windows/Linux)**:
+`conda`:
+
+.. caution::
+
+      This is the recommended installation method for Windows and Linux users only. If you are using an Apple Silicon Mac, please see the :ref:`installation` page for instructions on how to install NAPS.
 
 .. code-block:: bash
 
     conda create -n naps naps-track -c kocherlab -c sleap -c nvidia -c conda-forge
 
-
-`pip` **(any OS)**:
-
-.. code-block:: bash
-
-    pip install naps-track
-
-
-`pip` **(any OS - develop)**:
-
-.. code-block:: bash
-
-    pip install git+https://github.com/kocherlab/naps@develop
-
-
-`pip` **(any OS - git)**:
-
-.. code-block:: bash
-
-    git clone https://github.com/kocherlab/naps && cd naps
-    pip install .
 
 ==========
 References
