@@ -1,3 +1,10 @@
+.. _explanations:
+
+##############################
+Parameter Explanations
+##############################
+
+
 Understanding the Trade-off Between Fidelity and Responsiveness in Window Size Adjustment
 -----------------------------------------------------------------------------------------
 
