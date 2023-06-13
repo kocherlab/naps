@@ -30,13 +30,13 @@ With a small window size, the algorithm can respond quickly to identity swaps, b
 
 .. code-block:: none
 
-    C_{i,j}(t) = [[-1, -2, -1],
-                  [-1, -1, -2],
-                  [-1, -2, -1]]
+    C_{i,j}(t) = [[-2, -1,  0],
+                  [0, -1, -2],
+                  [ 0, -2, -1]]
 
-In this case, due to the small window size and missed tag readings, the algorithm misassigns the second instance to the third tag and the third instance to the second tag, illustrating the susceptibility of small windows to such errors.
+Here, due to the small window size, the first instance is correctly assigned to the first tag, but the second instance is incorrectly assigned to the second tag and the third instance to the second tag. This results in a deviation from the ideal diagonal alignment and shows how small windows can lead to misassignments.
 
-2. **Medium window size (41 frames; w=20)**
+1. **Medium window size (41 frames; w=20)**
 
 Increasing the window size helps to mitigate the impact of missed tag readings but also delays the algorithm's response to identity swaps. The cost matrix obtained may look like:
 
