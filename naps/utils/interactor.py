@@ -2,6 +2,7 @@
 import os
 
 import numpy as np
+from shapely import area
 from shapely.geometry import LineString, MultiPoint, Point
 from shapely.ops import unary_union
 
@@ -141,6 +142,8 @@ class Interactor:
                     "Destination interactor": dest_interactor.name,
                     "Interaction Name": name,
                     "Interaction Frame": self.frame,
+                    "Origin Area": area(origin_interactor._models[origin]),
+                    "Destination Area": area(dest_interactor._models[dest])
                 }
 
             # Confirm a name was given for the interaction
