@@ -80,6 +80,13 @@ def build_parser():
     )
 
     parser.add_argument(
+        "--aruco-marker-subset",
+        help="The ArUco markers used in the video",
+        type=int,
+        nargs='+'
+    )
+
+    parser.add_argument(
         "--aruco-crop-size",
         help="The number of pixels horizontally and vertically around the aruco SLEAP node to identify the marker",
         type=int,
@@ -183,6 +190,7 @@ def main(argv=None):
         adaptiveThreshConstant=args.adaptiveThreshConstant,
         perspectiveRemoveIgnoredMarginPerCell=args.perspectiveRemoveIgnoredMarginPerCell,
         errorCorrectionRate=args.errorCorrectionRate,
+        tag_subset_list=args.aruco_marker_subset,
     )
     logger.info("ArUco model built in %s seconds.", time.time() - t0)
 

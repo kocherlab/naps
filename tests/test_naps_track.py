@@ -51,3 +51,50 @@ def test_naps_track():
 
     # Remove the temporary directory
     shutil.rmtree(test_dir)
+
+
+def test_subset_naps_track():
+
+    # Create a temporary directory
+    test_dir = tempfile.mkdtemp()
+
+    # Create the temporary output file
+    test_output = os.path.join(test_dir, "test_naps_track_output.h5.slp")
+
+    # Create a list of the arguments
+    argument_list = [
+        "--slp-path",
+        "tests/data/example.slp",
+        "--h5-path",
+        "tests/data/example.analysis.h5",
+        "--video-path",
+        "tests/data/example.mp4",
+        "--tag-node-name",
+        "Tag",
+        "--start-frame",
+        "0",
+        "--end-frame",
+        "29",
+        "--aruco-marker-set",
+        "DICT_4X4_100",
+        "--aruco-marker-subset",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "--output-path",
+        test_output,
+    ]
+
+    # Run naps-track with the argument list
+    naps_track.main(argument_list)
+
+    # Get the contents of the file, since we cannot directly compare the files
+    test_locations, test_node_names = load_tracks_from_slp(test_output)
+
+    # Check if we get the expected output
+    assert test_locations.shape == (30, 4, 2, 5)
+
+    # Remove the temporary directory
+    shutil.rmtree(test_dir)
