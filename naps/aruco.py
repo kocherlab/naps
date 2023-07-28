@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 import cv2.aruco
 
+import numpy as np
+
 
 class ArUcoModel:
     """Class providing a wrapper around the cv2.aruco library"""
@@ -14,38 +16,12 @@ class ArUcoModel:
         adaptiveThreshConstant: float,
         perspectiveRemoveIgnoredMarginPerCell: float,
         errorCorrectionRate: float,
+        tag_subset_list: list = [],
         **kwargs,
     ):
 
-        # Store the tag set
-        self.tag_set = tag_set
-
-        # Store the ArUco parameters
-        self.adaptiveThreshWinSizeMin = adaptiveThreshWinSizeMin
-        self.adaptiveThreshWinSizeMax = adaptiveThreshWinSizeMax
-        self.adaptiveThreshWinSizeStep = adaptiveThreshWinSizeStep
-        self.adaptiveThreshConstant = adaptiveThreshConstant
-        self.errorCorrectionRate = errorCorrectionRate
-        self.perspectiveRemoveIgnoredMarginPerCell = (
-            perspectiveRemoveIgnoredMarginPerCell
-        )
-
-        """
-        Set the ArUco dict and params to None. Create w/ buildModel
-        as we cannot pickle them when using multiprocessing
-        """
-        self.aruco_dict = None
-        self.aruco_params = None
-        self.model_built = False
-
-    @classmethod
-    def withTagSet(cls, tag_set, **kwargs):
-        return cls(tag_set, **kwargs)
-
-    def build(self):
-
         # Assign the aruco dict
-        self.aruco_dict = self._assignArucoDict(self.tag_set)
+        self.aruco_dict = self._assignArucoDict(tag_set)
 
         """
         ArUco parameters:
@@ -63,29 +39,43 @@ class ArUcoModel:
         self.aruco_params.cornerRefinementMethod = cv2.aruco.CORNER_REFINE_SUBPIX
 
         # Window parameters
-        self.aruco_params.adaptiveThreshWinSizeMin = self.adaptiveThreshWinSizeMin
-        self.aruco_params.adaptiveThreshWinSizeMax = self.adaptiveThreshWinSizeMax
-        self.aruco_params.adaptiveThreshWinSizeStep = self.adaptiveThreshWinSizeStep
+        self.aruco_params.adaptiveThreshWinSizeMin = adaptiveThreshWinSizeMin
+        self.aruco_params.adaptiveThreshWinSizeMax = adaptiveThreshWinSizeMax
+        self.aruco_params.adaptiveThreshWinSizeStep = adaptiveThreshWinSizeStep
 
         # If too slow, start by adjusting this one up. If we want more tags, lower it (diminishing returns)
-        self.aruco_params.adaptiveThreshConstant = self.adaptiveThreshConstant
+        self.aruco_params.adaptiveThreshConstant = adaptiveThreshConstant
 
         # No note for this option
         self.aruco_params.perspectiveRemoveIgnoredMarginPerCell = (
-            self.perspectiveRemoveIgnoredMarginPerCell
+            perspectiveRemoveIgnoredMarginPerCell
         )
 
         # If false positives are a problem, lower this parameter.
-        self.aruco_params.errorCorrectionRate = self.errorCorrectionRate
+        self.aruco_params.errorCorrectionRate = errorCorrectionRate
 
-        # Indicate the model has been built
-        self.model_built = True
+        # Assign an empty subset dict
+        self.subset_dict = {}
+
+        # Check if a tag subset list was specified
+        if tag_subset_list:
+
+            # Update the subset dict
+            self.subset_dict = {i: t for i, t in enumerate(tag_subset_list)}
+
+            # Create the subset dict
+            subset_dict = cv2.aruco.custom_dictionary(0, self.aruco_dict.markerSize, 1)
+            subset_dict.bytesList = np.take(self.aruco_dict.bytesList, tag_subset_list, axis = 0)
+
+            # Replace the aruco dict with the subset dict
+            self.aruco_dict = subset_dict
+
+
+    @classmethod
+    def withTagSet(cls, tag_set, **kwargs):
+        return cls(tag_set, **kwargs)
 
     def detect(self, img):
-
-        # Build the model if needed
-        if not self.model_built:
-            self.build()
 
         # Detect ArUco tag(s) within the image
         corners, tags, _ = cv2.aruco.detectMarkers(
@@ -96,8 +86,15 @@ class ArUcoModel:
         if len(corners) == 0:
             return [None]
 
+        # Assing the tags
+        marker_tags = [marker_tag[0] for _, marker_tag in zip(corners, tags)]
+
+        # Update the tags if using a subset
+        if self.subset_dict:
+            marker_tags = [self.subset_dict[marker_tag] for marker_tag in marker_tags]
+
         # Return detected ArUco tags
-        return [marker_tag[0] for _, marker_tag in zip(corners, tags)]
+        return marker_tags
 
     def _assignArucoDict(self, tag_set):
 
