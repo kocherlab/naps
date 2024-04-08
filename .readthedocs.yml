@@ -6,7 +6,7 @@ conda:
   environment: docs/environment.yml
 
 build:
-  image: latest
+  os: ubuntu-22.04
 
 sphinx:
   configuration: docs/conf.py
