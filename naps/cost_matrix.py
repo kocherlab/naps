@@ -74,6 +74,12 @@ class CostMatrix:
             cost_dataframe = cost_dataframe.loc[~(cost_dataframe == 0).all(axis=1)]
             cost_dataframe = cost_dataframe.loc[:, ~(cost_dataframe == 0).all(axis=0)]
 
+            # Create a list of the tracks in the current frame
+            match_tracks = set(self.unmatched_dict[match_frame]) & set(cost_dataframe.columns)
+
+            # Subset the cost dataframe to only include the tracks in the current frame
+            cost_dataframe = cost_dataframe[list(match_tracks)]
+
             # Store the assignments
             for track_index, tag_index in self.assignment_method(cost_dataframe.values):
                 matched_dict[match_frame][
