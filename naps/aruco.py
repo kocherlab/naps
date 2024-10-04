@@ -82,6 +82,9 @@ class ArUcoModel:
         self.model_built = True
 
     def detect(self, img):
+        # Check if the image is empty, normally when prediction falls outside the image
+        if 0 in img.shape:
+            return [None]
 
         # Build the model if needed
         if not self.model_built:
