@@ -53,7 +53,13 @@ class ArUcoModel:
         These thresholding parameters DRAMATICALLY improve detection rate, while DRAMATICALLY hurting performance.
         Since super fast processing isn't really necessary here they should be fine as is.
         """
-        self.aruco_params = cv2.aruco.DetectorParameters_create()
+        # Handle both old and new OpenCV API for detector parameters
+        try:
+            # New API (OpenCV 4.7+)
+            self.aruco_params = cv2.aruco.DetectorParameters()
+        except AttributeError:
+            # Old API (OpenCV < 4.7)
+            self.aruco_params = cv2.aruco.DetectorParameters_create()
 
         """
         Assign the corner refinement method:
@@ -134,4 +140,10 @@ class ArUcoModel:
             raise Exception(f"Unable to assign tag set: {tag_set}")
 
         # Return the OpenCV tags
-        return cv2.aruco.Dictionary_get(ARUCO_DICT[tag_set])
+        # Handle both old and new OpenCV API
+        try:
+            # New API (OpenCV 4.7+)
+            return cv2.aruco.getPredefinedDictionary(ARUCO_DICT[tag_set])
+        except AttributeError:
+            # Old API (OpenCV < 4.7)
+            return cv2.aruco.Dictionary_get(ARUCO_DICT[tag_set])
