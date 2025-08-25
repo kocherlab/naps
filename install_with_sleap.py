@@ -59,8 +59,15 @@ def install_naps_with_sleap():
         import sleap
         import cv2
         import numpy as np
+        
+        # Handle OpenCV version check (some installations don't have __version__)
+        try:
+            cv_version = cv2.__version__
+        except AttributeError:
+            cv_version = getattr(cv2, 'cv2.__version__', 'unknown')
+        
         print(f"✅ Success! NAPS {naps.__version__}, SLEAP {sleap.__version__}, "
-              f"OpenCV {cv2.__version__}, NumPy {np.__version__}")
+              f"OpenCV {cv_version}, NumPy {np.__version__}")
         return True
     except ImportError as e:
         print(f"❌ Import error: {e}")
