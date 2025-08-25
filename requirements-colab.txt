@@ -1,8 +1,13 @@
-numpy==1.26.4
-scipy==1.11.4
-h5py==3.10.0
+numpy>=1.22,<2.1
+scipy>=1.7.0
+h5py>=3.1.0
 pandas
 opencv-contrib-python-headless==4.8.1.78
+sleap
+imgstore
+nixio
+qimage2ndarray
+segmentation-models
 pytest
 pytest-cov
 tqdm
